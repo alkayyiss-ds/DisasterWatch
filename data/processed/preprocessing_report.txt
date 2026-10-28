@@ -1,0 +1,37 @@
+=== PREPROCESSING REPORT DisasterWatch ===
+Input  : bnpb_bencana_2026-01-01_2026-10-21.csv
+Input shape: (2260, 100)
+
+--- LOG PERUBAHAN ---
+Konversi numerik: 0 kolom
+Standarisasi string: strip + upper pada kolom kunci
+Drop baris tanggal invalid: 0
+Drop tanpa identitas wajib: 0
+Drop duplikat penuh: 0
+Koordinat di luar batas Indonesia di-null-kan
+Nilai negatif kolom dampak di-clip ke 0
+Kolom dampak (24) NaN → 0
+Shape akhir (features): (2260, 83)
+Shape akhir (cluster)  : (412, 25)
+Shape akhir (clf)      : (2260, 33)
+Shape akhir (tren)     : (10, 22)
+
+--- OUTPUT FILES ---
+bnpb_disaster_clean.csv        : (2260, 181)
+bnpb_disaster_features.csv     : (2260, 83)
+bnpb_disaster_cluster_ready.csv: (412, 25)
+bnpb_province_cluster_ready.csv: (38, 12)
+bnpb_disaster_clf_ready.csv    : (2260, 33)
+bnpb_disaster_monthly_trend.csv: (10, 22)
+bnpb_disaster_type_monthly.csv : (68, 6)
+
+--- FITUR KLASIFIKASI ---
+Post-event features (30): kejadian_code, provinsi_code, kabkot_code, year, month, quarter, musim_hujan, month_sin, month_cos, kejadian_mean_severity, provinsi_mean_severity, kabkot_total_laporan, kabkot_type_freq, meninggal, hilang, terluka, menderita, mengungsi, rumah_rusak, terendam, lahan, kerugian_juta, jumlah_kejadian, log_korban_jiwa, log_people_affected, log_material_damage, ada_korban_jiwa, ada_pengungsi, ada_material, ada_agri
+Pre-event  features (13): kejadian_code, provinsi_code, kabkot_code, year, month, quarter, musim_hujan, month_sin, month_cos, kejadian_mean_severity, provinsi_mean_severity, kabkot_total_laporan, kabkot_type_freq
+
+--- DISTRIBUSI SEVERITY ---
+severity
+Tanpa Dampak    1033
+Sedang           556
+Berat            510
+Ringan           161
