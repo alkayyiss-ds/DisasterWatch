@@ -1,0 +1,34 @@
+﻿Algorithm,Parameter,k,Silhouette,Davies_Bouldin,Calinski_Harabasz,Clusters,Noise_Count,Cluster_Sizes,Notes
+K-Means,k=2,2,0.332,1.2154,218.1,2,0,"[223, 189]","Partisi seimbang, interpretabilitas tinggi"
+K-Means,k=3,3,0.3479,1.1335,177.29,3,0,"[186, 207, 19]","Partisi seimbang, interpretabilitas tinggi"
+K-Means,k=4,4,0.3237,1.2204,172.78,4,0,"[105, 172, 120, 15]","Partisi seimbang, interpretabilitas tinggi"
+K-Means,k=5,5,0.2794,1.2417,160.74,5,0,"[94, 82, 104, 15, 117]","Partisi seimbang, interpretabilitas tinggi"
+K-Means,k=6,6,0.2811,1.2836,151.77,6,0,"[106, 81, 70, 49, 90, 16]","Partisi seimbang, interpretabilitas tinggi"
+Agglomerative (Ward),k=2,2,0.3182,1.2182,205.36,2,0,"[237, 175]",Hirarki aglomeratif jarak minimal varians
+Agglomerative (Ward),k=3,3,0.3334,1.1006,161.15,3,0,"[225, 175, 12]",Hirarki aglomeratif jarak minimal varians
+Agglomerative (Ward),k=4,4,0.2817,1.3877,141.67,4,0,"[175, 157, 12, 68]",Hirarki aglomeratif jarak minimal varians
+Agglomerative (Ward),k=5,5,0.2321,1.3775,130.52,5,0,"[157, 99, 12, 68, 76]",Hirarki aglomeratif jarak minimal varians
+Agglomerative (Ward),k=6,6,0.2497,1.3688,126.32,6,0,"[129, 99, 12, 68, 76, 28]",Hirarki aglomeratif jarak minimal varians
+Agglomerative (Complete),k=2,2,0.4997,0.8755,63.82,2,0,"[400, 12]","Sensitif outlier, cluster tidak seimbang"
+Agglomerative (Complete),k=3,3,0.3249,1.1377,155.08,3,0,"[12, 212, 188]","Sensitif outlier, cluster tidak seimbang"
+Agglomerative (Complete),k=4,4,0.3197,1.1662,108.97,4,0,"[212, 8, 188, 4]","Sensitif outlier, cluster tidak seimbang"
+Agglomerative (Complete),k=5,5,0.2954,1.2035,94.42,5,0,"[188, 8, 197, 4, 15]","Sensitif outlier, cluster tidak seimbang"
+Agglomerative (Complete),k=6,6,0.2506,1.3674,97.01,6,0,"[8, 86, 197, 4, 15, 102]","Sensitif outlier, cluster tidak seimbang"
+DBSCAN (Feature Space),"eps=1.0, ms=3",10,0.3084,1.0214,86.47,10,131,"valid=281, noise=131",Noise 131/412 (31.8%)
+DBSCAN (Feature Space),"eps=1.0, ms=5",8,0.34,1.0388,137.12,8,154,"valid=258, noise=154",Noise 154/412 (37.4%)
+DBSCAN (Feature Space),"eps=1.0, ms=8",6,0.39,1.0796,169.61,6,199,"valid=213, noise=199",Noise 199/412 (48.3%)
+DBSCAN (Feature Space),"eps=1.5, ms=3",4,-0.0945,1.2221,8.64,4,49,"valid=363, noise=49",Noise 49/412 (11.9%)
+DBSCAN (Feature Space),"eps=1.5, ms=5",2,-0.0621,1.7263,2.49,2,61,"valid=351, noise=61",Noise 61/412 (14.8%)
+DBSCAN (Feature Space),"eps=1.5, ms=8",1,,,,1,93,"valid=319, noise=93",Noise 93/412 (22.6%)
+DBSCAN (Feature Space),"eps=2.0, ms=3",3,0.205,0.8161,9.19,3,16,"valid=396, noise=16",Noise 16/412 (3.9%)
+DBSCAN (Feature Space),"eps=2.0, ms=5",1,,,,1,25,"valid=387, noise=25",Noise 25/412 (6.1%)
+DBSCAN (Feature Space),"eps=2.0, ms=8",1,,,,1,26,"valid=386, noise=26",Noise 26/412 (6.3%)
+HDBSCAN (Feature Space),min_cluster_size=5,9,0.387,0.8334,129.86,9,205,"valid=207, noise=205",Noise 205/412 (49.8%)
+HDBSCAN (Feature Space),min_cluster_size=10,4,0.4622,0.7573,199.43,4,218,"valid=194, noise=218",Noise 218/412 (52.9%)
+HDBSCAN (Feature Space),min_cluster_size=15,4,0.485,0.6942,207.1,4,229,"valid=183, noise=229",Noise 229/412 (55.6%)
+Spatial DBSCAN (Haversine),"eps=100km, ms=3",17,-0.0918,1.0015,47.83,17,43,"valid=369, noise=43",Pengelompokan hotspot spasial kepulauan Indonesia
+Spatial DBSCAN (Haversine),"eps=100km, ms=5",13,0.2436,0.5395,204.15,13,106,"valid=306, noise=106",Pengelompokan hotspot spasial kepulauan Indonesia
+Spatial DBSCAN (Haversine),"eps=150km, ms=3",8,0.2354,0.7104,98.57,8,13,"valid=399, noise=13",Pengelompokan hotspot spasial kepulauan Indonesia
+Spatial DBSCAN (Haversine),"eps=150km, ms=5",9,0.1001,0.7655,72.46,9,29,"valid=383, noise=29",Pengelompokan hotspot spasial kepulauan Indonesia
+Spatial DBSCAN (Haversine),"eps=200km, ms=3",5,0.1907,0.9009,147.41,5,5,"valid=407, noise=5",Pengelompokan hotspot spasial kepulauan Indonesia
+Spatial DBSCAN (Haversine),"eps=200km, ms=5",7,0.2098,0.7784,96.39,7,9,"valid=403, noise=9",Pengelompokan hotspot spasial kepulauan Indonesia
