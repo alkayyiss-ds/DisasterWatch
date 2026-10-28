@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DisasterWatch — Dashboard Kebencanaan Indonesia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<!-- Leaflet Map CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="js/data_asli.js"></script>
+<script src="js/app.js"></script>
+
+<style>
+  /* Custom style untuk Leaflet & Halaman Baru */
+  #map-overview, #map-wilayah { height: 100%; width: 100%; border-radius: 10px; z-index: 1; }
+  .leaflet-container { font-family: 'Inter', sans-serif; }
+  
+  /* CSS KLASTER BARU */
+  .cluster-card {
+    background: #fff; border-radius: 16px; padding: 24px;
+    box-shadow: 0 4px 20px -4px rgba(16,24,40,0.08);
+    border: 1px solid var(--line); position: relative; overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .cluster-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px -8px rgba(16,24,40,0.15); }
+  .cluster-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; }
+  .cluster-card.c1::before { background: #3A86FF; }
+  .cluster-card.c2::before { background: #FB5607; }
+  .cluster-card.c3::before { background: #2A9D8F; }
+  .cc-header { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+  .cc-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex: none; }
+  .c1 .cc-icon { background: #E8F1FB; color: #3A86FF; }
+  .c2 .cc-icon { background: #FFF1E2; color: #FB5607; }
+  .c3 .cc-icon { background: #D1FADF; color: #2A9D8F; }
+  .cc-title { font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; margin-bottom: 2px; }
+  .cc-subtitle { font-size: 12px; color: var(--muted); font-weight: 500; }
+  .cc-desc { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 20px; min-height: 42px; }
+  .cc-stats { display: flex; gap: 16px; }
+  .cc-stat { flex: 1; background: #F9FAFB; border-radius: 10px; padding: 14px 12px; text-align: center; border: 1px solid var(--line-2); }
+  .cc-stat span { display: block; font-size: 10px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+  .cc-stat b { font-family: 'Outfit', sans-serif; display: block; font-size: 26px; font-weight: 800; color: var(--ink); line-height: 1; }
+
+  /* --- ANIMASI CARD --- */
+  @keyframes slideUpFade {
+    0% { opacity: 0; transform: translateY(40px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  .page.on .anim-card {
+    animation: slideUpFade 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    opacity: 0;
+  }
+  .page.on .grid-3 .anim-card:nth-child(1) { animation-delay: 0.1s; }
+  .page.on .grid-3 .anim-card:nth-child(2) { animation-delay: 0.2s; }
+  .page.on .grid-3 .anim-card:nth-child(3) { animation-delay: 0.3s; }
+  .page.on .grid-2e .anim-card:nth-child(1) { animation-delay: 0.4s; }
+  .page.on .grid-2e .anim-card:nth-child(2) { animation-delay: 0.5s; }
+
+  /* --- HOVER CARD LAPORAN --- */
+  .report-card { transition: all 0.3s ease; cursor: pointer; border-left: 4px solid transparent; }
+  .report-card:hover { border-left-color: var(--blue); background: #F9FAFB; transform: translateX(6px); }
+  .report-card:hover .btn-download { background: var(--blue); color: #fff; transform: scale(1.05); }
+  .btn-download {
+    background: var(--blue-soft); color: var(--blue); border: none; border-radius: 8px;
+    padding: 8px 16px; font-weight: 700; font-family: inherit; font-size: 12px;
+    display: flex; align-items: center; gap: 6px; cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .btn-download svg { width: 14px; height: 14px; }
+
+  /* --- HOVER SWITCH PENGATURAN --- */
+  .setting-item { transition: background 0.2s; border-radius: 8px; padding: 16px 12px; }
+  .setting-item:hover { background: #F9FAFB; }
+  .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
+  .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+  input:checked + .slider { background-color: var(--blue); }
+  input:checked + .slider:before { transform: translateX(20px); }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar">
+    <div class="brand">
+      <svg width="34" height="34" viewBox="0 0 44 44" aria-hidden="true">
+        <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2E75B6"/><stop offset="1" stop-color="#F4A259"/></linearGradient></defs>
+        <rect width="44" height="44" rx="12" fill="url(#lg)"/>
+        <path d="M10 28c4-8 8-8 12 0s8 8 12 0" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+        <path d="M22 10l5 9h-10z" fill="#fff" opacity=".95"/>
+      </svg>
+      <div><b>DisasterWatch</b><span>Siaga. Paham. Tangguh.</span></div>
+    </div>
+
+    <div class="nav-section">Menu Utama</div>
+    <button class="nav-item on" data-t="overview">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+      <span class="lbl-txt">Overview</span>
+    </button>
+    <button class="nav-item" data-t="peta">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 4l6 2 6-2v16l-6 2-6-2-6 2V6z"/><path d="M9 4v16M15 6v16"/></svg>
+      <span class="lbl-txt">Peta Wilayah</span>
+    </button>
+    <button class="nav-item" data-t="prediksi">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>
+      <span class="lbl-txt">Prediksi Korban</span>
+      <span class="nav-badge">ML</span>
+    </button>
+    <button class="nav-item" data-t="klaster">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="8" r="3"/><circle cx="17" cy="9" r="3"/><circle cx="12" cy="17" r="3"/></svg>
+      <span class="lbl-txt">Klaster Provinsi</span>
+    </button>
+    <button class="nav-item" data-t="tren">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>
+      <span class="lbl-txt">Tren &amp; Prediksi</span>
+    </button>
+
+    <div class="nav-section">Lainnya</div>
+    <button class="nav-item" data-t="laporan">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <span class="lbl-txt">Laporan</span>
+    </button>
+    <button class="nav-item" data-t="pengaturan">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      <span class="lbl-txt">Pengaturan</span>
+    </button>
+
+    <div class="sidebar-foot">
+      <div class="sdg-badges"><span>SDG 13.1</span><span>SDG 11.5</span></div>
+      <div class="user-box">
+        <div class="avatar">AD</div>
+        <div><b>Admin</b><span>admin@dw.id</span></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN ===== -->
+  <main class="main">
+    <div class="topbar">
+      
+      <!-- TOMBOL HAMBURGER (TOGGLE SIDEBAR) -->
+      <button class="icon-btn" id="btn-toggle-sidebar" aria-label="Toggle Sidebar" style="margin-right: 4px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+
+      <div class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input placeholder="Cari provinsi, jenis bencana, atau laporan…" aria-label="Pencarian">
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn" aria-label="Notifikasi">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="dot"></span>
+        </button>
+        <button class="icon-btn" aria-label="Pengaturan">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </button>
+        <div class="divider-v"></div>
+        <button class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== OVERVIEW ===== -->
+    <section class="page on" id="p-overview">
+      <div class="page-head">
+        <div>
+          <div class="crumb"><span>Dashboard</span> / <b>Overview</b></div>
+          <h1>Ringkasan Kebencanaan Indonesia</h1>
+          <p>Data BNPB (DIBI) · 2015 – 2026</p>
+        </div>
+      </div>
+
+      <div class="filterbar">
+        <div class="filter-group">
+          <label>Tahun</label>
+          <select class="select" id="f-tahun">
+            <option value="2026">2015 – 2026 (Semua)</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Jenis</label>
+          <select class="select" id="f-jenis">
+            <option value="semua">Semua bencana</option>
+            <option value="banjir">Banjir</option>
+            <option value="karhutla">Karhutla</option>
+            <option value="cuaca">Cuaca ekstrem</option>
+            <option value="longsor">Tanah longsor</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Provinsi</label>
+          <select class="select" id="f-prov">
+            <option value="semua">Semua provinsi</option>
+            <option value="jateng">Jawa Tengah</option>
+            <option value="jatim">Jawa Timur</option>
+            <option value="jabar">Jawa Barat</option>
+          </select>
+        </div>
+        <button class="reset" id="f-reset">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+          Reset
+        </button>
+      </div>
+
+      <div class="kpis" id="kpi-row">
+        <div class="kpi">
+          <div class="kpi-head">
+            <div class="kpi-ic" style="background:var(--blue-soft)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2E75B6" stroke-width="2.5" stroke-linecap="round"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg></div>
+          </div>
+          <div class="kpi-label">Total Kejadian</div>
+          <div class="kpi-val" id="kpi-total">44.290</div>
+          <div class="kpi-foot"><span class="trend up">▲ 12,4%</span> vs tahun lalu</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-head">
+            <div class="kpi-ic" style="background:var(--red-soft)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D92D20" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></div>
+          </div>
+          <div class="kpi-label">Korban Meninggal</div>
+          <div class="kpi-val" id="kpi-meninggal">11.795</div>
+          <div class="kpi-foot"><span class="trend down">▼ 6,1%</span> vs tahun lalu</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-head">
+            <div class="kpi-ic" style="background:var(--orange-soft)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B4531A" stroke-width="2.5" stroke-linecap="round"><path d="M3 11l9-7 9 7v9H3z"/></svg></div>
+          </div>
+          <div class="kpi-label">Rumah Rusak</div>
+          <div class="kpi-val" id="kpi-rumah">1,4 jt</div>
+          <div class="kpi-foot"><span class="trend up">▲ 18,7%</span> vs tahun lalu</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-head">
+            <div class="kpi-ic" style="background:var(--green-soft)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E9384" stroke-width="2.5" stroke-linecap="round"><path d="M12 21s7-6 7-11a7 7 0 10-14 0c0 5 7 11 7 11z"/></svg></div>
+          </div>
+          <div class="kpi-label">Provinsi Terdampak</div>
+          <div class="kpi-val" id="kpi-prov">78</div>
+          <div class="kpi-foot"><span class="trend flat">— stabil</span> vs tahun lalu</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-head">
+            <div><h3>Tren Kejadian Bulanan</h3><p>Data Tahun 2026</p></div>
+            <button class="card-menu" aria-label="Menu">⋯</button>
+          </div>
+          <div class="chart-wrap"><canvas id="c-monthly"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <div><h3>Komposisi Jenis Bencana</h3><p>Total keseluruhan data</p></div>
+          </div>
+          <div class="chart-wrap"><canvas id="c-komposisi"></canvas></div>
+        </div>
+      </div>
+
+      <div class="grid-2e">
+        <div class="card">
+          <div class="card-head">
+            <div><h3>Peta Risiko Provinsi</h3><p>Sebaran titik kejadian</p></div>
+          </div>
+          <div class="map" style="height:300px; padding:0; overflow:hidden;">
+            <div id="map-overview"></div>
+          </div>
+          <div class="map-legend"><span>Rendah</span><i style="background:linear-gradient(90deg,#FFE5B4,#F4A259,#E4572E,#A4161A)"></i><span>Tinggi</span></div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <div><h3>Top 5 Provinsi</h3><p>Kejadian terbanyak</p></div>
+          </div>
+          <table class="tbl">
+            <thead><tr><th>Provinsi</th><th>Kejadian</th></tr></thead>
+            <tbody id="top-prov-tbody">
+              <!-- Akan diisi oleh JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PETA ===== -->
+    <section class="page" id="p-peta">
+      <div class="page-head"><div><div class="crumb"><span>Dashboard</span> / <b>Peta Wilayah</b></div><h1>Peta Risiko Wilayah</h1><p>Sebaran dan intensitas kejadian per provinsi</p></div></div>
+      <div class="filterbar">
+        <div class="filter-group"><label>Periode</label><select class="select"><option>2015 – 2026</option><option>2024 – 2026</option></select></div>
+        <div class="filter-group"><label>Jenis</label><select class="select"><option>Semua bencana</option><option>Banjir</option></select></div>
+      </div>
+      <div class="grid-2e">
+        <div class="card">
+          <div class="card-head"><div><h3>Choropleth Risiko</h3><p>Warna = tingkat risiko relatif</p></div></div>
+          <div class="map" style="height:380px; padding:0; overflow:hidden;">
+            <div id="map-wilayah"></div>
+          </div>
+          <div class="map-legend"><span>Rendah</span><i style="background:linear-gradient(90deg,#FFE5B4,#F4A259,#E4572E,#A4161A)"></i><span>Sangat tinggi</span></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div><h3>Top Kabupaten Rawan</h3><p>Data kejadian tertinggi</p></div></div>
+          <table class="tbl">
+            <thead><tr><th>Kabupaten</th><th>Kejadian</th></tr></thead>
+            <tbody>
+              <tr><td><span class="rank">1</span>Cilacap</td><td>47</td></tr>
+              <tr><td><span class="rank">2</span>Bandung</td><td>38</td></tr>
+              <tr><td><span class="rank">3</span>Sidoarjo</td><td>27</td></tr>
+              <tr><td><span class="rank">4</span>Semarang</td><td>24</td></tr>
+              <tr><td><span class="rank">5</span>Bogor</td><td>21</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h3>Jenis Bencana Dominan per Provinsi</h3><p>Proporsi 3 jenis teratas</p></div></div>
+        <div class="chart-wrap sm"><canvas id="c-dominan"></canvas></div>
+      </div>
+    </section>
+
+    <!-- ===== PREDIKSI ===== -->
+    <section class="page" id="p-prediksi">
+      <div class="page-head"><div><div class="crumb"><span>Dashboard</span> / <b>Prediksi Korban</b></div><h1>Prediksi Korban Jiwa</h1><p>Model klasifikasi Random Forest · 1.842 sampel uji</p></div></div>
+      <div class="kpis" style="grid-template-columns:repeat(4,1fr)">
+        <div class="kpi"><div class="kpi-label">Accuracy</div><div class="kpi-val" style="color:var(--green)">0,89</div></div>
+        <div class="kpi"><div class="kpi-label">Precision</div><div class="kpi-val" style="color:var(--green)">0,86</div></div>
+        <div class="kpi"><div class="kpi-label">Recall</div><div class="kpi-val" style="color:var(--orange)">0,82</div></div>
+        <div class="kpi"><div class="kpi-label">F1-score</div><div class="kpi-val" style="color:var(--green)">0,84</div></div>
+      </div>
+      <div class="grid-2e">
+        <div class="card">
+          <div class="card-head"><div><h3>Confusion Matrix</h3><p>Prediksi vs kenyataan</p></div></div>
+          <div class="cm">
+            <div class="h"></div><div class="h">Prediksi: Tidak</div><div class="h">Prediksi: Ya</div>
+            <div class="h">Aktual: Tidak</div><div class="g">1.512<small>True Negative</small></div><div class="b">113<small>False Positive</small></div>
+            <div class="h">Aktual: Ya</div><div class="b">39<small>False Negative</small></div><div class="g">178<small>True Positive</small></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div><h3>Feature Importance</h3><p>Faktor paling berpengaruh</p></div></div>
+          <div class="chart-wrap sm"><canvas id="c-feature"></canvas></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h3>Simulasi Prediksi</h3><p>Pilih kondisi untuk melihat estimasi risiko korban jiwa</p></div></div>
+        <div class="sim-grid">
+          <div class="sim-field"><label>Jenis Bencana</label><select class="select" id="sim-jenis"><option>Banjir</option><option>Tanah longsor</option><option>Gempa bumi</option></select></div>
+          <div class="sim-field"><label>Provinsi</label><select class="select" id="sim-prov"><option>Jawa Tengah</option><option>Jawa Barat</option><option>Jawa Timur</option></select></div>
+          <div class="sim-field"><label>Bulan</label><select class="select" id="sim-bulan"><option>Januari</option><option>Februari</option><option>Maret</option></select></div>
+        </div>
+        <div class="sim-result">
+          <div class="lbl-sm">Estimasi Risiko</div>
+          <div class="val" id="sim-val">Tinggi · 78%</div>
+          <div class="sim-bar"><i id="sim-bar" style="width:78%"></i></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== KLASTER (TAMPILAN BARU) ===== -->
+    <section class="page" id="p-klaster">
+      <div class="page-head">
+        <div>
+          <div class="crumb"><span>Dashboard</span> / <b>Klaster Provinsi</b></div>
+          <h1>Klasterisasi Risiko Provinsi</h1>
+          <p>Pengelompokan wilayah berdasarkan karakteristik bencana (K-Means, k=3)</p>
+        </div>
+      </div>
+
+      <!-- 3 Kartu Profil Klaster -->
+      <div class="grid-3" style="margin-bottom: 16px;">
+        <div class="cluster-card c1 anim-card">
+          <div class="cc-header">
+            <div class="cc-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>
+            </div>
+            <div>
+              <div class="cc-title">Klaster 1</div>
+              <div class="cc-subtitle">Risiko Banjir Dominan</div>
+            </div>
+          </div>
+          <div class="cc-desc">Wilayah dengan frekuensi banjir tinggi, namun tingkat korban jiwa relatif lebih rendah dibanding klaster lain.</div>
+          <div class="cc-stats">
+            <div class="cc-stat"><span>Provinsi</span><b>8</b></div>
+            <div class="cc-stat"><span>Rerata Kejadian</span><b>42</b></div>
+          </div>
+        </div>
+        
+        <div class="cluster-card c2 anim-card">
+          <div class="cc-header">
+            <div class="cc-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <div>
+              <div class="cc-title">Klaster 2</div>
+              <div class="cc-subtitle">Karhutla & Kekeringan</div>
+            </div>
+          </div>
+          <div class="cc-desc">Wilayah dengan dominasi bencana hidrometeorologi ekstrem, berdampak luas pada kerusakan lahan dan ekosistem.</div>
+          <div class="cc-stats">
+            <div class="cc-stat"><span>Provinsi</span><b>6</b></div>
+            <div class="cc-stat"><span>Rerata Kejadian</span><b>88</b></div>
+          </div>
+        </div>
+        
+        <div class="cluster-card c3 anim-card">
+          <div class="cc-header">
+            <div class="cc-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 22h20L12 2z"/><path d="M12 9v5M12 18h.01"/></svg>
+            </div>
+            <div>
+              <div class="cc-title">Klaster 3</div>
+              <div class="cc-subtitle">Gempa & Erupsi</div>
+            </div>
+          </div>
+          <div class="cc-desc">Wilayah dengan risiko geologis tinggi. Meski kejadian lebih jarang, dampak korban jiwa sangat masif.</div>
+          <div class="cc-stats">
+            <div class="cc-stat"><span>Provinsi</span><b>5</b></div>
+            <div class="cc-stat"><span>Rerata Kejadian</span><b>27</b></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2e">
+        <div class="card anim-card">
+          <div class="card-head">
+            <div><h3>Rata-rata Korban Jiwa per Klaster</h3><p>Perbandingan dampak fatal antar wilayah</p></div>
+          </div>
+          <div class="chart-wrap"><canvas id="c-scatter"></canvas></div>
+        </div>
+        
+        <div class="card anim-card">
+          <div class="card-head">
+            <div><h3>Daftar Provinsi per Klaster</h3><p>Contoh pemetaan wilayah (Top 5)</p></div>
+          </div>
+          <table class="tbl">
+            <thead><tr><th>Provinsi</th><th>Klaster</th></tr></thead>
+            <tbody>
+              <tr><td>Jawa Barat</td><td><span class="pill blue">Banjir</span></td></tr>
+              <tr><td>Jawa Tengah</td><td><span class="pill blue">Banjir</span></td></tr>
+              <tr><td>Riau</td><td><span class="pill orange">Karhutla</span></td></tr>
+              <tr><td>Kalimantan Selatan</td><td><span class="pill orange">Karhutla</span></td></tr>
+              <tr><td>Aceh</td><td><span class="pill green">Gempa</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TREN ===== -->
+    <section class="page" id="p-tren">
+      <div class="page-head"><div><div class="crumb"><span>Dashboard</span> / <b>Tren &amp; Prediksi</b></div><h1>Tren &amp; Prediksi Kejadian</h1><p>Model SARIMA(1,1,1)(1,1,0)₁₂ · RMSE 48,2</p></div></div>
+      <div class="grid-2" style="grid-template-columns:repeat(4,1fr)">
+        <div class="kpi"><div class="kpi-label">RMSE</div><div class="kpi-val">48,2</div></div>
+        <div class="kpi"><div class="kpi-label">MAE</div><div class="kpi-val">36,7</div></div>
+        <div class="kpi"><div class="kpi-label">Horizon</div><div class="kpi-val">6 bln</div></div>
+        <div class="kpi"><div class="kpi-label">Model</div><div class="kpi-val" style="font-size:20px">SARIMA</div></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h3>Forecast Kejadian</h3><p>Aktual (solid) vs ramalan (dashed) · pita 95%</p></div></div>
+        <div class="chart-wrap lg"><canvas id="c-forecast"></canvas></div>
+        <div class="chart-legend">
+          <span><i style="background:#1F3A5F"></i>Aktual</span>
+          <span><i style="background:#E4572E"></i>Ramalan</span>
+          <span><i style="background:rgba(228,87,46,.2)"></i>Rentang 95%</span>
+        </div>
+      </div>
+      <div class="grid-2e">
+        <div class="card">
+          <div class="card-head"><div><h3>Pola Musiman</h3><p>Rata-rata kejadian per bulan</p></div></div>
+          <div class="chart-wrap sm"><canvas id="c-seasonal"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div><h3>Catatan Penting</h3><p>Interpretasi data</p></div></div>
+          <div style="padding:14px;border-radius:10px;background:var(--orange-soft);border:1px solid #FAD9B5;font-size:12.5px;line-height:1.6;color:#7A4A12;margin-bottom:10px">
+            <b style="display:block;margin-bottom:4px;color:#B4531A">⚠ Perubahan metodologi 2024</b>
+            Pencatatan kejadian BNPB berubah mulai 2024. Jumlah sebelum dan sesudah tidak setara — model dilatih terpisah atau dengan penanda periode.
+          </div>
+          <div style="padding:14px;border-radius:10px;background:var(--blue-soft);border:1px solid #C9DDF3;font-size:12.5px;line-height:1.6;color:#1B4A7A">
+            <b style="display:block;margin-bottom:4px;color:#2E75B6">ℹ Data 2026 belum penuh</b>
+            Data hanya sampai 27 Okt 2026, tidak dibandingkan langsung dengan tahun penuh.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== LAPORAN (DENGAN ANIMASI) ===== -->
+    <section class="page" id="p-laporan">
+      <div class="page-head">
+        <div><div class="crumb"><span>Dashboard</span> / <b>Laporan</b></div><h1>Pusat Unduhan Laporan</h1><p>Unduh dataset dan hasil analisis terbaru</p></div>
+      </div>
+      
+      <div class="card anim-card" style="padding: 0;">
+        <div class="report-card" style="padding: 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; gap: 16px; align-items: center;">
+            <div style="width: 48px; height: 48px; border-radius: 12px; background: #E8F1FB; display: flex; align-items: center; justify-content: center; color: var(--blue);">
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <div>
+              <b style="font-size: 15px; color: var(--ink); display: block; margin-bottom: 4px;">Dataset BNPB (CSV)</b>
+              <span style="font-size: 12px; color: var(--muted);">Data mentah 44.290 kejadian · 30 MB · Rilis 28 Okt 2026</span>
+            </div>
+          </div>
+          <button class="btn-download"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Unduh</button>
+        </div>
+
+        <div class="report-card" style="padding: 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; gap: 16px; align-items: center;">
+            <div style="width: 48px; height: 48px; border-radius: 12px; background: #FFF1E2; display: flex; align-items: center; justify-content: center; color: #FB5607;">
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="8" r="3"/><circle cx="17" cy="9" r="3"/><circle cx="12" cy="17" r="3"/></svg>
+            </div>
+            <div>
+              <b style="font-size: 15px; color: var(--ink); display: block; margin-bottom: 4px;">Hasil Klasterisasi Provinsi (CSV)</b>
+              <span style="font-size: 12px; color: var(--muted);">Profil 3 klaster risiko · 1 MB · Rilis 28 Okt 2026</span>
+            </div>
+          </div>
+          <button class="btn-download"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Unduh</button>
+        </div>
+
+        <div class="report-card" style="padding: 20px; display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; gap: 16px; align-items: center;">
+            <div style="width: 48px; height: 48px; border-radius: 12px; background: #D1FADF; display: flex; align-items: center; justify-content: center; color: var(--green);">
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <div>
+              <b style="font-size: 15px; color: var(--ink); display: block; margin-bottom: 4px;">Laporan Evaluasi Model (PDF)</b>
+              <span style="font-size: 12px; color: var(--muted);">Metrik akurasi & interpretasi clustering · 4 MB · Rilis 28 Okt 2026</span>
+            </div>
+          </div>
+          <button class="btn-download"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Unduh</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PENGATURAN (DENGAN ANIMASI) ===== -->
+    <section class="page" id="p-pengaturan">
+      <div class="page-head">
+        <div><div class="crumb"><span>Dashboard</span> / <b>Pengaturan</b></div><h1>Pengaturan Sistem</h1><p>Konfigurasi tampilan dan preferensi dashboard</p></div>
+      </div>
+      <div class="card anim-card" style="padding: 12px;">
+        
+        <div class="setting-item" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line);">
+          <div>
+            <b style="font-size: 14px; color: var(--ink); display: block; margin-bottom: 4px;">Mode Gelap (Dark Mode)</b>
+            <span style="font-size: 12px; color: var(--muted);">Ubah tema antarmuka menjadi gelap untuk kenyamanan mata.</span>
+          </div>
+          <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+        </div>
+
+        <div class="setting-item" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line);">
+          <div>
+            <b style="font-size: 14px; color: var(--ink); display: block; margin-bottom: 4px;">Notifikasi Bencana Dini</b>
+            <span style="font-size: 12px; color: var(--muted);">Kirim peringatan via email jika terdeteksi anomali data bencana.</span>
+          </div>
+          <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+        </div>
+
+        <div class="setting-item" style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <b style="font-size: 14px; color: var(--ink); display: block; margin-bottom: 4px;">Auto-refresh Data</b>
+            <span style="font-size: 12px; color: var(--muted);">Perbarui dataset otomatis dari server BNPB setiap 24 jam.</span>
+          </div>
+          <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+</div>
+</body>
+</html>
