@@ -1,6 +1,7 @@
-venv/
-__pycache__/
-*.py[cod]
-.env
+﻿venv/
 .venv/
+__pycache__/
+*.pyc
+.env
 backend/models/
+backend-prediksi-dampak.bundle

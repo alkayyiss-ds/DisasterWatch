@@ -5,20 +5,6 @@ window.DATA_ASLI = {
     "rumah": "1,4 jt",
     "prov": 40
   },
-  "monthly": [
-    287,
-    183,
-    217,
-    192,
-    166,
-    121,
-    247,
-    319,
-    345,
-    214,
-    0,
-    0
-  ],
   "komposisi": {
     "labels": [
       "BANJIR",
@@ -54,6 +40,452 @@ window.DATA_ASLI = {
       2125,
       1751
     ]
+  },
+  "tahun_agg": {
+    "2015": {
+      "total": 1703,
+      "meninggal": 219,
+      "rumah": "26 rb",
+      "prov": 34,
+      "monthly": [
+        310,
+        290,
+        136,
+        180,
+        98,
+        102,
+        39,
+        39,
+        45,
+        87,
+        211,
+        166
+      ]
+    },
+    "2016": {
+      "total": 2313,
+      "meninggal": 482,
+      "rumah": "48 rb",
+      "prov": 34,
+      "monthly": [
+        202,
+        359,
+        307,
+        186,
+        121,
+        89,
+        112,
+        92,
+        192,
+        212,
+        253,
+        188
+      ]
+    },
+    "2017": {
+      "total": 2898,
+      "meninggal": 309,
+      "rumah": "50 rb",
+      "prov": 34,
+      "monthly": [
+        388,
+        465,
+        298,
+        242,
+        171,
+        148,
+        115,
+        122,
+        132,
+        237,
+        314,
+        266
+      ]
+    },
+    "2018": {
+      "total": 3522,
+      "meninggal": 5477,
+      "rumah": "370 rb",
+      "prov": 34,
+      "monthly": [
+        463,
+        454,
+        392,
+        242,
+        178,
+        158,
+        366,
+        204,
+        213,
+        231,
+        305,
+        316
+      ]
+    },
+    "2019": {
+      "total": 3874,
+      "meninggal": 478,
+      "rumah": "74 rb",
+      "prov": 34,
+      "monthly": [
+        464,
+        463,
+        515,
+        456,
+        139,
+        212,
+        217,
+        224,
+        203,
+        293,
+        294,
+        394
+      ]
+    },
+    "2020": {
+      "total": 4947,
+      "meninggal": 376,
+      "rumah": "66 rb",
+      "prov": 34,
+      "monthly": [
+        633,
+        775,
+        558,
+        326,
+        336,
+        249,
+        209,
+        248,
+        308,
+        476,
+        377,
+        452
+      ]
+    },
+    "2021": {
+      "total": 6227,
+      "meninggal": 728,
+      "rumah": "159 rb",
+      "prov": 34,
+      "monthly": [
+        708,
+        794,
+        613,
+        449,
+        337,
+        287,
+        240,
+        329,
+        422,
+        490,
+        815,
+        743
+      ]
+    },
+    "2022": {
+      "total": 3728,
+      "meninggal": 858,
+      "rumah": "97 rb",
+      "prov": 34,
+      "monthly": [
+        458,
+        389,
+        397,
+        273,
+        296,
+        253,
+        221,
+        241,
+        251,
+        445,
+        262,
+        242
+      ]
+    },
+    "2023": {
+      "total": 5615,
+      "meninggal": 275,
+      "rumah": "47 rb",
+      "prov": 38,
+      "monthly": [
+        515,
+        630,
+        509,
+        322,
+        294,
+        303,
+        490,
+        692,
+        851,
+        427,
+        274,
+        308
+      ]
+    },
+    "2024": {
+      "total": 3719,
+      "meninggal": 540,
+      "rumah": "80 rb",
+      "prov": 38,
+      "monthly": [
+        368,
+        308,
+        388,
+        242,
+        244,
+        172,
+        318,
+        364,
+        340,
+        311,
+        345,
+        319
+      ]
+    },
+    "2025": {
+      "total": 3443,
+      "meninggal": 1626,
+      "rumah": "213 rb",
+      "prov": 38,
+      "monthly": [
+        471,
+        398,
+        423,
+        164,
+        233,
+        181,
+        351,
+        279,
+        205,
+        215,
+        276,
+        247
+      ]
+    },
+    "2026": {
+      "total": 2291,
+      "meninggal": 427,
+      "rumah": "165 rb",
+      "prov": 38,
+      "monthly": [
+        287,
+        183,
+        217,
+        192,
+        166,
+        121,
+        247,
+        319,
+        345,
+        214,
+        0,
+        0
+      ]
+    }
+  },
+  "jenis_agg": {
+    "TANAH LONGSOR": {
+      "total": 8030,
+      "meninggal": 1777
+    },
+    "BANJIR": {
+      "total": 14188,
+      "meninggal": 3152
+    },
+    "CUACA EKSTREM": {
+      "total": 12260,
+      "meninggal": 378
+    },
+    "GELOMBANG PASANG DAN ABRASI": {
+      "total": 372,
+      "meninggal": 22
+    },
+    "KEBAKARAN HUTAN DAN LAHAN": {
+      "total": 7951,
+      "meninggal": 57
+    },
+    "GEMPABUMI": {
+      "total": 559,
+      "meninggal": 1676
+    },
+    "KEKERINGAN": {
+      "total": 764,
+      "meninggal": 6
+    },
+    "ERUPSI GUNUNG API": {
+      "total": 142,
+      "meninggal": 149
+    },
+    "GEMPA BUMI DAN TSUNAMI": {
+      "total": 5,
+      "meninggal": 4141
+    },
+    "TSUNAMI": {
+      "total": 9,
+      "meninggal": 437
+    }
+  },
+  "prov_agg": {
+    "ACEH": {
+      "total": 2125,
+      "meninggal": 732
+    },
+    "BANTEN": {
+      "total": 868,
+      "meninggal": 391
+    },
+    "JAWA TENGAH": {
+      "total": 7445,
+      "meninggal": 540
+    },
+    "SUMATERA BARAT": {
+      "total": 1302,
+      "meninggal": 575
+    },
+    "JAWA BARAT": {
+      "total": 8116,
+      "meninggal": 1311
+    },
+    "JAWA TIMUR": {
+      "total": 4536,
+      "meninggal": 417
+    },
+    "NUSA TENGGARA TIMUR": {
+      "total": 741,
+      "meninggal": 459
+    },
+    "SULAWESI SELATAN": {
+      "total": 1751,
+      "meninggal": 286
+    },
+    "KALIMANTAN TIMUR": {
+      "total": 1248,
+      "meninggal": 41
+    },
+    "SUMATERA UTARA": {
+      "total": 1714,
+      "meninggal": 651
+    },
+    "SULAWESI UTARA": {
+      "total": 369,
+      "meninggal": 100
+    },
+    "SULAWESI TENGAH": {
+      "total": 868,
+      "meninggal": 4212
+    },
+    "KALIMANTAN UTARA": {
+      "total": 354,
+      "meninggal": 23
+    },
+    "PAPUA": {
+      "total": 128,
+      "meninggal": 129
+    },
+    "DI YOGYAKARTA": {
+      "total": 341,
+      "meninggal": 39
+    },
+    "MALUKU": {
+      "total": 366,
+      "meninggal": 70
+    },
+    "SUMATERA SELATAN": {
+      "total": 1169,
+      "meninggal": 55
+    },
+    "BENGKULU": {
+      "total": 312,
+      "meninggal": 65
+    },
+    "KALIMANTAN BARAT": {
+      "total": 725,
+      "meninggal": 56
+    },
+    "GORONTALO": {
+      "total": 323,
+      "meninggal": 54
+    },
+    "LAMPUNG": {
+      "total": 643,
+      "meninggal": 182
+    },
+    "KEPULAUAN BANGKA BELITUNG": {
+      "total": 504,
+      "meninggal": 34
+    },
+    "SULAWESI BARAT": {
+      "total": 279,
+      "meninggal": 128
+    },
+    "DKI JAKARTA": {
+      "total": 339,
+      "meninggal": 56
+    },
+    "KALIMANTAN SELATAN": {
+      "total": 1622,
+      "meninggal": 84
+    },
+    "KALIMANTAN TENGAH": {
+      "total": 969,
+      "meninggal": 31
+    },
+    "NUSA TENGGARA BARAT": {
+      "total": 934,
+      "meninggal": 651
+    },
+    "BALI": {
+      "total": 658,
+      "meninggal": 136
+    },
+    "JAMBI": {
+      "total": 637,
+      "meninggal": 31
+    },
+    "KEPULAUAN RIAU": {
+      "total": 454,
+      "meninggal": 59
+    },
+    "SULAWESI TENGGARA": {
+      "total": 285,
+      "meninggal": 26
+    },
+    "RIAU": {
+      "total": 1182,
+      "meninggal": 15
+    },
+    "MALUKU UTARA": {
+      "total": 387,
+      "meninggal": 57
+    },
+    "PAPUA BARAT": {
+      "total": 108,
+      "meninggal": 38
+    },
+    "P A P U A": {
+      "total": 30,
+      "meninggal": 6
+    },
+    "DAERAH ISTIMEWA YOGYAKARTA": {
+      "total": 367,
+      "meninggal": 8
+    },
+    "PAPUA PEGUNUNGAN": {
+      "total": 20,
+      "meninggal": 16
+    },
+    "PAPUA BARAT DAYA": {
+      "total": 37,
+      "meninggal": 1
+    },
+    "PAPUA SELATAN": {
+      "total": 10,
+      "meninggal": 0
+    },
+    "PAPUA TENGAH": {
+      "total": 14,
+      "meninggal": 30
+    }
   },
   "map_points": [
     {
@@ -1268,7 +1700,7 @@ window.DATA_ASLI = {
       "jenis_bencana_unik": 2.257309941520468,
       "avg_severity_score": 2.093141505128323,
       "pct_severity_berat": 4.645605484937475,
-      "avg_korban_per_event": 1.228553756192006,
+      "avg_korban_per_event": 1.2285537561920061,
       "avg_terdampak_per_event": 86.42584271736,
       "jumlah_wilayah": 171,
       "persentase": 16.4,
@@ -1312,8 +1744,8 @@ window.DATA_ASLI = {
       "total_korban_jiwa": 117.88311688311688,
       "total_terdampak": 144561.87012987013,
       "total_material": 14373.415584415585,
-      "total_agri": 2251.538422535212,
-      "jenis_bencana_unik": 3.7142857142857135,
+      "total_agri": 2251.5384225352113,
+      "jenis_bencana_unik": 3.7142857142857144,
       "avg_severity_score": 12.49383543461832,
       "pct_severity_berat": 52.355121385854005,
       "avg_korban_per_event": 100.34319896516196,
@@ -1322,5 +1754,19 @@ window.DATA_ASLI = {
       "persentase": 7.4,
       "nama_profil": "Risiko Katastropik & Fatalitas Ekstrem"
     }
+  ],
+  "monthly": [
+    287,
+    183,
+    217,
+    192,
+    166,
+    121,
+    247,
+    319,
+    345,
+    214,
+    0,
+    0
   ]
 };
