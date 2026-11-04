@@ -1,0 +1,27 @@
+# DisasterWatch — dependensi Python (disarankan Python 3.10+)
+# Teruji dengan Python 3.13: numpy 2.5, pandas 3.0, scikit-learn 1.9, matplotlib 3.11,
+# seaborn 0.13, scipy 1.18. Batas bawah di bawah adalah versi minimum fitur yang dipakai notebook
+# (mis. HDBSCAN di scikit-learn >= 1.3, legend 'outside' di matplotlib >= 3.7).
+#
+# Pasang:  pip install -r requirements.txt
+
+# --- Data & komputasi ---
+numpy>=1.26
+pandas>=2.1
+scipy>=1.11
+
+# --- Machine learning (clustering, klasifikasi, evaluasi) ---
+scikit-learn>=1.3
+
+# --- Visualisasi ---
+matplotlib>=3.7
+seaborn>=0.13
+
+# --- Styler tabel pandas (df.style.format / highlight_*) ---
+jinja2>=3.1
+
+# --- Menjalankan notebook (.ipynb) ---
+ipython>=8.0
+ipykernel>=6.25
+jupyterlab>=4.0
+nbconvert>=7.0    # opsional: eksekusi notebook dari terminal (jupyter nbconvert --execute)
