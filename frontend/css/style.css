@@ -605,3 +605,16 @@ body.dark-mode #btn-export {
 body.dark-mode #btn-export:hover {
   background: #2563A8;
 }
+
+/* ===== Prediksi Dampak — integrasi backend Random Forest ===== */
+.sim-hint { font-size: 10px; font-weight: 600; text-transform: none; letter-spacing: 0; color: var(--muted-2, #98A2B3); cursor: help; }
+.sim-proba { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.sim-proba span { font-size: 11.5px; font-weight: 600; color: #C9D4E5; background: #22324F; border-radius: 99px; padding: 4px 10px; }
+.sim-proba span.on { background: #F4A259; color: #0F1B2D; }
+.sim-metrics small { display: block; font-size: 11px; color: #8A9BB8; margin-top: 3px; }
+.sim-basis { margin-top: 12px; font-size: 11.5px; color: #8A9BB8; text-align: center; }
+.sim-status { margin-top: 12px; padding: 10px 14px; border-radius: 10px; font-size: 12.5px; background: var(--orange-soft, #FFF1E2); color: #B4531A; border: 1px solid #F9DBC0; }
+.sim-status code { background: rgba(0,0,0,.06); padding: 1px 6px; border-radius: 4px; font-size: 12px; }
+.mitigation-list li .m-src { display: inline-block; margin-left: 6px; font-size: 10.5px; font-weight: 700; color: var(--muted); background: #EEF2F6; border-radius: 99px; padding: 1px 8px; vertical-align: 1px; }
+.sim-result.loading { opacity: .6; transition: opacity .2s; }
+body.dark-mode .mitigation-list li .m-src { background: #22324F; color: #C9D4E5; }

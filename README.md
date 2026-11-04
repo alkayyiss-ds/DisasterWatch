@@ -49,6 +49,18 @@ Tahap 1 — **download data** ✅ (selesai)
 | TSUNAMI | 9 |
 | GEMPA BUMI DAN TSUNAMI | 5 |
 
+## Dashboard + backend Prediksi Dampak
+
+Halaman **Prediksi Dampak** memakai model Random Forest lewat API di folder `backend/`. Dari root repo:
+
+```powershell
+pip install -r backend/requirements.txt
+python backend/train_model.py                 # sekali, ±40 detik
+uvicorn backend.app:app --reload --port 8000  # buka http://localhost:8000
+```
+
+Detail endpoint, model, dan batasannya ada di [`backend/README.md`](backend/README.md).
+
 ## Struktur project
 
 ```

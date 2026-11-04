@@ -319,52 +319,52 @@
         <div>
           <div class="crumb"><span>Dashboard</span> / <b>Prediksi Dampak</b></div>
           <h1>Prediksi Dampak Bencana</h1>
-          <p>Estimasi tingkat dampak &amp; rekomendasi mitigasi berbasis profil klaster risiko</p>
+          <p>Estimasi tingkat dampak dengan model Random Forest &amp; rekomendasi mitigasi berbasis profil klaster risiko</p>
         </div>
       </div>
       <div class="kpis" style="grid-template-columns:repeat(4,1fr)">
-        <div class="kpi"><div class="kpi-label">Akurasi Model</div><div class="kpi-val" style="color:var(--green)">0,89</div></div>
-        <div class="kpi"><div class="kpi-label">Wilayah Terklasifikasi</div><div class="kpi-val">1.041</div></div>
-        <div class="kpi"><div class="kpi-label">Tingkat Risiko</div><div class="kpi-val">4</div></div>
-        <div class="kpi"><div class="kpi-label">Rekomendasi Mitigasi</div><div class="kpi-val">18</div></div>
+        <div class="kpi"><div class="kpi-label">Akurasi Model</div><div class="kpi-val" style="color:var(--green)" id="kpi-akurasi">–</div></div>
+        <div class="kpi"><div class="kpi-label">Wilayah Terklasifikasi</div><div class="kpi-val" id="kpi-wilayah">–</div></div>
+        <div class="kpi"><div class="kpi-label">Tingkat Dampak</div><div class="kpi-val" id="kpi-tingkat">4</div></div>
+        <div class="kpi"><div class="kpi-label">Rekomendasi Mitigasi</div><div class="kpi-val" id="kpi-rekomendasi">–</div></div>
       </div>
       <div class="card">
-        <div class="card-head"><div><h3>Simulasi Prediksi Dampak</h3><p>Pilih kondisi untuk melihat estimasi tingkat dampak &amp; rekomendasi mitigasi</p></div></div>
+        <div class="card-head"><div><h3>Simulasi Prediksi Dampak</h3><p>Pilih kondisi untuk melihat estimasi tingkat dampak &amp; rekomendasi mitigasi</p></div><span class="pill blue" id="model-badge">Random Forest</span></div>
         <div class="sim-grid">
           <div class="sim-field"><label>Jenis Bencana</label><select class="select" id="sim-jenis"><option>Banjir</option><option>Tanah longsor</option><option>Gempa bumi</option><option>Karhutla</option><option>Cuaca ekstrem</option></select></div>
           <div class="sim-field"><label>Provinsi</label><select class="select" id="sim-prov"><option>Jawa Tengah</option><option>Jawa Barat</option><option>Jawa Timur</option><option>Aceh</option><option>Riau</option><option>Kalimantan Selatan</option></select></div>
           <div class="sim-field"><label>Bulan</label><select class="select" id="sim-bulan"><option>Januari</option><option>Februari</option><option>Maret</option><option>April</option><option>Mei</option><option>Juni</option><option>Juli</option><option>Agustus</option><option>September</option><option>Oktober</option><option>November</option><option>Desember</option></select></div>
-          <div class="sim-field"><label>Kepadatan Penduduk</label><select class="select" id="sim-kepadatan"><option>Rendah</option><option selected>Sedang</option><option>Tinggi</option><option>Sangat tinggi</option></select></div>
+          <div class="sim-field"><label>Kepadatan Penduduk <small class="sim-hint" title="Tidak tersedia di data BNPB, sehingga tidak dipakai model. Hanya memengaruhi rekomendasi mitigasi.">· untuk mitigasi</small></label><select class="select" id="sim-kepadatan"><option>Rendah</option><option selected>Sedang</option><option>Tinggi</option><option>Sangat tinggi</option></select></div>
         </div>
-        <div class="sim-result">
+        <div class="sim-status" id="sim-status" hidden></div>
+        <div class="sim-result" id="sim-result">
           <div class="lbl-sm">Tingkat Dampak Terprediksi</div>
-          <div class="val" id="sim-val">Tinggi · 78%</div>
-          <div class="sim-bar"><i id="sim-bar" style="width:78%"></i></div>
+          <div class="val" id="sim-val">Memuat prediksi…</div>
+          <div class="sim-bar"><i id="sim-bar" style="width:0%"></i></div>
+          <div class="sim-proba" id="sim-proba"></div>
           <div class="sim-metrics">
-            <div><span>Estimasi Korban</span><b id="sim-korban">~ 12 jiwa</b></div>
-            <div><span>Estimasi Terdampak</span><b id="sim-terdampak">~ 2.500 jiwa</b></div>
-            <div><span>Estimasi Kerusakan</span><b id="sim-rusak">~ 180 unit</b></div>
+            <div><span>Estimasi Korban Jiwa</span><b id="sim-korban">–</b><small id="sim-korban-d"></small></div>
+            <div><span>Estimasi Terdampak</span><b id="sim-terdampak">–</b><small id="sim-terdampak-d"></small></div>
+            <div><span>Estimasi Kerusakan Rumah</span><b id="sim-rusak">–</b><small id="sim-rusak-d"></small></div>
           </div>
+          <div class="sim-basis" id="sim-basis"></div>
         </div>
       </div>
       <div class="card" id="mitigasi-card">
-        <div class="card-head"><div><h3>Rekomendasi Mitigasi</h3><p id="mitigasi-sub">Berdasarkan profil klaster &amp; simulasi kondisi</p></div><span class="pill red" id="mitigasi-badge">Risiko Tinggi</span></div>
+        <div class="card-head"><div><h3>Rekomendasi Mitigasi</h3><p id="mitigasi-sub">Berdasarkan tingkat dampak, jenis bencana &amp; profil klaster</p></div><span class="pill" id="mitigasi-badge">–</span></div>
         <ul class="mitigation-list" id="mitigation-list"></ul>
       </div>
       <div class="grid-2e">
         <div class="card">
-          <div class="card-head"><div><h3>Faktor Risiko Dominan</h3><p>Pengaruh terhadap tingkat dampak</p></div></div>
+          <div class="card-head"><div><h3>Faktor Risiko Dominan</h3><p id="faktor-sub">Kontribusi kelompok fitur terhadap akurasi model (permutation importance)</p></div></div>
           <div class="chart-wrap sm"><canvas id="c-feature"></canvas></div>
         </div>
         <div class="card">
-          <div class="card-head"><div><h3>Ringkasan Profil Klaster</h3><p>Referensi tingkat risiko</p></div></div>
+          <div class="card-head"><div><h3>Ringkasan Profil Klaster</h3><p id="klaster-sub">Jumlah kab/kota per klaster risiko (K-Means)</p></div></div>
           <table class="tbl">
-            <thead><tr><th>Klaster</th><th>Wilayah</th></tr></thead>
-            <tbody>
-              <tr><td><span class="pill green">Risiko Rendah</span></td><td>171</td></tr>
-              <tr><td><span class="pill blue">Multi-Bencana Kronis</span></td><td>413</td></tr>
-              <tr><td><span class="pill orange">Kemanusiaan Akut</span></td><td>380</td></tr>
-              <tr><td><span class="pill red">Katastropik</span></td><td>77</td></tr>
+            <thead><tr><th>Klaster</th><th>Kab/Kota</th></tr></thead>
+            <tbody id="klaster-ringkasan">
+              <tr><td colspan="2" style="color:var(--muted)">Memuat…</td></tr>
             </tbody>
           </table>
         </div>
