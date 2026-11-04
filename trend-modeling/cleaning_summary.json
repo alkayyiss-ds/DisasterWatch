@@ -1,0 +1,8 @@
+{
+  "raw_rows": 44336,
+  "rows_after_cleaning": 44228,
+  "duplicates_removed": 108,
+  "dedup_rule": "Tanggal + Kabupaten + Jenis + Lokasi + Kode Identitas Bencana; event ID berbeda dipertahankan",
+  "period_start": "2015-01-01",
+  "period_end": "2026-10-31"
+}
