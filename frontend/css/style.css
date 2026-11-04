@@ -401,3 +401,207 @@ input:checked + .slider:before{transform:translateX(20px)}
 @media (prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
 }
+
+
+/* ============================================================
+   TAMBAHAN: DARK MODE + SKELETON + FIX ANIMASI
+   ============================================================ */
+
+/* --- Transisi halus saat ganti tema --- */
+body,
+.topbar,
+.sidebar,
+.card,
+.kpi,
+.filterbar,
+.tbl th,
+.tbl td,
+.search input,
+.icon-btn,
+.btn-primary,
+.setting-item,
+.cluster-card,
+.cc-stat,
+.alert-card,
+.mitigation-list li,
+.report-card {
+  transition: background-color .3s ease, color .3s ease, border-color .3s ease;
+}
+
+/* ============================================================
+   DARK MODE
+   ============================================================ */
+body.dark-mode {
+  --navy: #0A1220;
+  --navy-2: #1E2D47;
+  --blue-soft: #1B2A44;
+  --red-soft: #3B1C1A;
+  --green-soft: #1A3B2E;
+  --orange-soft: #3B2A1A;
+  --ink: #F9FAFB;
+  --muted: #98A2B3;
+  --muted-2: #667085;
+  --line: #2A3A5E;
+  --line-2: #1E2D47;
+  --surface: #1B2A44;
+  --bg: #0F1B2D;
+}
+
+body.dark-mode .sidebar { background: #0A1220; }
+
+body.dark-mode .topbar {
+  background: var(--surface);
+  border-bottom-color: var(--line);
+}
+
+body.dark-mode .search input {
+  background: #0F1B2D;
+  border-color: var(--line);
+  color: var(--ink);
+}
+body.dark-mode .search input:focus {
+  background: #0F1B2D;
+  border-color: var(--blue);
+}
+
+body.dark-mode .icon-btn {
+  background: var(--surface);
+  border-color: var(--line);
+  color: var(--muted);
+}
+body.dark-mode .icon-btn:hover {
+  background: #2A3A5E;
+  color: var(--ink);
+}
+
+body.dark-mode .card,
+body.dark-mode .kpi,
+body.dark-mode .filterbar,
+body.dark-mode .cluster-card {
+  background: var(--surface);
+  border-color: var(--line);
+}
+
+body.dark-mode .tbl th {
+  background: #1E2D47;
+  color: var(--muted);
+}
+body.dark-mode .tbl td { border-bottom-color: var(--line-2); }
+body.dark-mode .tbl tr:hover td { background: #2A3A5E; }
+body.dark-mode .tbl .rank { background: #2A3A5E; color: var(--muted); }
+
+body.dark-mode .cc-stat,
+body.dark-mode .mitigation-list li,
+body.dark-mode .setting-item:hover,
+body.dark-mode .report-card:hover,
+body.dark-mode .alert-card {
+  background: #1E2D47;
+  border-color: var(--line-2);
+}
+
+body.dark-mode .alert-card { border-color: var(--line); }
+body.dark-mode .cc-icon { background: #2A3A5E; }
+
+body.dark-mode .card-head h3,
+body.dark-mode .page-head h1,
+body.dark-mode .kpi-val,
+body.dark-mode .cc-title,
+body.dark-mode .cc-stat b { color: var(--ink); }
+
+body.dark-mode .select {
+  background-color: #0F1B2D;
+  border-color: var(--line);
+  color: var(--ink);
+}
+
+body.dark-mode .filterbar .reset:hover { background: #2A3A5E; color: var(--ink); }
+
+/* Peta Leaflet di dark mode */
+body.dark-mode .leaflet-container { background: #0A1220; }
+body.dark-mode .leaflet-tile { filter: brightness(.75) invert(1) hue-rotate(180deg) contrast(.9); }
+
+/* ============================================================
+   SKELETON LOADING
+   ============================================================ */
+.chart-wrap.loading { position: relative; }
+.chart-wrap.loading canvas { opacity: 0; }
+
+.chart-wrap.loading::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #F2F4F7 25%, #E4E7EC 50%, #F2F4F7 75%);
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.4s infinite;
+  z-index: 2;
+}
+
+@keyframes skeletonShimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Skeleton versi dark */
+body.dark-mode .chart-wrap.loading::after {
+  background: linear-gradient(90deg, #1E2D47 25%, #2A3A5E 50%, #1E2D47 75%);
+  background-size: 200% 100%;
+}
+
+/* ============================================================
+   FIX: KONFLIK ANIMASI .page.on > * dan .anim-card
+   ============================================================ */
+/* Anak langsung yang JUGA .anim-card tidak perlu animasi ganda */
+.page.on > .anim-card { animation: none; opacity: 1; }
+.page.on .anim-card { opacity: 0; } /* tetap animasi via aturan .anim-card di atas */
+
+
+/* ============================================================
+   PENYESUAIAN FITUR: SEARCH, EXPORT, COUNT-UP, DAN DARK MODE
+   ============================================================ */
+
+/* Search */
+#search-input {
+  width: 100%;
+}
+
+#search-input::placeholder {
+  color: var(--muted-2);
+}
+
+#search-input:focus-visible {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(46,117,182,.12);
+}
+
+/* Export */
+#btn-export {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+#btn-export:focus-visible {
+  outline: 3px solid rgba(58,134,255,.3);
+  outline-offset: 2px;
+}
+
+/* Count-Up pada KPI */
+.kpi-val {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Penyesuaian kontrol saat Dark Mode aktif */
+body.dark-mode #search-input::placeholder {
+  color: var(--muted-2);
+}
+
+body.dark-mode #btn-export {
+  color: #fff;
+}
+
+body.dark-mode #btn-export:hover {
+  background: #2563A8;
+}

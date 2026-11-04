@@ -1,0 +1,28 @@
+﻿seri,model,label,is_best,mae,rmse,mape,smape
+NASIONAL,seasonal_naive,Seasonal Naive (baseline),False,101.75,119.79,45.26,36.62
+NASIONAL,prophet,Prophet,False,130.8,160.89,63.34,43.21
+NASIONAL,xgboost,XGBoost,True,65.03,85.42,29.82,25.29
+BANJIR,seasonal_naive,Seasonal Naive (baseline),True,68.75,94.37,173.74,72.05
+BANJIR,prophet,Prophet,False,78.25,85.82,278.13,85.05
+BANJIR,xgboost,XGBoost,False,76.34,82.25,243.02,83.31
+CUACA EKSTREM,seasonal_naive,Seasonal Naive (baseline),False,38.08,47.78,175.61,78.84
+CUACA EKSTREM,prophet,Prophet,False,27.1,36.65,97.48,53.8
+CUACA EKSTREM,xgboost,XGBoost,True,22.93,29.1,117.03,58.81
+TANAH LONGSOR,seasonal_naive,Seasonal Naive (baseline),False,11.25,12.73,218.93,78.23
+TANAH LONGSOR,prophet,Prophet,False,17.36,23.68,132.97,119.96
+TANAH LONGSOR,xgboost,XGBoost,True,6.43,8.39,107.87,54.5
+KEBAKARAN HUTAN DAN LAHAN,seasonal_naive,Seasonal Naive (baseline),True,59.0,90.7,78.05,96.49
+KEBAKARAN HUTAN DAN LAHAN,prophet,Prophet,False,59.45,63.16,206.9,90.24
+KEBAKARAN HUTAN DAN LAHAN,xgboost,XGBoost,False,61.99,103.35,56.49,81.35
+KEKERINGAN,seasonal_naive,Seasonal Naive (baseline),False,7.83,12.23,75.78,131.87
+KEKERINGAN,prophet,Prophet,True,4.63,7.65,41.41,52.58
+KEKERINGAN,xgboost,XGBoost,False,9.08,14.5,78.75,140.25
+GEMPA BUMI,seasonal_naive,Seasonal Naive (baseline),False,5.0,6.38,193.4,130.79
+GEMPA BUMI,prophet,Prophet,True,3.98,4.23,162.58,111.26
+GEMPA BUMI,xgboost,XGBoost,False,4.02,4.61,176.74,111.5
+GELOMBANG PASANG DAN ABRASI,seasonal_naive,Seasonal Naive (baseline),False,1.83,2.08,96.88,147.38
+GELOMBANG PASANG DAN ABRASI,prophet,Prophet,False,2.43,2.63,144.55,118.82
+GELOMBANG PASANG DAN ABRASI,xgboost,XGBoost,True,1.22,1.36,56.4,102.61
+ERUPSI GUNUNG API,seasonal_naive,Seasonal Naive (baseline),False,0.67,0.91,75.0,158.33
+ERUPSI GUNUNG API,prophet,Prophet,False,0.68,0.86,73.52,158.03
+ERUPSI GUNUNG API,xgboost,XGBoost,True,0.63,0.75,67.28,150.25
