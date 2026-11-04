@@ -1,9 +1,9 @@
 window.DATA_ASLI = {
   "kpi": {
-    "total": 44290,
+    "total": 44280,
     "meninggal": 11795,
     "rumah": "1,4 jt",
-    "prov": 78
+    "prov": 40
   },
   "monthly": [
     287,
@@ -30,10 +30,10 @@ window.DATA_ASLI = {
       "GELOMBANG PASANG DAN ABRASI"
     ],
     "data": [
-      14189,
-      12262,
-      8035,
-      7953,
+      14188,
+      12260,
+      8030,
+      7951,
       764,
       559,
       372
@@ -45,364 +45,22 @@ window.DATA_ASLI = {
       "JAWA TENGAH",
       "JAWA TIMUR",
       "ACEH",
-      "KALIMANTAN SELATAN"
+      "SULAWESI SELATAN"
     ],
     "data": [
-      7389,
-      6709,
-      3911,
-      1890,
-      1512
+      8116,
+      7445,
+      4536,
+      2125,
+      1751
     ]
   },
   "map_points": [
     {
-      "lat": -2.1962,
-      "lng": 102.064,
-      "jenis": "BANJIR",
-      "prov": "JAMBI"
-    },
-    {
-      "lat": -3.4152937,
-      "lng": 104.605316,
-      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
-      "prov": "Sumatera Selatan"
-    },
-    {
-      "lat": -9.91821,
-      "lng": 123.86,
-      "jenis": "BANJIR",
-      "prov": "NUSA TENGGARA TIMUR"
-    },
-    {
-      "lat": -7.38713,
-      "lng": 110.977,
-      "jenis": "BANJIR",
-      "prov": "JAWA TENGAH"
-    },
-    {
-      "lat": -5.41976,
-      "lng": 119.471,
-      "jenis": "CUACA EKSTREM",
-      "prov": "SULAWESI SELATAN"
-    },
-    {
-      "lat": -7.25786,
-      "lng": 110.136,
-      "jenis": "TANAH LONGSOR",
-      "prov": "JAWA TENGAH"
-    },
-    {
-      "lat": -7.29054,
-      "lng": 108.429,
-      "jenis": "CUACA EKSTREM",
-      "prov": "JAWA BARAT"
-    },
-    {
-      "lat": -8.31252,
-      "lng": 114.683,
-      "jenis": "CUACA EKSTREM",
-      "prov": "BALI"
-    },
-    {
-      "lat": 2.72686,
-      "lng": 125.391,
-      "jenis": "ERUPSI GUNUNG API",
-      "prov": "SULAWESI UTARA"
-    },
-    {
-      "lat": -0.24943,
-      "lng": 100.169,
-      "jenis": "CUACA EKSTREM",
-      "prov": "SUMATERA BARAT"
-    },
-    {
-      "lat": -0.233308,
-      "lng": 103.157,
-      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
-      "prov": "RIAU"
-    },
-    {
-      "lat": -0.460538,
-      "lng": 100.586,
-      "jenis": "TANAH LONGSOR",
-      "prov": "SUMATERA BARAT"
-    },
-    {
-      "lat": -7.36025,
-      "lng": 108.219,
-      "jenis": "CUACA EKSTREM",
-      "prov": "JAWA BARAT"
-    },
-    {
-      "lat": -2.11066,
-      "lng": 106.113,
-      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
-      "prov": "KEPULAUAN BANGKA BELITUNG"
-    },
-    {
-      "lat": 0.688118,
-      "lng": 121.711,
-      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
-      "prov": "GORONTALO"
-    },
-    {
-      "lat": 1.4119065,
-      "lng": 101.64286,
-      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
-      "prov": "Riau"
-    },
-    {
-      "lat": -6.2197475,
-      "lng": 107.12171,
-      "jenis": "KEKERINGAN",
-      "prov": "Jawa Barat"
-    },
-    {
-      "lat": 4.62878,
-      "lng": 97.6286,
-      "jenis": "BANJIR",
-      "prov": "ACEH"
-    },
-    {
-      "lat": 3.8249,
-      "lng": 96.8783,
-      "jenis": "BANJIR",
-      "prov": "ACEH"
-    },
-    {
-      "lat": -7.27203,
-      "lng": 110.475,
-      "jenis": "TANAH LONGSOR",
-      "prov": "JAWA TENGAH"
-    },
-    {
-      "lat": -8.53312,
-      "lng": 116.531,
-      "jenis": "CUACA EKSTREM",
-      "prov": "NUSA TENGGARA BARAT"
-    },
-    {
-      "lat": -7.02051,
-      "lng": 110.39,
-      "jenis": "CUACA EKSTREM",
-      "prov": "JAWA TENGAH"
-    },
-    {
-      "lat": -7.03767,
-      "lng": 110.156,
-      "jenis": "TANAH LONGSOR",
-      "prov": "JAWA TENGAH"
-    },
-    {
-      "lat": -7.02051,
-      "lng": 110.39,
-      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
-      "prov": "JAWA TENGAH"
-    },
-    {
-      "lat": -6.746221,
-      "lng": 108.552155,
-      "jenis": "BANJIR",
-      "prov": "Jawa Barat"
-    },
-    {
-      "lat": -6.82507,
-      "lng": 107.981,
-      "jenis": "TANAH LONGSOR",
-      "prov": "JAWA BARAT"
-    },
-    {
-      "lat": -6.5597973,
-      "lng": 106.767044,
-      "jenis": "TANAH LONGSOR",
-      "prov": "Jawa Barat"
-    },
-    {
-      "lat": -7.45514,
-      "lng": 109.176,
-      "jenis": "CUACA EKSTREM",
-      "prov": "JAWA TENGAH"
-    },
-    {
-      "lat": -8.16192,
-      "lng": 111.626,
-      "jenis": "CUACA EKSTREM",
-      "prov": "JAWA TIMUR"
-    },
-    {
-      "lat": -6.55998,
-      "lng": 106.768,
-      "jenis": "CUACA EKSTREM",
-      "prov": "JAWA BARAT"
-    },
-    {
-      "lat": -5.59249,
-      "lng": 133.053,
-      "jenis": "CUACA EKSTREM",
-      "prov": "MALUKU"
-    },
-    {
-      "lat": -3.40998,
-      "lng": 104.601,
-      "jenis": "CUACA EKSTREM",
-      "prov": "SUMATERA SELATAN"
-    },
-    {
-      "lat": -7.35956,
-      "lng": 107.789,
-      "jenis": "GELOMBANG PASANG DAN ABRASI",
-      "prov": "JAWA BARAT"
-    },
-    {
-      "lat": 5.16438,
-      "lng": 97.1103,
-      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
-      "prov": "ACEH"
-    },
-    {
-      "lat": -1.74973,
-      "lng": 103.096,
-      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
-      "prov": "JAMBI"
-    },
-    {
-      "lat": -1.15695,
-      "lng": 116.597,
-      "jenis": "BANJIR",
-      "prov": "KALIMANTAN TIMUR"
-    },
-    {
-      "lat": -5.20975,
-      "lng": 120.136,
-      "jenis": "TANAH LONGSOR",
-      "prov": "SULAWESI SELATAN"
-    },
-    {
-      "lat": 0.32181665,
-      "lng": 101.06886,
-      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
-      "prov": "Riau"
-    },
-    {
-      "lat": 0.920285,
-      "lng": 104.485,
-      "jenis": "BANJIR",
-      "prov": "KEPULAUAN RIAU"
-    },
-    {
-      "lat": -2.06499,
-      "lng": 112.713,
-      "jenis": "BANJIR",
-      "prov": "KALIMANTAN TENGAH"
-    },
-    {
       "lat": -7.09997,
       "lng": 107.611,
-      "jenis": "BANJIR",
-      "prov": "JAWA BARAT"
-    },
-    {
-      "lat": -1.80186,
-      "lng": 114.924,
-      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
-      "prov": "KALIMANTAN TENGAH"
-    },
-    {
-      "lat": -7.45514,
-      "lng": 109.176,
-      "jenis": "TANAH LONGSOR",
-      "prov": "JAWA TENGAH"
-    },
-    {
-      "lat": -3.80729,
-      "lng": 119.971,
-      "jenis": "CUACA EKSTREM",
-      "prov": "SULAWESI SELATAN"
-    },
-    {
-      "lat": -6.59345,
-      "lng": 106.8,
       "jenis": "TANAH LONGSOR",
       "prov": "JAWA BARAT"
-    },
-    {
-      "lat": 0.7318066,
-      "lng": 114.83613,
-      "jenis": "BANJIR",
-      "prov": "Kalimantan Timur"
-    },
-    {
-      "lat": -6.55998,
-      "lng": 106.768,
-      "jenis": "TANAH LONGSOR",
-      "prov": "JAWA BARAT"
-    },
-    {
-      "lat": -2.60937,
-      "lng": 115.47866,
-      "jenis": "CUACA EKSTREM",
-      "prov": "Kalimantan Selatan"
-    },
-    {
-      "lat": 2.84363,
-      "lng": 98.2673,
-      "jenis": "CUACA EKSTREM",
-      "prov": "SUMATERA UTARA"
-    },
-    {
-      "lat": -6.78907,
-      "lng": 110.87,
-      "jenis": "CUACA EKSTREM",
-      "prov": "JAWA TENGAH"
-    },
-    {
-      "lat": 2.31657,
-      "lng": 128.448,
-      "jenis": "BANJIR",
-      "prov": "MALUKU UTARA"
-    },
-    {
-      "lat": -1.59889,
-      "lng": 101.931,
-      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
-      "prov": "JAMBI"
-    },
-    {
-      "lat": -7.83311,
-      "lng": 112.531,
-      "jenis": "CUACA EKSTREM",
-      "prov": "JAWA TIMUR"
-    },
-    {
-      "lat": -7.54987,
-      "lng": 112.485,
-      "jenis": "BANJIR",
-      "prov": "JAWA TIMUR"
-    },
-    {
-      "lat": -0.500725,
-      "lng": 117.179,
-      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
-      "prov": "KALIMANTAN TIMUR"
-    },
-    {
-      "lat": 3.7087595,
-      "lng": 98.22367,
-      "jenis": "BANJIR",
-      "prov": "Sumatera Utara"
-    },
-    {
-      "lat": -7.0589,
-      "lng": 108.928,
-      "jenis": "BANJIR",
-      "prov": "JAWA TENGAH"
-    },
-    {
-      "lat": 3.36717,
-      "lng": 99.0585,
-      "jenis": "CUACA EKSTREM",
-      "prov": "SUMATERA UTARA"
     },
     {
       "lat": -0.233308,
@@ -411,10 +69,16 @@ window.DATA_ASLI = {
       "prov": "RIAU"
     },
     {
-      "lat": -6.74564,
-      "lng": 108.552,
+      "lat": -7.6864,
+      "lng": 110.62,
       "jenis": "KEBAKARAN HUTAN DAN LAHAN",
-      "prov": "JAWA BARAT"
+      "prov": "JAWA TENGAH"
+    },
+    {
+      "lat": -7.49096,
+      "lng": 108.89,
+      "jenis": "BANJIR",
+      "prov": "JAWA TENGAH"
     },
     {
       "lat": -6.54853,
@@ -423,760 +87,16 @@ window.DATA_ASLI = {
       "prov": "JAWA TENGAH"
     },
     {
-      "lat": -7.3594475,
-      "lng": 107.78794,
-      "jenis": "CUACA EKSTREM",
-      "prov": "Jawa Barat"
-    },
-    {
-      "lat": -7.45514,
-      "lng": 109.176,
-      "jenis": "TANAH LONGSOR",
+      "lat": -7.0570054,
+      "lng": 109.6205,
+      "jenis": "BANJIR",
       "prov": "JAWA TENGAH"
     },
     {
-      "lat": -3.40998,
-      "lng": 104.601,
-      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
-      "prov": "SUMATERA SELATAN"
-    },
-    {
-      "lat": -7.80131,
-      "lng": 114.051,
-      "jenis": "CUACA EKSTREM",
-      "prov": "JAWA TIMUR"
-    },
-    {
-      "lat": -7.61446,
-      "lng": 111.019,
-      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
-      "prov": "JAWA TENGAH"
-    },
-    {
-      "lat": -7.06511,
-      "lng": 113.504,
+      "lat": -6.59023,
+      "lng": 105.743,
       "jenis": "BANJIR",
-      "prov": "JAWA TIMUR"
-    },
-    {
-      "lat": -7.63562,
-      "lng": 108.519,
-      "jenis": "CUACA EKSTREM",
-      "prov": "JAWA BARAT"
-    },
-    {
-      "lat": -6.59345,
-      "lng": 106.8,
-      "jenis": "TANAH LONGSOR",
-      "prov": "JAWA BARAT"
-    },
-    {
-      "lat": -6.55998,
-      "lng": 106.768,
-      "jenis": "TANAH LONGSOR",
-      "prov": "JAWA BARAT"
-    },
-    {
-      "lat": -2.00777,
-      "lng": 119.518,
-      "jenis": "BANJIR",
-      "prov": "SULAWESI BARAT"
-    },
-    {
-      "lat": -7.07619,
-      "lng": 106.707,
-      "jenis": "CUACA EKSTREM",
-      "prov": "JAWA BARAT"
-    },
-    {
-      "lat": 3.16286,
-      "lng": 97.4353,
-      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
-      "prov": "ACEH"
-    },
-    {
-      "lat": -7.86652,
-      "lng": 113.321,
-      "jenis": "BANJIR",
-      "prov": "JAWA TIMUR"
-    },
-    {
-      "lat": -6.55998,
-      "lng": 106.768,
-      "jenis": "TANAH LONGSOR",
-      "prov": "JAWA BARAT"
-    },
-    {
-      "lat": 0.029782,
-      "lng": 100.566,
-      "jenis": "BANJIR",
-      "prov": "SUMATERA BARAT"
-    },
-    {
-      "lat": -6.59345,
-      "lng": 106.8,
-      "jenis": "TANAH LONGSOR",
-      "prov": "JAWA BARAT"
-    },
-    {
-      "lat": -7.68086,
-      "lng": 110.835,
-      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
-      "prov": "JAWA TENGAH"
-    },
-    {
-      "lat": 2.5129735,
-      "lng": 115.73544,
-      "jenis": "BANJIR",
-      "prov": "Kalimantan Utara"
-    },
-    {
-      "lat": -7.35956,
-      "lng": 107.789,
-      "jenis": "BANJIR",
-      "prov": "JAWA BARAT"
-    },
-    {
-      "lat": -7.45514,
-      "lng": 109.176,
-      "jenis": "CUACA EKSTREM",
-      "prov": "JAWA TENGAH"
-    },
-    {
-      "lat": -7.00423,
-      "lng": 108.56,
-      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
-      "prov": "JAWA BARAT"
-    },
-    {
-      "lat": 4.83218,
-      "lng": 95.6787,
-      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
-      "prov": "ACEH"
-    },
-    {
-      "lat": -1.87168,
-      "lng": 125.755,
-      "jenis": "BANJIR",
-      "prov": "MALUKU UTARA"
-    },
-    {
-      "lat": -7.09997,
-      "lng": 107.611,
-      "jenis": "BANJIR",
-      "prov": "JAWA BARAT"
-    },
-    {
-      "lat": -8.36493,
-      "lng": 114.206,
-      "jenis": "BANJIR",
-      "prov": "JAWA TIMUR"
-    },
-    {
-      "lat": -7.0520244,
-      "lng": 113.25634,
-      "jenis": "CUACA EKSTREM",
-      "prov": "Jawa Timur"
-    },
-    {
-      "lat": 2.6133,
-      "lng": 96.0857,
-      "jenis": "TANAH LONGSOR",
-      "prov": "ACEH"
-    },
-    {
-      "lat": -1.15695,
-      "lng": 116.597,
-      "jenis": "TANAH LONGSOR",
-      "prov": "KALIMANTAN TIMUR"
-    },
-    {
-      "lat": -6.55998,
-      "lng": 106.768,
-      "jenis": "BANJIR",
-      "prov": "JAWA BARAT"
-    },
-    {
-      "lat": -0.909947,
-      "lng": 133.853,
-      "jenis": "BANJIR",
-      "prov": "PAPUA BARAT"
-    },
-    {
-      "lat": -1.7497988,
-      "lng": 103.097946,
-      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
-      "prov": "Jambi"
-    },
-    {
-      "lat": -7.71544,
-      "lng": 110.383,
-      "jenis": "CUACA EKSTREM",
-      "prov": "DI YOGYAKARTA"
-    },
-    {
-      "lat": -6.59345,
-      "lng": 106.8,
-      "jenis": "TANAH LONGSOR",
-      "prov": "JAWA BARAT"
-    },
-    {
-      "lat": -7.05683,
-      "lng": 109.62,
-      "jenis": "TANAH LONGSOR",
-      "prov": "JAWA TENGAH"
-    },
-    {
-      "lat": -3.62246,
-      "lng": 119.6,
-      "jenis": "CUACA EKSTREM",
-      "prov": "SULAWESI SELATAN"
-    },
-    {
-      "lat": 4.76731,
-      "lng": 97.0071,
-      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
-      "prov": "ACEH"
-    },
-    {
-      "lat": -7.50158,
-      "lng": 110.247,
-      "jenis": "TANAH LONGSOR",
-      "prov": "JAWA TENGAH"
-    },
-    {
-      "lat": -6.55998,
-      "lng": 106.768,
-      "jenis": "CUACA EKSTREM",
-      "prov": "JAWA BARAT"
-    },
-    {
-      "lat": -7.45514,
-      "lng": 109.176,
-      "jenis": "CUACA EKSTREM",
-      "prov": "JAWA TENGAH"
-    },
-    {
-      "lat": -7.36025,
-      "lng": 108.219,
-      "jenis": "BANJIR",
-      "prov": "JAWA BARAT"
-    },
-    {
-      "lat": 0.940086,
-      "lng": 100.475,
-      "jenis": "BANJIR",
-      "prov": "RIAU"
-    },
-    {
-      "lat": -4.10067,
-      "lng": 104.094,
-      "jenis": "BANJIR",
-      "prov": "SUMATERA SELATAN"
-    },
-    {
-      "lat": -7.41554,
-      "lng": 109.907,
-      "jenis": "TANAH LONGSOR",
-      "prov": "JAWA TENGAH"
-    },
-    {
-      "lat": -1.59889,
-      "lng": 101.931,
-      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
-      "prov": "JAMBI"
-    },
-    {
-      "lat": -6.25202,
-      "lng": 107.354,
-      "jenis": "BANJIR",
-      "prov": "JAWA BARAT"
-    },
-    {
-      "lat": -7.68086,
-      "lng": 110.835,
-      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
-      "prov": "JAWA TENGAH"
-    },
-    {
-      "lat": -7.45205,
-      "lng": 112.701,
-      "jenis": "CUACA EKSTREM",
-      "prov": "JAWA TIMUR"
-    },
-    {
-      "lat": -4.00654,
-      "lng": 120.171,
-      "jenis": "BANJIR",
-      "prov": "SULAWESI SELATAN"
-    },
-    {
-      "lat": -6.93987,
-      "lng": 106.924,
-      "jenis": "TANAH LONGSOR",
-      "prov": "JAWA BARAT"
-    },
-    {
-      "lat": -10.2043,
-      "lng": 123.607,
-      "jenis": "CUACA EKSTREM",
-      "prov": "NUSA TENGGARA TIMUR"
-    },
-    {
-      "lat": 0.0297823,
-      "lng": 100.566,
-      "jenis": "CUACA EKSTREM",
-      "prov": "SUMATERA BARAT"
-    },
-    {
-      "lat": 0.016925635,
-      "lng": 120.44906,
-      "jenis": "BANJIR",
-      "prov": "Sulawesi Tengah"
-    },
-    {
-      "lat": -6.95314,
-      "lng": 111.892,
-      "jenis": "CUACA EKSTREM",
-      "prov": "JAWA TIMUR"
-    },
-    {
-      "lat": -3.40998,
-      "lng": 104.601,
-      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
-      "prov": "SUMATERA SELATAN"
-    },
-    {
-      "lat": -6.27268,
-      "lng": 106.81,
-      "jenis": "BANJIR",
-      "prov": "DKI JAKARTA"
-    },
-    {
-      "lat": -8.722147,
-      "lng": 116.28984,
-      "jenis": "CUACA EKSTREM",
-      "prov": "Nusa Tenggara Barat"
-    },
-    {
-      "lat": -7.7003803,
-      "lng": 109.966125,
-      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
-      "prov": "Jawa Tengah"
-    },
-    {
-      "lat": 3.36959,
-      "lng": 97.6955,
-      "jenis": "BANJIR",
-      "prov": "ACEH"
-    },
-    {
-      "lat": 4.83218,
-      "lng": 95.6787,
-      "jenis": "BANJIR",
-      "prov": "ACEH"
-    },
-    {
-      "lat": -5.4184546,
-      "lng": 119.474144,
-      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
-      "prov": "Sulawesi Selatan"
-    },
-    {
-      "lat": -1.73326,
-      "lng": 116.094,
-      "jenis": "TANAH LONGSOR",
-      "prov": "KALIMANTAN TIMUR"
-    },
-    {
-      "lat": -5.13665,
-      "lng": 105.649,
-      "jenis": "CUACA EKSTREM",
-      "prov": "LAMPUNG"
-    },
-    {
-      "lat": -7.02051,
-      "lng": 110.39,
-      "jenis": "TANAH LONGSOR",
-      "prov": "JAWA TENGAH"
-    },
-    {
-      "lat": -3.09032,
-      "lng": 114.626,
-      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
-      "prov": "KALIMANTAN SELATAN"
-    },
-    {
-      "lat": -0.562342,
-      "lng": 100.228,
-      "jenis": "CUACA EKSTREM",
-      "prov": "SUMATERA BARAT"
-    },
-    {
-      "lat": -7.07619,
-      "lng": 106.707,
-      "jenis": "TANAH LONGSOR",
-      "prov": "JAWA BARAT"
-    },
-    {
-      "lat": -5.676913,
-      "lng": 132.8881,
-      "jenis": "BANJIR",
-      "prov": "Maluku"
-    },
-    {
-      "lat": -3.26352,
-      "lng": 102.879,
-      "jenis": "CUACA EKSTREM",
-      "prov": "SUMATERA SELATAN"
-    },
-    {
-      "lat": -6.82507,
-      "lng": 107.981,
-      "jenis": "TANAH LONGSOR",
-      "prov": "JAWA BARAT"
-    },
-    {
-      "lat": -5.0007,
-      "lng": 119.725,
-      "jenis": "CUACA EKSTREM",
-      "prov": "SULAWESI SELATAN"
-    },
-    {
-      "lat": -2.39495,
-      "lng": 120.161,
-      "jenis": "BANJIR",
-      "prov": "SULAWESI SELATAN"
-    },
-    {
-      "lat": -4.0937295,
-      "lng": 104.10522,
-      "jenis": "BANJIR",
-      "prov": "Sumatera Selatan"
-    },
-    {
-      "lat": -8.20024,
-      "lng": 114.963,
-      "jenis": "TANAH LONGSOR",
-      "prov": "BALI"
-    },
-    {
-      "lat": -6.55998,
-      "lng": 106.768,
-      "jenis": "TANAH LONGSOR",
-      "prov": "JAWA BARAT"
-    },
-    {
-      "lat": -7.685818,
-      "lng": 110.61945,
-      "jenis": "BANJIR",
-      "prov": "Jawa Tengah"
-    },
-    {
-      "lat": -2.9789,
-      "lng": 139.976,
-      "jenis": "BANJIR",
-      "prov": "PAPUA"
-    },
-    {
-      "lat": 4.454468,
-      "lng": 96.18088,
-      "jenis": "BANJIR",
-      "prov": "Aceh"
-    },
-    {
-      "lat": 2.27073,
-      "lng": 98.5724,
-      "jenis": "BANJIR",
-      "prov": "SUMATERA UTARA"
-    },
-    {
-      "lat": -1.89086,
-      "lng": 105.489,
-      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
-      "prov": "KEPULAUAN BANGKA BELITUNG"
-    },
-    {
-      "lat": -7.4889274,
-      "lng": 108.88984,
-      "jenis": "CUACA EKSTREM",
-      "prov": "Jawa Tengah"
-    },
-    {
-      "lat": -8.16192,
-      "lng": 111.626,
-      "jenis": "BANJIR",
-      "prov": "JAWA TIMUR"
-    },
-    {
-      "lat": -7.5506916,
-      "lng": 112.484436,
-      "jenis": "CUACA EKSTREM",
-      "prov": "Jawa Timur"
-    },
-    {
-      "lat": -7.45514,
-      "lng": 109.176,
-      "jenis": "TANAH LONGSOR",
-      "prov": "JAWA TENGAH"
-    },
-    {
-      "lat": -7.59742,
-      "lng": 111.938,
-      "jenis": "TANAH LONGSOR",
-      "prov": "JAWA TIMUR"
-    },
-    {
-      "lat": -7.41856,
-      "lng": 110.651,
-      "jenis": "CUACA EKSTREM",
-      "prov": "JAWA TENGAH"
-    },
-    {
-      "lat": -6.78907,
-      "lng": 110.87,
-      "jenis": "CUACA EKSTREM",
-      "prov": "JAWA TENGAH"
-    },
-    {
-      "lat": 0.8855699,
-      "lng": 122.664536,
-      "jenis": "BANJIR",
-      "prov": "Gorontalo"
-    },
-    {
-      "lat": -3.50372,
-      "lng": 119.872,
-      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
-      "prov": "SULAWESI SELATAN"
-    },
-    {
-      "lat": -7.09997,
-      "lng": 107.611,
-      "jenis": "BANJIR",
-      "prov": "JAWA BARAT"
-    },
-    {
-      "lat": -7.50158,
-      "lng": 110.247,
-      "jenis": "CUACA EKSTREM",
-      "prov": "JAWA TENGAH"
-    },
-    {
-      "lat": 0.70793,
-      "lng": 124.04,
-      "jenis": "BANJIR",
-      "prov": "SULAWESI UTARA"
-    },
-    {
-      "lat": -8.1253,
-      "lng": 113.138,
-      "jenis": "BANJIR",
-      "prov": "JAWA TIMUR"
-    },
-    {
-      "lat": -7.41856,
-      "lng": 110.651,
-      "jenis": "CUACA EKSTREM",
-      "prov": "JAWA TENGAH"
-    },
-    {
-      "lat": 1.4061,
-      "lng": 101.663,
-      "jenis": "BANJIR",
-      "prov": "RIAU"
-    },
-    {
-      "lat": -7.45514,
-      "lng": 109.176,
-      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
-      "prov": "JAWA TENGAH"
-    },
-    {
-      "lat": -2.9789,
-      "lng": 139.976,
-      "jenis": "BANJIR",
-      "prov": "PAPUA"
-    },
-    {
-      "lat": -6.25202,
-      "lng": 107.354,
-      "jenis": "CUACA EKSTREM",
-      "prov": "JAWA BARAT"
-    },
-    {
-      "lat": -6.59502,
-      "lng": 107.432,
-      "jenis": "TANAH LONGSOR",
-      "prov": "JAWA BARAT"
-    },
-    {
-      "lat": -6.14222,
-      "lng": 106.147,
-      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
       "prov": "BANTEN"
-    },
-    {
-      "lat": -8.57166,
-      "lng": 120.691,
-      "jenis": "BANJIR",
-      "prov": "NUSA TENGGARA TIMUR"
-    },
-    {
-      "lat": -7.07619,
-      "lng": 106.707,
-      "jenis": "TANAH LONGSOR",
-      "prov": "JAWA BARAT"
-    },
-    {
-      "lat": -7.8032975,
-      "lng": 110.37436,
-      "jenis": "BANJIR",
-      "prov": "Daerah Istimewa Yogyakarta"
-    },
-    {
-      "lat": -0.562342,
-      "lng": 100.228,
-      "jenis": "CUACA EKSTREM",
-      "prov": "SUMATERA BARAT"
-    },
-    {
-      "lat": -3.20988,
-      "lng": 103.988,
-      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
-      "prov": "SUMATERA SELATAN"
-    },
-    {
-      "lat": -6.17463,
-      "lng": 106.519,
-      "jenis": "CUACA EKSTREM",
-      "prov": "BANTEN"
-    },
-    {
-      "lat": -3.45284,
-      "lng": 104.229,
-      "jenis": "BANJIR",
-      "prov": "SUMATERA SELATAN"
-    },
-    {
-      "lat": -0.24943,
-      "lng": 100.169,
-      "jenis": "TANAH LONGSOR",
-      "prov": "SUMATERA BARAT"
-    },
-    {
-      "lat": -7.80329,
-      "lng": 110.374,
-      "jenis": "BANJIR",
-      "prov": "DAERAH ISTIMEWA YOGYAKARTA"
-    },
-    {
-      "lat": -2.60349,
-      "lng": 115.502,
-      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
-      "prov": "KALIMANTAN SELATAN"
-    },
-    {
-      "lat": -7.74292,
-      "lng": 112.832,
-      "jenis": "BANJIR",
-      "prov": "JAWA TIMUR"
-    },
-    {
-      "lat": 1.01203,
-      "lng": 109.564,
-      "jenis": "CUACA EKSTREM",
-      "prov": "KALIMANTAN BARAT"
-    },
-    {
-      "lat": -7.35956,
-      "lng": 107.789,
-      "jenis": "TANAH LONGSOR",
-      "prov": "JAWA BARAT"
-    },
-    {
-      "lat": -7.07619,
-      "lng": 106.707,
-      "jenis": "BANJIR",
-      "prov": "JAWA BARAT"
-    },
-    {
-      "lat": 3.48087,
-      "lng": 98.6944,
-      "jenis": "BANJIR",
-      "prov": "SUMATERA UTARA"
-    },
-    {
-      "lat": 0.835238,
-      "lng": 112.811,
-      "jenis": "BANJIR",
-      "prov": "KALIMANTAN BARAT"
-    },
-    {
-      "lat": 4.83218,
-      "lng": 95.6787,
-      "jenis": "CUACA EKSTREM",
-      "prov": "ACEH"
-    },
-    {
-      "lat": -6.93987,
-      "lng": 106.924,
-      "jenis": "BANJIR",
-      "prov": "JAWA BARAT"
-    },
-    {
-      "lat": 1.4061,
-      "lng": 101.663,
-      "jenis": "BANJIR",
-      "prov": "RIAU"
-    },
-    {
-      "lat": -7.0589,
-      "lng": 108.928,
-      "jenis": "TANAH LONGSOR",
-      "prov": "JAWA TENGAH"
-    },
-    {
-      "lat": -4.439996,
-      "lng": 119.69485,
-      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
-      "prov": "Sulawesi Selatan"
-    },
-    {
-      "lat": -3.8052,
-      "lng": 136.493,
-      "jenis": "BANJIR",
-      "prov": "PAPUA"
-    },
-    {
-      "lat": -3.24546,
-      "lng": 121.152,
-      "jenis": "BANJIR",
-      "prov": "SULAWESI TENGGARA"
-    },
-    {
-      "lat": -7.90167,
-      "lng": 110.355,
-      "jenis": "CUACA EKSTREM",
-      "prov": "DI YOGYAKARTA"
-    },
-    {
-      "lat": -5.31281,
-      "lng": 122.924,
-      "jenis": "BANJIR",
-      "prov": "SULAWESI TENGGARA"
-    },
-    {
-      "lat": -6.55998,
-      "lng": 106.768,
-      "jenis": "BANJIR",
-      "prov": "JAWA BARAT"
-    },
-    {
-      "lat": -5.47349,
-      "lng": 105.11,
-      "jenis": "BANJIR",
-      "prov": "LAMPUNG"
     },
     {
       "lat": -5.53277,
@@ -1185,22 +105,82 @@ window.DATA_ASLI = {
       "prov": "LAMPUNG"
     },
     {
-      "lat": -3.10851,
-      "lng": 119.712,
-      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
-      "prov": "SULAWESI SELATAN"
-    },
-    {
-      "lat": 2.73562,
-      "lng": 97.9372,
+      "lat": -3.09032,
+      "lng": 114.626,
       "jenis": "CUACA EKSTREM",
+      "prov": "KALIMANTAN SELATAN"
+    },
+    {
+      "lat": -0.46764895,
+      "lng": 100.58406,
+      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
+      "prov": "SUMATERA BARAT"
+    },
+    {
+      "lat": -6.59345,
+      "lng": 106.8,
+      "jenis": "BANJIR",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": -2.30911,
+      "lng": 102.665,
+      "jenis": "BANJIR",
+      "prov": "JAMBI"
+    },
+    {
+      "lat": -6.89706,
+      "lng": 107.415,
+      "jenis": "TANAH LONGSOR",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": 3.98193,
+      "lng": 97.3575,
+      "jenis": "BANJIR",
       "prov": "ACEH"
     },
     {
-      "lat": 3.16286,
-      "lng": 97.4353,
+      "lat": -4.10067,
+      "lng": 104.094,
+      "jenis": "BANJIR",
+      "prov": "SUMATERA SELATAN"
+    },
+    {
+      "lat": -8.35208,
+      "lng": 122.84,
+      "jenis": "BANJIR",
+      "prov": "NUSA TENGGARA TIMUR"
+    },
+    {
+      "lat": -6.16561,
+      "lng": 106.748,
+      "jenis": "BANJIR",
+      "prov": "DKI JAKARTA"
+    },
+    {
+      "lat": -6.54853,
+      "lng": 110.768,
+      "jenis": "TANAH LONGSOR",
+      "prov": "JAWA TENGAH"
+    },
+    {
+      "lat": 1.03052,
+      "lng": 104.613,
       "jenis": "KEBAKARAN HUTAN DAN LAHAN",
-      "prov": "ACEH"
+      "prov": "KEPULAUAN RIAU"
+    },
+    {
+      "lat": 0.655599,
+      "lng": 122.326,
+      "jenis": "CUACA EKSTREM",
+      "prov": "GORONTALO"
+    },
+    {
+      "lat": -7.45514,
+      "lng": 109.176,
+      "jenis": "CUACA EKSTREM",
+      "prov": "JAWA TENGAH"
     },
     {
       "lat": -3.09032,
@@ -1209,15 +189,501 @@ window.DATA_ASLI = {
       "prov": "KALIMANTAN SELATAN"
     },
     {
-      "lat": -6.10614,
-      "lng": 120.51,
-      "jenis": "KEKERINGAN",
+      "lat": -3.62246,
+      "lng": 119.6,
+      "jenis": "BANJIR",
       "prov": "SULAWESI SELATAN"
+    },
+    {
+      "lat": -8.23598,
+      "lng": 113.656,
+      "jenis": "BANJIR",
+      "prov": "JAWA TIMUR"
+    },
+    {
+      "lat": 1.73836,
+      "lng": 98.7859,
+      "jenis": "TANAH LONGSOR",
+      "prov": "SUMATERA UTARA"
+    },
+    {
+      "lat": -5.48819,
+      "lng": 119.987,
+      "jenis": "CUACA EKSTREM",
+      "prov": "SULAWESI SELATAN"
+    },
+    {
+      "lat": -2.43008,
+      "lng": 106.243,
+      "jenis": "BANJIR",
+      "prov": "KEPULAUAN BANGKA BELITUNG"
+    },
+    {
+      "lat": -7.00423,
+      "lng": 108.56,
+      "jenis": "CUACA EKSTREM",
+      "prov": "JAWA BARAT"
     },
     {
       "lat": -0.505955,
       "lng": 115.834,
+      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
+      "prov": "KALIMANTAN TIMUR"
+    },
+    {
+      "lat": -6.54853,
+      "lng": 110.768,
       "jenis": "BANJIR",
+      "prov": "JAWA TENGAH"
+    },
+    {
+      "lat": -6.55998,
+      "lng": 106.768,
+      "jenis": "CUACA EKSTREM",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": -6.27268,
+      "lng": 106.81,
+      "jenis": "TANAH LONGSOR",
+      "prov": "DKI JAKARTA"
+    },
+    {
+      "lat": -7.13372,
+      "lng": 107.158,
+      "jenis": "CUACA EKSTREM",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": -6.89706,
+      "lng": 107.415,
+      "jenis": "CUACA EKSTREM",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": -7.35188,
+      "lng": 109.657,
+      "jenis": "TANAH LONGSOR",
+      "prov": "JAWA TENGAH"
+    },
+    {
+      "lat": -6.55998,
+      "lng": 106.768,
+      "jenis": "CUACA EKSTREM",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": 5.12471,
+      "lng": 96.2135,
+      "jenis": "CUACA EKSTREM",
+      "prov": "ACEH"
+    },
+    {
+      "lat": -6.14222,
+      "lng": 106.147,
+      "jenis": "BANJIR",
+      "prov": "BANTEN"
+    },
+    {
+      "lat": -7.49096,
+      "lng": 108.89,
+      "jenis": "CUACA EKSTREM",
+      "prov": "JAWA TENGAH"
+    },
+    {
+      "lat": -7.50158,
+      "lng": 110.247,
+      "jenis": "TANAH LONGSOR",
+      "prov": "JAWA TENGAH"
+    },
+    {
+      "lat": -8.1253,
+      "lng": 113.138,
+      "jenis": "CUACA EKSTREM",
+      "prov": "JAWA TIMUR"
+    },
+    {
+      "lat": -2.39495,
+      "lng": 120.161,
+      "jenis": "BANJIR",
+      "prov": "SULAWESI SELATAN"
+    },
+    {
+      "lat": -8.47214,
+      "lng": 118.217,
+      "jenis": "BANJIR",
+      "prov": "NUSA TENGGARA BARAT"
+    },
+    {
+      "lat": -7.82887,
+      "lng": 112.09,
+      "jenis": "CUACA EKSTREM",
+      "prov": "JAWA TIMUR"
+    },
+    {
+      "lat": -6.21539,
+      "lng": 107.121,
+      "jenis": "BANJIR",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": -3.44736,
+      "lng": 115.655,
+      "jenis": "GELOMBANG PASANG DAN ABRASI",
+      "prov": "KALIMANTAN SELATAN"
+    },
+    {
+      "lat": -1.73326,
+      "lng": 116.094,
+      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
+      "prov": "KALIMANTAN TIMUR"
+    },
+    {
+      "lat": 0.835238,
+      "lng": 112.811,
+      "jenis": "BANJIR",
+      "prov": "KALIMANTAN BARAT"
+    },
+    {
+      "lat": 0.268686,
+      "lng": 110.432,
+      "jenis": "CUACA EKSTREM",
+      "prov": "KALIMANTAN BARAT"
+    },
+    {
+      "lat": -6.28023,
+      "lng": 106.976,
+      "jenis": "BANJIR",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": -2.44408,
+      "lng": 103.83,
+      "jenis": "BANJIR",
+      "prov": "SUMATERA SELATAN"
+    },
+    {
+      "lat": -6.55998,
+      "lng": 106.768,
+      "jenis": "TANAH LONGSOR",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": -6.14222,
+      "lng": 106.147,
+      "jenis": "BANJIR",
+      "prov": "BANTEN"
+    },
+    {
+      "lat": -7.62422,
+      "lng": 111.646,
+      "jenis": "BANJIR",
+      "prov": "JAWA TIMUR"
+    },
+    {
+      "lat": -6.25202,
+      "lng": 107.354,
+      "jenis": "CUACA EKSTREM",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": -7.03767,
+      "lng": 110.156,
+      "jenis": "CUACA EKSTREM",
+      "prov": "JAWA TENGAH"
+    },
+    {
+      "lat": -7.38713,
+      "lng": 110.977,
+      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
+      "prov": "JAWA TENGAH"
+    },
+    {
+      "lat": -8.113471,
+      "lng": 111.887726,
+      "jenis": "CUACA EKSTREM",
+      "prov": "JAWA TIMUR"
+    },
+    {
+      "lat": -7.71544,
+      "lng": 110.383,
+      "jenis": "ERUPSI GUNUNG API",
+      "prov": "DI YOGYAKARTA"
+    },
+    {
+      "lat": -6.27268,
+      "lng": 106.81,
+      "jenis": "BANJIR",
+      "prov": "DKI JAKARTA"
+    },
+    {
+      "lat": -7.97896,
+      "lng": 112.636,
+      "jenis": "BANJIR",
+      "prov": "JAWA TIMUR"
+    },
+    {
+      "lat": -3.26352,
+      "lng": 102.879,
+      "jenis": "CUACA EKSTREM",
+      "prov": "SUMATERA SELATAN"
+    },
+    {
+      "lat": -7.81887,
+      "lng": 110.167,
+      "jenis": "TANAH LONGSOR",
+      "prov": "DI YOGYAKARTA"
+    },
+    {
+      "lat": -0.89887184,
+      "lng": 100.437645,
+      "jenis": "BANJIR",
+      "prov": "SUMATERA BARAT"
+    },
+    {
+      "lat": 0.47927603,
+      "lng": 127.67501,
+      "jenis": "CUACA EKSTREM",
+      "prov": "MALUKU UTARA"
+    },
+    {
+      "lat": -9.91821,
+      "lng": 123.86,
+      "jenis": "CUACA EKSTREM",
+      "prov": "NUSA TENGGARA TIMUR"
+    },
+    {
+      "lat": 5.37994,
+      "lng": 95.5156,
+      "jenis": "CUACA EKSTREM",
+      "prov": "ACEH"
+    },
+    {
+      "lat": -2.72828,
+      "lng": 115.207,
+      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
+      "prov": "KALIMANTAN SELATAN"
+    },
+    {
+      "lat": -7.4889274,
+      "lng": 108.88984,
+      "jenis": "CUACA EKSTREM",
+      "prov": "JAWA TENGAH"
+    },
+    {
+      "lat": -4.05231,
+      "lng": 102.658,
+      "jenis": "TANAH LONGSOR",
+      "prov": "BENGKULU"
+    },
+    {
+      "lat": -6.59345,
+      "lng": 106.8,
+      "jenis": "TANAH LONGSOR",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": -8.16192,
+      "lng": 111.626,
+      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
+      "prov": "JAWA TIMUR"
+    },
+    {
+      "lat": -7.86652,
+      "lng": 113.321,
+      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
+      "prov": "JAWA TIMUR"
+    },
+    {
+      "lat": -6.91084,
+      "lng": 110.632,
+      "jenis": "BANJIR",
+      "prov": "JAWA TENGAH"
+    },
+    {
+      "lat": -0.50267,
+      "lng": 115.82422,
+      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
+      "prov": "KALIMANTAN TIMUR"
+    },
+    {
+      "lat": -0.562342,
+      "lng": 100.228,
+      "jenis": "CUACA EKSTREM",
+      "prov": "SUMATERA BARAT"
+    },
+    {
+      "lat": 3.4803057,
+      "lng": 98.694824,
+      "jenis": "CUACA EKSTREM",
+      "prov": "SUMATERA UTARA"
+    },
+    {
+      "lat": -6.55998,
+      "lng": 106.768,
+      "jenis": "CUACA EKSTREM",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": 5.16438,
+      "lng": 97.1103,
+      "jenis": "CUACA EKSTREM",
+      "prov": "ACEH"
+    },
+    {
+      "lat": -7.32292,
+      "lng": 109.407,
+      "jenis": "BANJIR",
+      "prov": "JAWA TENGAH"
+    },
+    {
+      "lat": -7.02051,
+      "lng": 110.39,
+      "jenis": "CUACA EKSTREM",
+      "prov": "JAWA TENGAH"
+    },
+    {
+      "lat": 3.7087595,
+      "lng": 98.22367,
+      "jenis": "BANJIR",
+      "prov": "SUMATERA UTARA"
+    },
+    {
+      "lat": 2.33349,
+      "lng": 99.6378,
+      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
+      "prov": "SUMATERA UTARA"
+    },
+    {
+      "lat": -0.24943,
+      "lng": 100.169,
+      "jenis": "BANJIR",
+      "prov": "SUMATERA BARAT"
+    },
+    {
+      "lat": -3.62823,
+      "lng": 102.642,
+      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
+      "prov": "BENGKULU"
+    },
+    {
+      "lat": -3.67718,
+      "lng": 128.18,
+      "jenis": "CUACA EKSTREM",
+      "prov": "MALUKU"
+    },
+    {
+      "lat": -7.00423,
+      "lng": 108.56,
+      "jenis": "TANAH LONGSOR",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": -0.829802,
+      "lng": 119.91,
+      "jenis": "BANJIR",
+      "prov": "SULAWESI TENGAH"
+    },
+    {
+      "lat": 0.327175,
+      "lng": 101.071,
+      "jenis": "BANJIR",
+      "prov": "RIAU"
+    },
+    {
+      "lat": -7.09997,
+      "lng": 107.611,
+      "jenis": "BANJIR",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": -7.97896,
+      "lng": 112.636,
+      "jenis": "TANAH LONGSOR",
+      "prov": "JAWA TIMUR"
+    },
+    {
+      "lat": -0.562342,
+      "lng": 100.228,
+      "jenis": "CUACA EKSTREM",
+      "prov": "SUMATERA BARAT"
+    },
+    {
+      "lat": 4.45664,
+      "lng": 96.1855,
+      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
+      "prov": "ACEH"
+    },
+    {
+      "lat": -6.55998,
+      "lng": 106.768,
+      "jenis": "CUACA EKSTREM",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": -7.5451,
+      "lng": 112.265,
+      "jenis": "CUACA EKSTREM",
+      "prov": "JAWA TIMUR"
+    },
+    {
+      "lat": -7.59742,
+      "lng": 111.938,
+      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
+      "prov": "JAWA TIMUR"
+    },
+    {
+      "lat": -2.92467,
+      "lng": 115.048,
+      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
+      "prov": "KALIMANTAN SELATAN"
+    },
+    {
+      "lat": -7.13372,
+      "lng": 107.158,
+      "jenis": "CUACA EKSTREM",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": -8.58347,
+      "lng": 115.188,
+      "jenis": "CUACA EKSTREM",
+      "prov": "BALI"
+    },
+    {
+      "lat": -8.53312,
+      "lng": 116.531,
+      "jenis": "CUACA EKSTREM",
+      "prov": "NUSA TENGGARA BARAT"
+    },
+    {
+      "lat": -6.59345,
+      "lng": 106.8,
+      "jenis": "TANAH LONGSOR",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": -3.3637135,
+      "lng": 105.39731,
+      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
+      "prov": "SUMATERA SELATAN"
+    },
+    {
+      "lat": 3.62773,
+      "lng": 98.668,
+      "jenis": "CUACA EKSTREM",
+      "prov": "SUMATERA UTARA"
+    },
+    {
+      "lat": -6.5597973,
+      "lng": 106.767044,
+      "jenis": "TANAH LONGSOR",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": -1.73326,
+      "lng": 116.094,
+      "jenis": "KEKERINGAN",
       "prov": "KALIMANTAN TIMUR"
     },
     {
@@ -1227,14 +693,326 @@ window.DATA_ASLI = {
       "prov": "JAWA TENGAH"
     },
     {
+      "lat": -7.81887,
+      "lng": 110.167,
+      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
+      "prov": "DAERAH ISTIMEWA YOGYAKARTA"
+    },
+    {
+      "lat": -7.69958,
+      "lng": 109.966,
+      "jenis": "BANJIR",
+      "prov": "JAWA TENGAH"
+    },
+    {
       "lat": -7.07619,
       "lng": 106.707,
       "jenis": "TANAH LONGSOR",
       "prov": "JAWA BARAT"
     },
     {
-      "lat": -7.80131,
-      "lng": 114.051,
+      "lat": -5.13665,
+      "lng": 105.649,
+      "jenis": "CUACA EKSTREM",
+      "prov": "LAMPUNG"
+    },
+    {
+      "lat": 0.977976,
+      "lng": 121.373,
+      "jenis": "GELOMBANG PASANG DAN ABRASI",
+      "prov": "SULAWESI TENGAH"
+    },
+    {
+      "lat": -7.35956,
+      "lng": 107.789,
+      "jenis": "TANAH LONGSOR",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": -7.71544,
+      "lng": 110.383,
+      "jenis": "CUACA EKSTREM",
+      "prov": "DI YOGYAKARTA"
+    },
+    {
+      "lat": -7.09997,
+      "lng": 107.611,
+      "jenis": "KEKERINGAN",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": -6.55998,
+      "lng": 106.768,
+      "jenis": "CUACA EKSTREM",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": -7.99424,
+      "lng": 110.612,
+      "jenis": "TANAH LONGSOR",
+      "prov": "DI YOGYAKARTA"
+    },
+    {
+      "lat": -7.49671,
+      "lng": 108.141,
+      "jenis": "TANAH LONGSOR",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": -7.99424,
+      "lng": 110.612,
+      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
+      "prov": "DAERAH ISTIMEWA YOGYAKARTA"
+    },
+    {
+      "lat": -3.52539,
+      "lng": 121.886,
+      "jenis": "BANJIR",
+      "prov": "SULAWESI TENGGARA"
+    },
+    {
+      "lat": -7.07619,
+      "lng": 106.707,
+      "jenis": "TANAH LONGSOR",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": -6.55998,
+      "lng": 106.768,
+      "jenis": "CUACA EKSTREM",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": 0.206953,
+      "lng": 99.6781,
+      "jenis": "BANJIR",
+      "prov": "SUMATERA BARAT"
+    },
+    {
+      "lat": -6.55998,
+      "lng": 106.768,
+      "jenis": "BANJIR",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": -5.13665,
+      "lng": 105.649,
+      "jenis": "CUACA EKSTREM",
+      "prov": "LAMPUNG"
+    },
+    {
+      "lat": -9.91821,
+      "lng": 123.86,
+      "jenis": "CUACA EKSTREM",
+      "prov": "NUSA TENGGARA TIMUR"
+    },
+    {
+      "lat": -3.31195,
+      "lng": 119.144,
+      "jenis": "BANJIR",
+      "prov": "SULAWESI BARAT"
+    },
+    {
+      "lat": -7.59742,
+      "lng": 111.938,
+      "jenis": "CUACA EKSTREM",
+      "prov": "JAWA TIMUR"
+    },
+    {
+      "lat": -8.3742,
+      "lng": 115.53,
+      "jenis": "ERUPSI GUNUNG API",
+      "prov": "BALI"
+    },
+    {
+      "lat": -7.29054,
+      "lng": 108.429,
+      "jenis": "BANJIR",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": -6.55998,
+      "lng": 106.768,
+      "jenis": "TANAH LONGSOR",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": -2.48787,
+      "lng": 104.668,
+      "jenis": "BANJIR",
+      "prov": "SUMATERA SELATAN"
+    },
+    {
+      "lat": 3.16286,
+      "lng": 97.4353,
+      "jenis": "BANJIR",
+      "prov": "ACEH"
+    },
+    {
+      "lat": -6.25202,
+      "lng": 107.354,
+      "jenis": "BANJIR",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": -8.474806,
+      "lng": 118.61902,
+      "jenis": "BANJIR",
+      "prov": "NUSA TENGGARA BARAT"
+    },
+    {
+      "lat": -6.55998,
+      "lng": 106.768,
+      "jenis": "CUACA EKSTREM",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": -3.10851,
+      "lng": 119.712,
+      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
+      "prov": "SULAWESI SELATAN"
+    },
+    {
+      "lat": -6.27268,
+      "lng": 106.81,
+      "jenis": "BANJIR",
+      "prov": "DKI JAKARTA"
+    },
+    {
+      "lat": -7.05198,
+      "lng": 113.256,
+      "jenis": "BANJIR",
+      "prov": "JAWA TIMUR"
+    },
+    {
+      "lat": -2.00777,
+      "lng": 119.518,
+      "jenis": "BANJIR",
+      "prov": "SULAWESI BARAT"
+    },
+    {
+      "lat": -2.44408,
+      "lng": 103.83,
+      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
+      "prov": "SUMATERA SELATAN"
+    },
+    {
+      "lat": -2.0026543,
+      "lng": 119.511086,
+      "jenis": "KEKERINGAN",
+      "prov": "SULAWESI BARAT"
+    },
+    {
+      "lat": -6.74393,
+      "lng": 111.042,
+      "jenis": "BANJIR",
+      "prov": "JAWA TENGAH"
+    },
+    {
+      "lat": 0.9902363,
+      "lng": 117.1313,
+      "jenis": "BANJIR",
+      "prov": "KALIMANTAN TIMUR"
+    },
+    {
+      "lat": -1.40849,
+      "lng": 119.97,
+      "jenis": "BANJIR",
+      "prov": "SULAWESI TENGAH"
+    },
+    {
+      "lat": -7.25786,
+      "lng": 110.136,
+      "jenis": "CUACA EKSTREM",
+      "prov": "JAWA TENGAH"
+    },
+    {
+      "lat": -0.500725,
+      "lng": 117.179,
+      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
+      "prov": "KALIMANTAN TIMUR"
+    },
+    {
+      "lat": -0.24943,
+      "lng": 100.169,
+      "jenis": "TANAH LONGSOR",
+      "prov": "SUMATERA BARAT"
+    },
+    {
+      "lat": 1.0294776,
+      "lng": 128.30864,
+      "jenis": "BANJIR",
+      "prov": "MALUKU UTARA"
+    },
+    {
+      "lat": -6.91084,
+      "lng": 110.632,
+      "jenis": "BANJIR",
+      "prov": "JAWA TENGAH"
+    },
+    {
+      "lat": -7.50158,
+      "lng": 110.247,
+      "jenis": "CUACA EKSTREM",
+      "prov": "JAWA TENGAH"
+    },
+    {
+      "lat": 0.7075405,
+      "lng": 124.03856,
+      "jenis": "BANJIR",
+      "prov": "SULAWESI UTARA"
+    },
+    {
+      "lat": -6.55998,
+      "lng": 106.768,
+      "jenis": "CUACA EKSTREM",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": 1.39631,
+      "lng": 99.2808,
+      "jenis": "BANJIR",
+      "prov": "SUMATERA UTARA"
+    },
+    {
+      "lat": -2.54569,
+      "lng": 111.747,
+      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
+      "prov": "KALIMANTAN TENGAH"
+    },
+    {
+      "lat": -7.866411,
+      "lng": 113.32024,
+      "jenis": "CUACA EKSTREM",
+      "prov": "JAWA TIMUR"
+    },
+    {
+      "lat": 3.4803057,
+      "lng": 98.694824,
+      "jenis": "BANJIR",
+      "prov": "SUMATERA UTARA"
+    },
+    {
+      "lat": 2.34993,
+      "lng": 97.8471,
+      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
+      "prov": "ACEH"
+    },
+    {
+      "lat": -1.1555759,
+      "lng": 116.591515,
+      "jenis": "BANJIR",
+      "prov": "KALIMANTAN TIMUR"
+    },
+    {
+      "lat": -7.09997,
+      "lng": 107.611,
+      "jenis": "TANAH LONGSOR",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": -7.43924,
+      "lng": 111.343,
       "jenis": "CUACA EKSTREM",
       "prov": "JAWA TIMUR"
     },
@@ -1245,81 +1023,303 @@ window.DATA_ASLI = {
       "prov": "JAWA BARAT"
     },
     {
-      "lat": -6.21539,
-      "lng": 107.121,
+      "lat": 0.029782,
+      "lng": 100.566,
+      "jenis": "CUACA EKSTREM",
+      "prov": "SUMATERA BARAT"
+    },
+    {
+      "lat": -6.55998,
+      "lng": 106.768,
+      "jenis": "CUACA EKSTREM",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": -3.0905852,
+      "lng": 114.63005,
+      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
+      "prov": "KALIMANTAN SELATAN"
+    },
+    {
+      "lat": -6.55998,
+      "lng": 106.768,
       "jenis": "TANAH LONGSOR",
       "prov": "JAWA BARAT"
+    },
+    {
+      "lat": -2.43008,
+      "lng": 106.243,
+      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
+      "prov": "KEPULAUAN BANGKA BELITUNG"
+    },
+    {
+      "lat": 3.99461,
+      "lng": 116.663,
+      "jenis": "CUACA EKSTREM",
+      "prov": "KALIMANTAN UTARA"
+    },
+    {
+      "lat": -2.5560594,
+      "lng": 121.12833,
+      "jenis": "BANJIR",
+      "prov": "SULAWESI SELATAN"
+    },
+    {
+      "lat": -3.81882,
+      "lng": 114.903,
+      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
+      "prov": "KALIMANTAN SELATAN"
+    },
+    {
+      "lat": 0.826471,
+      "lng": 101.825,
+      "jenis": "BANJIR",
+      "prov": "RIAU"
+    },
+    {
+      "lat": -7.83311,
+      "lng": 112.531,
+      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
+      "prov": "JAWA TIMUR"
+    },
+    {
+      "lat": -6.89706,
+      "lng": 107.415,
+      "jenis": "TANAH LONGSOR",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": 3.71074,
+      "lng": 98.2203,
+      "jenis": "CUACA EKSTREM",
+      "prov": "SUMATERA UTARA"
+    },
+    {
+      "lat": -8.23598,
+      "lng": 113.656,
+      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
+      "prov": "JAWA TIMUR"
+    },
+    {
+      "lat": -6.5490036,
+      "lng": 110.76813,
+      "jenis": "BANJIR",
+      "prov": "JAWA TENGAH"
+    },
+    {
+      "lat": -7.3763,
+      "lng": 108.567,
+      "jenis": "TANAH LONGSOR",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": -4.33905,
+      "lng": 119.892,
+      "jenis": "BANJIR",
+      "prov": "SULAWESI SELATAN"
+    },
+    {
+      "lat": -7.65517,
+      "lng": 109.617,
+      "jenis": "CUACA EKSTREM",
+      "prov": "JAWA TENGAH"
+    },
+    {
+      "lat": 0.029782,
+      "lng": 100.566,
+      "jenis": "BANJIR",
+      "prov": "SUMATERA BARAT"
+    },
+    {
+      "lat": -4.00039,
+      "lng": 122.533,
+      "jenis": "BANJIR",
+      "prov": "SULAWESI TENGGARA"
+    },
+    {
+      "lat": 5.06823,
+      "lng": 96.0072,
+      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
+      "prov": "ACEH"
+    },
+    {
+      "lat": -7.4889274,
+      "lng": 108.88984,
+      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
+      "prov": "JAWA TENGAH"
+    },
+    {
+      "lat": 0.688118,
+      "lng": 121.711,
+      "jenis": "BANJIR",
+      "prov": "GORONTALO"
+    },
+    {
+      "lat": -7.50158,
+      "lng": 110.247,
+      "jenis": "TANAH LONGSOR",
+      "prov": "JAWA TENGAH"
+    },
+    {
+      "lat": -6.91084,
+      "lng": 110.632,
+      "jenis": "GELOMBANG PASANG DAN ABRASI",
+      "prov": "JAWA TENGAH"
+    },
+    {
+      "lat": -6.55998,
+      "lng": 106.768,
+      "jenis": "TANAH LONGSOR",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": -7.49096,
+      "lng": 108.89,
+      "jenis": "TANAH LONGSOR",
+      "prov": "JAWA TENGAH"
+    },
+    {
+      "lat": 1.554376,
+      "lng": 127.8348,
+      "jenis": "BANJIR",
+      "prov": "MALUKU UTARA"
+    },
+    {
+      "lat": 3.8249,
+      "lng": 96.8783,
+      "jenis": "CUACA EKSTREM",
+      "prov": "ACEH"
+    },
+    {
+      "lat": -6.78907,
+      "lng": 110.87,
+      "jenis": "KEBAKARAN HUTAN DAN LAHAN",
+      "prov": "JAWA TENGAH"
+    },
+    {
+      "lat": -7.07619,
+      "lng": 106.707,
+      "jenis": "CUACA EKSTREM",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": -7.02127,
+      "lng": 109.861,
+      "jenis": "CUACA EKSTREM",
+      "prov": "JAWA TENGAH"
+    },
+    {
+      "lat": -7.54987,
+      "lng": 112.485,
+      "jenis": "BANJIR",
+      "prov": "JAWA TIMUR"
+    },
+    {
+      "lat": -7.07619,
+      "lng": 106.707,
+      "jenis": "TANAH LONGSOR",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": -6.55998,
+      "lng": 106.768,
+      "jenis": "CUACA EKSTREM",
+      "prov": "JAWA BARAT"
+    },
+    {
+      "lat": -1.68082,
+      "lng": 120.521,
+      "jenis": "BANJIR",
+      "prov": "SULAWESI TENGAH"
+    },
+    {
+      "lat": -7.35188,
+      "lng": 109.657,
+      "jenis": "TANAH LONGSOR",
+      "prov": "JAWA TENGAH"
     },
     {
       "lat": -2.31914,
       "lng": 115.642,
       "jenis": "BANJIR",
       "prov": "KALIMANTAN SELATAN"
+    },
+    {
+      "lat": -7.25786,
+      "lng": 110.136,
+      "jenis": "BANJIR",
+      "prov": "JAWA TENGAH"
+    },
+    {
+      "lat": 4.62878,
+      "lng": 97.6286,
+      "jenis": "BANJIR",
+      "prov": "ACEH"
     }
   ],
   "clusters": [
     {
       "cluster": 0,
-      "total_laporan": 3.2732558139534884,
-      "total_korban_jiwa": 0.0755813953488372,
-      "total_terdampak": 97.61046511627907,
-      "total_material": 14.546511627906977,
-      "total_agri": 200.70100581395351,
-      "jenis_bencana_unik": 1.3837209302325582,
-      "avg_severity_score": 0.7013047075209543,
-      "pct_severity_berat": 0.0,
-      "avg_korban_per_event": 0.06636338467733816,
-      "avg_terdampak_per_event": 45.645544264217314,
-      "jumlah_wilayah": 172,
-      "persentase": 41.7,
+      "total_laporan": 8.555555555555555,
+      "total_korban_jiwa": 1.2892561983471074,
+      "total_terdampak": 365.72185430463577,
+      "total_material": 96.09941520467837,
+      "total_agri": 139.25449180327868,
+      "jenis_bencana_unik": 2.257309941520468,
+      "avg_severity_score": 2.093141505128323,
+      "pct_severity_berat": 4.645605484937475,
+      "avg_korban_per_event": 1.228553756192006,
+      "avg_terdampak_per_event": 86.42584271736,
+      "jumlah_wilayah": 171,
+      "persentase": 16.4,
       "nama_profil": "Risiko Rendah (Sporadis & Dampak Minimal)"
     },
     {
       "cluster": 1,
-      "total_laporan": 12.320754716981131,
-      "total_korban_jiwa": 1.0566037735849056,
-      "total_terdampak": 27538.377358490565,
-      "total_material": 2884.9622641509436,
-      "total_agri": 1031.10379245283,
-      "jenis_bencana_unik": 3.5660377358490565,
-      "avg_severity_score": 3.120980168344805,
-      "pct_severity_berat": 25.26824768235645,
-      "avg_korban_per_event": 0.28880197835148447,
-      "avg_terdampak_per_event": 2563.7767926901224,
-      "jumlah_wilayah": 106,
-      "persentase": 25.7,
+      "total_laporan": 89.58837772397095,
+      "total_korban_jiwa": 9.203389830508474,
+      "total_terdampak": 144023.0411622276,
+      "total_material": 19599.641646489104,
+      "total_agri": 8551.50802919708,
+      "jenis_bencana_unik": 4.8474576271186445,
+      "avg_severity_score": 2.7427242157595724,
+      "pct_severity_berat": 31.19401815638559,
+      "avg_korban_per_event": 0.7712696757409361,
+      "avg_terdampak_per_event": 2621.5018587065288,
+      "jumlah_wilayah": 413,
+      "persentase": 39.7,
       "nama_profil": "Risiko Multi-Bencana Kronis & Kerusakan Lahan"
     },
     {
       "cluster": 2,
-      "total_laporan": 3.0,
-      "total_korban_jiwa": 0.23728813559322035,
-      "total_terdampak": 16143.694915254237,
-      "total_material": 1897.6864406779662,
-      "total_agri": 82.69016949152542,
-      "jenis_bencana_unik": 1.7966101694915255,
-      "avg_severity_score": 5.473176179647604,
-      "pct_severity_berat": 66.09866828087166,
-      "avg_korban_per_event": 0.379136400322841,
-      "avg_terdampak_per_event": 6817.646680790961,
-      "jumlah_wilayah": 118,
-      "persentase": 28.6,
+      "total_laporan": 11.071052631578947,
+      "total_korban_jiwa": 1.0347826086956522,
+      "total_terdampak": 20436.45,
+      "total_material": 2915.863157894737,
+      "total_agri": 449.9237166083916,
+      "jenis_bencana_unik": 2.6894736842105265,
+      "avg_severity_score": 3.833970128849284,
+      "pct_severity_berat": 52.24328024483237,
+      "avg_korban_per_event": 0.6579218333846627,
+      "avg_terdampak_per_event": 3462.9622629343085,
+      "jumlah_wilayah": 380,
+      "persentase": 36.5,
       "nama_profil": "Risiko Kemanusiaan Akut & Pengungsian Massal"
     },
     {
       "cluster": 3,
-      "total_laporan": 2.3125,
-      "total_korban_jiwa": 18.4375,
-      "total_terdampak": 65192.9375,
-      "total_material": 9127.3125,
-      "total_agri": 54.478125,
-      "jenis_bencana_unik": 2.0,
-      "avg_severity_score": 29.08807995551928,
-      "pct_severity_berat": 66.35416666666667,
-      "avg_korban_per_event": 99.85,
-      "avg_terdampak_per_event": 23422.00625,
-      "jumlah_wilayah": 16,
-      "persentase": 3.9,
+      "total_laporan": 20.90909090909091,
+      "total_korban_jiwa": 117.88311688311688,
+      "total_terdampak": 144561.87012987013,
+      "total_material": 14373.415584415585,
+      "total_agri": 2251.538422535212,
+      "jenis_bencana_unik": 3.7142857142857135,
+      "avg_severity_score": 12.49383543461832,
+      "pct_severity_berat": 52.355121385854005,
+      "avg_korban_per_event": 100.34319896516196,
+      "avg_terdampak_per_event": 16903.58818177648,
+      "jumlah_wilayah": 77,
+      "persentase": 7.4,
       "nama_profil": "Risiko Katastropik & Fatalitas Ekstrem"
     }
   ]
