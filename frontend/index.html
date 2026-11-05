@@ -16,223 +16,8 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <!-- Script Custom -->
-<script src="js/data_asli.js"></script>
+<script src="js/data.js"></script>
 <script src="js/app.js"></script>
-
-<style>
-  /* CSS KLASTER BARU */
-  .cluster-card {
-    background: #fff; border-radius: 16px; padding: 24px;
-    box-shadow: 0 4px 20px -4px rgba(16,24,40,0.08);
-    border: 1px solid var(--line); position: relative; overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-  .cluster-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px -8px rgba(16,24,40,0.15); }
-  .cluster-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; }
-  .cluster-card.c1::before { background: #2A9D8F; }
-  .cluster-card.c2::before { background: #3A86FF; }
-  .cluster-card.c3::before { background: #FB5607; }
-  .cluster-card.c4::before { background: #D92D20; }
-  .cc-header { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
-  .cc-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex: none; }
-  .c1 .cc-icon { background: #D1FADF; color: #2A9D8F; }
-  .c2 .cc-icon { background: #E8F1FB; color: #3A86FF; }
-  .c3 .cc-icon { background: #FFF1E2; color: #FB5607; }
-  .c4 .cc-icon { background: #FEE4E2; color: #D92D20; }
-  .cc-title { font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; margin-bottom: 2px; }
-  .cc-subtitle { font-size: 12px; color: var(--muted); font-weight: 500; }
-  .cc-desc { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 20px; min-height: 56px; }
-  .cc-stats { display: flex; gap: 16px; }
-  .cc-stat { flex: 1; background: #F9FAFB; border-radius: 10px; padding: 14px 12px; text-align: center; border: 1px solid var(--line-2); }
-  .cc-stat span { display: block; font-size: 10px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
-  .cc-stat b { font-family: 'Outfit', sans-serif; display: block; font-size: 26px; font-weight: 800; color: var(--ink); line-height: 1; }
-
-  /* ANIMASI CARD */
-  @keyframes slideUpFade { 0% { opacity: 0; transform: translateY(40px); } 100% { opacity: 1; transform: translateY(0); } }
-  .page.on .anim-card { animation: slideUpFade 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards; opacity: 0; }
-  .page.on .grid-3 .anim-card:nth-child(1) { animation-delay: 0.1s; }
-  .page.on .grid-3 .anim-card:nth-child(2) { animation-delay: 0.2s; }
-  .page.on .grid-3 .anim-card:nth-child(3) { animation-delay: 0.3s; }
-  .page.on .grid-3 .anim-card:nth-child(4) { animation-delay: 0.4s; }
-  
-  /* HOVER CARD LAPORAN */
-  .report-card { transition: all 0.3s ease; cursor: pointer; border-left: 4px solid transparent; }
-  .report-card:hover { border-left-color: var(--blue); background: #F9FAFB; transform: translateX(6px); }
-  .report-card:hover .btn-download { background: var(--blue); color: #fff; transform: scale(1.05); }
-  .btn-download { background: var(--blue-soft); color: var(--blue); border: none; border-radius: 8px; padding: 8px 16px; font-weight: 700; font-family: inherit; font-size: 12px; display: flex; align-items: center; gap: 6px; cursor: pointer; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
-  
-  /* HOVER SWITCH PENGATURAN */
-  .setting-item { transition: background 0.2s; border-radius: 8px; padding: 16px 12px; }
-  .setting-item:hover { background: #F9FAFB; }
-  .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
-  .switch input { opacity: 0; width: 0; height: 0; }
-  .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
-  .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
-  input:checked + .slider { background-color: var(--blue); }
-  input:checked + .slider:before { transform: translateX(20px); }
-
-  /* KLASTER & MITIGASI */
-  .cluster-grid { grid-template-columns: repeat(4, 1fr); }
-  .cluster-card.c4:hover { box-shadow: 0 12px 24px -8px rgba(217,45,32,0.25); }
-  .sim-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; padding-top: 14px; border-top: 1px solid #2A3A5E; }
-  .sim-metrics > div { text-align: center; }
-  .sim-metrics span { display: block; font-size: 10px; color: #8A9BB8; text-transform: uppercase; letter-spacing: .05em; font-weight: 700; margin-bottom: 4px; }
-  .sim-metrics b { font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 800; color: #fff; }
-  .mitigation-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
-  .mitigation-list li { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; background: #F9FAFB; border-radius: 10px; border-left: 4px solid var(--blue); font-size: 13.5px; color: var(--ink); line-height: 1.5; transition: all 0.25s ease; }
-  .mitigation-list li:hover { background: #F2F4F7; transform: translateX(4px); }
-  .mitigation-list li.urgent { border-left-color: var(--red); background: var(--red-soft); }
-  .mitigation-list li.urgent:hover { background: #FDD7D4; }
-  .mitigation-list li .m-icon { width: 26px; height: 26px; border-radius: 7px; flex: none; display: flex; align-items: center; justify-content: center; background: var(--blue); color: #fff; font-weight: 800; font-size: 13px; }
-  .mitigation-list li.urgent .m-icon { background: var(--red); }
-  .mitigation-list li b { display: block; font-weight: 700; margin-bottom: 2px; }
-  .impact-badge { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 800; text-transform: uppercase; }
-
-  @media (max-width: 1100px) {
-    .cluster-grid { grid-template-columns: repeat(2, 1fr); }
-    .sim-metrics { grid-template-columns: 1fr; gap: 8px; }
-  }
-  @media (max-width: 820px) {
-    .cluster-grid { grid-template-columns: 1fr; }
-  }
-
-  /* CSS TAB TREN BARU */
-  .filterbar label span { vertical-align: middle; }
-  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-  @media (max-width: 900px) {
-    .grid-4 { grid-template-columns: 1fr; }
-    .filterbar { flex-direction: column; align-items: stretch; }
-  }
-
-  /* --- PANEL NOTIFIKASI DROPDOWN --- */
-  .notif-panel {
-    position: absolute;
-    top: 64px;
-    right: 28px;
-    width: min(380px, calc(100vw - 32px));
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 12px 32px -8px rgba(16,24,40,0.15);
-    border: 1px solid var(--line);
-    z-index: 1000;
-    overflow: hidden;
-    animation: fadeInDown 0.2s ease-out;
-  }
-  @keyframes fadeInDown {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .notif-header {
-    background: var(--navy);
-    color: #fff;
-    padding: 16px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .notif-header h3 {
-    margin: 0;
-    font-family: 'Outfit', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-  }
-  .close-btn {
-    background: rgba(255,255,255,0.1);
-    border: none;
-    color: #fff;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .close-btn:hover { background: rgba(255,255,255,0.2); }
-  .notif-body {
-    max-height: 400px;
-    overflow-y: auto;
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  .notif-item {
-    display: flex;
-    gap: 12px;
-    padding: 16px;
-    border-radius: 10px;
-    background: #F9FAFB;
-    border: 1px solid var(--line-2);
-    position: relative;
-  }
-  .notif-item.unread {
-    background: #F0FDF4;
-    border-color: #D1FADF;
-  }
-  .notif-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #0E9384;
-    position: absolute;
-    top: 16px;
-    left: 10px;
-  }
-  .notif-item.unread .notif-content { margin-left: 12px; }
-  .notif-content { flex: 1; min-width: 0; }
-  .notif-content b {
-    display: block;
-    font-size: 12px;
-    color: var(--ink);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 4px;
-  }
-  .notif-content p {
-    margin: 0 0 6px;
-    font-size: 13.5px;
-    line-height: 1.5;
-    color: var(--ink);
-  }
-  .notif-time { font-size: 11.5px; color: var(--muted-2); }
-  .notif-trash {
-    align-self: flex-start;
-    flex: none;
-    background: none;
-    border: none;
-    color: var(--muted-2);
-    cursor: pointer;
-    padding: 4px;
-  }
-  .notif-trash:hover { color: var(--red); }
-  @media (max-width: 600px) {
-    .notif-panel {
-      top: 60px;
-      right: 12px;
-      width: calc(100vw - 24px);
-    }
-  }
-
-  /* --- FIX DROPDOWN PETA WILAYAH --- */
-  #p-peta .filter-group select {
-    padding: 8px 12px !important;
-    line-height: 1.5 !important;
-    height: 38px !important;
-    min-height: 38px !important;
-    appearance: auto !important;
-    -webkit-appearance: auto !important;
-    -moz-appearance: auto !important;
-    background-image: none !important;
-  }
-  #p-peta .filter-group select option {
-    padding: 10px;
-    line-height: 1.5;
-    background-color: #ffffff;
-    color: #101828;
-  }
-</style>
 </head>
 <body>
 <div class="app">
@@ -340,7 +125,6 @@
       </div>
     </div>
 
-
     <!-- OVERVIEW -->
     <section class="page on" id="p-overview">
       <div class="page-head">
@@ -437,10 +221,9 @@
     <section class="page" id="p-peta">
       <div class="page-head"><div><div class="crumb"><span>Dashboard</span> / <b>Peta Wilayah</b></div><h1>Peta Risiko Wilayah</h1><p>Sebaran dan intensitas kejadian per provinsi</p></div></div>
       <div class="filterbar">
-        <!-- DROPDOWN PERIODE DIPERBAIKI & DISESUAIKAN UNTUK STORYTELLING -->
         <div class="filter-group">
           <label>Periode</label>
-          <select class="select" id="map-filter-periode" style="appearance: auto; -webkit-appearance: auto; padding: 8px 12px; height: 38px; line-height: 1.5; width: 100%;">
+          <select class="select" id="map-filter-periode">
             <option value="2015">Gambaran Keseluruhan (2015 – 2026)</option>
             <option value="2024">Fokus Tren Terkini (2024 – 2026)</option>
           </select>
@@ -466,12 +249,8 @@
           <div class="card-head"><div><h3>Top Kabupaten Rawan</h3><p>Data kejadian tertinggi</p></div></div>
           <table class="tbl">
             <thead><tr><th>Kabupaten</th><th>Kejadian</th></tr></thead>
-            <tbody>
-              <tr><td><span class="rank">1</span>Cilacap</td><td>47</td></tr>
-              <tr><td><span class="rank">2</span>Bandung</td><td>38</td></tr>
-              <tr><td><span class="rank">3</span>Sidoarjo</td><td>27</td></tr>
-              <tr><td><span class="rank">4</span>Semarang</td><td>24</td></tr>
-              <tr><td><span class="rank">5</span>Bogor</td><td>21</td></tr>
+            <tbody id="top-kab-tbody">
+              <tr><td colspan="2" style="color:var(--muted)">Memuat data...</td></tr>
             </tbody>
           </table>
         </div>
@@ -580,13 +359,8 @@
           <div class="card-head"><div><h3>Daftar Wilayah per Klaster</h3><p>Contoh pemetaan (Top 6)</p></div></div>
           <table class="tbl">
             <thead><tr><th>Wilayah</th><th>Klaster</th></tr></thead>
-            <tbody>
-              <tr><td>Jawa Barat</td><td><span class="pill blue">Multi-Bencana</span></td></tr>
-              <tr><td>Jawa Tengah</td><td><span class="pill blue">Multi-Bencana</span></td></tr>
-              <tr><td>Riau</td><td><span class="pill green">Risiko Rendah</span></td></tr>
-              <tr><td>Kalimantan Selatan</td><td><span class="pill green">Risiko Rendah</span></td></tr>
-              <tr><td>Aceh</td><td><span class="pill orange">Kemanusiaan Akut</span></td></tr>
-              <tr><td>Palu</td><td><span class="pill red">Katastropik</span></td></tr>
+            <tbody id="klaster-prov-tbody">
+              <tr><td colspan="2" style="color:var(--muted)">Memuat data...</td></tr>
             </tbody>
           </table>
         </div>
@@ -617,25 +391,57 @@
           <p>Jumlah kejadian per bulan, 2015 sampai September 2026, dan perkiraan 12 bulan ke depan. Data: BNPB.</p>
         </div>
       </div>
-      <div class="filterbar" style="display: flex; gap: 20px; align-items: flex-end;">
-        <div class="filter-group" style="flex: 1;">
-          <label style="display: block; margin-bottom: 6px; font-weight: 700; color: var(--blue);"><span style="background:var(--blue); color:white; border-radius:50%; width:18px; height:18px; display:inline-flex; align-items:center; justify-content:center; font-size:10px; margin-right:6px;">2</span> Jenis Bencana</label>
-          <select class="select" style="width: 100%;"><option>Nasional (semua jenis)</option><option>Banjir</option><option>Cuaca Ekstrem</option></select>
+      
+      <!-- PERBAIKAN: Filterbar dengan value yang benar & ID -->
+      <div class="filterbar" style="display: flex; gap: 20px; align-items: flex-end; flex-wrap: wrap;">
+        <div class="filter-group" style="flex: 1; min-width: 200px;">
+          <label style="display: block; margin-bottom: 6px; font-weight: 700; color: var(--blue);">
+            <span style="background:var(--blue); color:white; border-radius:50%; width:18px; height:18px; display:inline-flex; align-items:center; justify-content:center; font-size:10px; margin-right:6px;">2</span>
+            Jenis Bencana
+          </label>
+          <select class="select" id="tren-seri" style="width: 100%;">
+            <option value="NASIONAL">Nasional (semua jenis)</option>
+            <option value="BANJIR">Banjir</option>
+            <option value="CUACA EKSTREM">Cuaca Ekstrem</option>
+            <option value="TANAH LONGSOR">Tanah Longsor</option>
+            <option value="KEBAKARAN HUTAN DAN LAHAN">Karhutla</option>
+          </select>
         </div>
-        <div class="filter-group" style="flex: 1;">
-          <label style="display: block; margin-bottom: 6px; font-weight: 700; color: var(--blue);"><span style="background:var(--blue); color:white; border-radius:50%; width:18px; height:18px; display:inline-flex; align-items:center; justify-content:center; font-size:10px; margin-right:6px;">3</span> Model</label>
-          <select class="select" style="width: 100%;"><option>Otomatis (terbaik)</option><option>XGBoost</option><option>SARIMA</option></select>
+        <div class="filter-group" style="flex: 1; min-width: 200px;">
+          <label style="display: block; margin-bottom: 6px; font-weight: 700; color: var(--blue);">
+            <span style="background:var(--blue); color:white; border-radius:50%; width:18px; height:18px; display:inline-flex; align-items:center; justify-content:center; font-size:10px; margin-right:6px;">3</span>
+            Model
+          </label>
+          <select class="select" id="tren-model" style="width: 100%;">
+            <option value="auto">Otomatis (terbaik)</option>
+            <option value="xgboost">XGBoost</option>
+            <option value="sarima">SARIMA</option>
+            <option value="seasonal_naive">Seasonal Naive</option>
+          </select>
         </div>
-        <div class="filter-group" style="flex: 1;">
-          <label style="display: block; margin-bottom: 6px; font-weight: 700; color: var(--blue);"><span style="background:var(--blue); color:white; border-radius:50%; width:18px; height:18px; display:inline-flex; align-items:center; justify-content:center; font-size:10px; margin-right:6px;">4</span> Horizon Prediksi</label>
-          <select class="select" style="width: 100%;"><option>6 bulan</option><option>12 bulan</option></select>
+        <div class="filter-group" style="flex: 1; min-width: 200px;">
+          <label style="display: block; margin-bottom: 6px; font-weight: 700; color: var(--blue);">
+            <span style="background:var(--blue); color:white; border-radius:50%; width:18px; height:18px; display:inline-flex; align-items:center; justify-content:center; font-size:10px; margin-right:6px;">4</span>
+            Horizon Prediksi
+          </label>
+          <select class="select" id="tren-horizon" style="width: 100%;">
+            <option value="6">6 bulan</option>
+            <option value="12" selected>12 bulan</option>
+          </select>
         </div>
-        <div style="display: flex; gap: 12px; padding-bottom: 8px;">
-          <label style="font-size: 13px; display: flex; align-items: center; gap: 4px;"><input type="checkbox" checked> Aktual</label>
-          <label style="font-size: 13px; display: flex; align-items: center; gap: 4px;"><input type="checkbox" checked> Prediksi</label>
-          <label style="font-size: 13px; display: flex; align-items: center; gap: 4px;"><input type="checkbox" checked> Interval</label>
+        <div style="display: flex; gap: 12px; padding-bottom: 8px; flex-wrap: wrap;">
+          <label style="font-size: 13px; display: flex; align-items: center; gap: 4px;">
+            <input type="checkbox" id="chk-aktual" checked> Aktual
+          </label>
+          <label style="font-size: 13px; display: flex; align-items: center; gap: 4px;">
+            <input type="checkbox" id="chk-prediksi" checked> Prediksi
+          </label>
+          <label style="font-size: 13px; display: flex; align-items: center; gap: 4px;">
+            <input type="checkbox" id="chk-interval" checked> Interval
+          </label>
         </div>
       </div>
+
       <div class="card">
         <div class="card-head"><div><h3>Jumlah kejadian per bulan: Nasional</h3><p>Bentuk garis hanya ilustrasi, bukan data asli</p></div></div>
         <div class="chart-wrap lg"><canvas id="c-forecast"></canvas></div>
@@ -647,28 +453,29 @@
         </div>
         <p style="font-size: 12px; color: var(--muted); text-align: center; margin-top: 10px;">Interaksi diharapkan: hover di grafik menampilkan tooltip (bulan, nilai aktual, nilai prediksi, rentang interval).</p>
       </div>
-      <div class="alert-card warning" style="margin-top: 0;">
+
+      <div class="alert-card warning" id="tren-alert" style="margin-top: 0;" hidden>
         <div class="alert-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg></div>
         <div class="alert-content">
-          <b>Catatan (muncul hanya jika jenis kecil dipilih, mis. Tsunami, Erupsi, Gempa Bumi, Kekeringan, Gelombang Pasang)</b>
+          <b>Catatan</b>
           <span>Jenis ini hanya sekitar 0-5 kejadian per bulan, jadi hasil prediksinya kurang stabil dan sebaiknya dibaca sebagai gambaran kasar saja.</span>
         </div>
       </div>
+
       <div class="grid-4" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
-        <div class="kpi"><div class="kpi-label">MAE</div><div class="kpi-val" style="color: var(--navy);">65.0</div><div class="kpi-foot">Rata-rata selisih absolut (kejadian/bulan)</div></div>
-        <div class="kpi"><div class="kpi-label">RMSE</div><div class="kpi-val" style="color: var(--navy);">85.4</div><div class="kpi-foot">Akar rata-rata kuadrat galat</div></div>
-        <div class="kpi"><div class="kpi-label">MAPE</div><div class="kpi-val" style="color: var(--navy);">29.8%</div><div class="kpi-foot">Galat persentase rata-rata</div></div>
-        <div class="kpi"><div class="kpi-label">MODEL TERPILIH</div><div class="kpi-val" style="color: var(--navy); font-size: 24px;">XGBoost</div><div class="kpi-foot">Terbaik berdasarkan MAE pada data uji</div></div>
+        <div class="kpi"><div class="kpi-label">MAE</div><div class="kpi-val" id="kpi-mae" style="color: var(--navy);">–</div><div class="kpi-foot">Rata-rata selisih absolut (kejadian/bulan)</div></div>
+        <div class="kpi"><div class="kpi-label">RMSE</div><div class="kpi-val" id="kpi-rmse" style="color: var(--navy);">–</div><div class="kpi-foot">Akar rata-rata kuadrat galat</div></div>
+        <div class="kpi"><div class="kpi-label">MAPE</div><div class="kpi-val" id="kpi-mape" style="color: var(--navy);">–</div><div class="kpi-foot">Galat persentase rata-rata</div></div>
+        <div class="kpi"><div class="kpi-label">MODEL TERPILIH</div><div class="kpi-val" id="kpi-model" style="color: var(--navy); font-size: 24px;">–</div><div class="kpi-foot" id="kpi-model-foot">Terbaik berdasarkan MAE pada data uji</div></div>
       </div>
+
       <div class="grid-2e">
         <div class="card">
           <div class="card-head"><div><h3><span style="color:var(--blue);">7</span> Perbandingan model</h3></div></div>
-          <table class="tbl">
+          <table class="tbl" id="tbl-model">
             <thead><tr><th>Model</th><th>MAE</th><th>RMSE</th><th>MAPE</th></tr></thead>
             <tbody>
-              <tr><td>Seasonal Naive (baseline)</td><td>101.7</td><td>119.8</td><td>45.3%</td></tr>
-              <tr><td>SARIMA</td><td>130.8</td><td>160.9</td><td>63.3%</td></tr>
-              <tr style="background: var(--blue-soft); font-weight: 700;"><td>XGBoost</td><td>65.0</td><td>85.4</td><td>29.8%</td></tr>
+              <tr><td colspan="4" style="color:var(--muted)">Memuat data...</td></tr>
             </tbody>
           </table>
           <p style="font-size: 11px; color: var(--muted); margin-top: 10px;">Baris model terbaik diberi highlight. Jumlah baris menyesuaikan model yang akhirnya dipakai.</p>
@@ -676,21 +483,20 @@
         <div class="card">
           <div class="card-head"><div><h3><span style="color:var(--blue);">8</span> Pola musiman (rata-rata per bulan)</h3></div></div>
           <div class="chart-wrap sm"><canvas id="c-seasonal"></canvas></div>
-          <p style="font-size: 11px; color: var(--muted); margin-top: 10px; text-align: center;">Tinggi batang hanya ilustrasi. Ikut berubah mengikuti jenis bencana yang dipilih.</p>
+          <p id="musiman-note" style="font-size: 11px; color: var(--muted); margin-top: 10px; text-align: center;">Memuat data...</p>
         </div>
       </div>
+
       <div class="card">
         <div class="card-head"><div><h3><span style="color:var(--blue);">9</span> Prediksi bulan-bulan ke depan</h3></div><a href="#" style="color: var(--blue); font-size: 13px; font-weight: 600; text-decoration: none;">Unduh CSV</a></div>
-        <table class="tbl">
+        <table class="tbl" id="tbl-prediksi">
           <thead><tr><th>Bulan</th><th>Prediksi</th><th>Batas bawah</th><th>Batas atas</th></tr></thead>
           <tbody>
-            <tr><td>Nov 2026</td><td>254</td><td>87</td><td>421</td></tr>
-            <tr><td>Des 2026</td><td>239</td><td>71</td><td>406</td></tr>
-            <tr><td>Jan 2027</td><td>272</td><td>105</td><td>440</td></tr>
-            <tr><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+            <tr><td colspan="4" style="color:var(--muted)">Memuat data...</td></tr>
           </tbody>
         </table>
       </div>
+
       <div class="card" style="background: #F9FAFB; border-color: var(--line);">
         <div class="card-head"><div><h3><span style="color:var(--blue);">10</span> Keterbatasan</h3></div></div>
         <ul style="font-size: 13px; color: var(--muted); padding-left: 20px; line-height: 1.8;">
@@ -705,19 +511,8 @@
     <!-- LAPORAN -->
     <section class="page" id="p-laporan">
       <div class="page-head"><div><div class="crumb"><span>Dashboard</span> / <b>Laporan</b></div><h1>Pusat Unduhan Laporan</h1><p>Unduh dataset dan hasil analisis terbaru</p></div></div>
-      <div class="card anim-card" style="padding: 0;">
-        <div class="report-card" style="padding: 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center;">
-          <div style="display: flex; gap: 16px; align-items: center;"><div style="width: 48px; height: 48px; border-radius: 12px; background: #E8F1FB; display: flex; align-items: center; justify-content: center; color: var(--blue);"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div><b style="font-size: 15px; color: var(--ink); display: block; margin-bottom: 4px;">Dataset BNPB (CSV)</b><span style="font-size: 12px; color: var(--muted);">Data mentah 44.280 kejadian · 30 MB · Rilis 5 Nov 2026</span></div></div>
-          <button type="button" class="btn-download"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Unduh</button>
-        </div>
-        <div class="report-card" style="padding: 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center;">
-          <div style="display: flex; gap: 16px; align-items: center;"><div style="width: 48px; height: 48px; border-radius: 12px; background: #FFF1E2; display: flex; align-items: center; justify-content: center; color: #FB5607;"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="8" r="3"/><circle cx="17" cy="9" r="3"/><circle cx="12" cy="17" r="3"/></svg></div><div><b style="font-size: 15px; color: var(--ink); display: block; margin-bottom: 4px;">Hasil Klasterisasi Risiko Wilayah (CSV)</b><span style="font-size: 12px; color: var(--muted);">Profil 4 klaster risiko · 1 MB · Rilis 5 Nov 2026</span></div></div>
-          <button type="button" class="btn-download"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Unduh</button>
-        </div>
-        <div class="report-card" style="padding: 20px; display: flex; justify-content: space-between; align-items: center;">
-          <div style="display: flex; gap: 16px; align-items: center;"><div style="width: 48px; height: 48px; border-radius: 12px; background: #D1FADF; display: flex; align-items: center; justify-content: center; color: var(--green);"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div><b style="font-size: 15px; color: var(--ink); display: block; margin-bottom: 4px;">Laporan Evaluasi Model &amp; Mitigasi (PDF)</b><span style="font-size: 12px; color: var(--muted);">Metrik akurasi &amp; interpretasi clustering · 4 MB · Rilis 5 Nov 2026</span></div></div>
-          <button type="button" class="btn-download"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Unduh</button>
-        </div>
+      <div class="card anim-card" style="padding: 0;" id="laporan-container">
+        <!-- Diisi oleh app.js -->
       </div>
     </section>
 
@@ -735,7 +530,7 @@
         </div>
         <div class="setting-item" style="display: flex; justify-content: space-between; align-items: center;">
           <div><b style="font-size: 14px; color: var(--ink); display: block; margin-bottom: 4px;">Auto-refresh Data</b><span style="font-size: 12px; color: var(--muted);">Perbarui dataset otomatis dari server BNPB setiap 24 jam.</span></div>
-          <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+          <label class="switch"><input type="checkbox" id="set-autorefresh"><span class="slider"></span></label>
         </div>
       </div>
     </section>

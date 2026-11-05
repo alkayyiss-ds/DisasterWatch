@@ -1,0 +1,182 @@
+{
+  "nama_model": "Random Forest — Tingkat Dampak Bencana",
+  "versi": "20261104-2250",
+  "dilatih_pada": "2026-11-04T22:50:37+00:00",
+  "sumber_data": "bnpb_bencana_2015-01-01_2026-10-28.csv",
+  "periode_data": [
+    "2015-01-01",
+    "2026-10-27"
+  ],
+  "n_laporan": 44161,
+  "kelas": [
+    "Tanpa Dampak",
+    "Ringan",
+    "Sedang",
+    "Berat"
+  ],
+  "distribusi_kelas": {
+    "Tanpa Dampak": 9744,
+    "Ringan": 15340,
+    "Sedang": 10483,
+    "Berat": 8594
+  },
+  "hyperparameter": {
+    "n_estimators": 300,
+    "min_samples_leaf": 10,
+    "max_features": "sqrt",
+    "random_state": 42
+  },
+  "tuning": [
+    {
+      "min_samples_leaf": 5,
+      "mse_val": 0.4048786030887986
+    },
+    {
+      "min_samples_leaf": 10,
+      "mse_val": 0.40131865722774074
+    },
+    {
+      "min_samples_leaf": 20,
+      "mse_val": 0.40320364409849163
+    }
+  ],
+  "fitur": {
+    "kategorikal": [
+      "kejadian",
+      "region",
+      "provinsi"
+    ],
+    "numerik": [
+      "lon",
+      "lat",
+      "month_sin",
+      "month_cos",
+      "musim_hujan",
+      "year",
+      "era_2024",
+      "prov_log_n",
+      "prov_sev_mean",
+      "prov_berat_rate",
+      "provtype_log_n",
+      "provtype_sev_mean",
+      "provtype_berat_rate"
+    ]
+  },
+  "evaluasi": {
+    "skema": "stratified split 70/10/20; metrik di data uji 20% (model dilatih ulang dengan 80%)",
+    "n_uji": 8833,
+    "accuracy": 0.6968,
+    "balanced_accuracy": 0.686,
+    "f1_macro": 0.6814,
+    "f1_weighted": 0.6889,
+    "mse": 0.4074,
+    "baseline_kelas_mayoritas": 0.3473,
+    "baseline_jenis_bencana_saja": 0.6647,
+    "classification_report": {
+      "Tanpa Dampak": {
+        "precision": 0.9731752963194011,
+        "recall": 0.8004104669061057,
+        "f1-score": 0.8783783783783784,
+        "support": 1949.0
+      },
+      "Ringan": {
+        "precision": 0.7178259645170375,
+        "recall": 0.8308344198174706,
+        "f1-score": 0.7702069799063302,
+        "support": 3068.0
+      },
+      "Sedang": {
+        "precision": 0.5208480565371024,
+        "recall": 0.3514544587505961,
+        "f1-score": 0.41970387243735763,
+        "support": 2097.0
+      },
+      "Berat": {
+        "precision": 0.5781802120141343,
+        "recall": 0.7614892379290285,
+        "f1-score": 0.6572934973637962,
+        "support": 1719.0
+      },
+      "accuracy": 0.6968187478772784,
+      "macro avg": {
+        "precision": 0.6975073823469189,
+        "recall": 0.6860471458508003,
+        "f1-score": 0.6813956820214656,
+        "support": 8833.0
+      },
+      "weighted avg": {
+        "precision": 0.7002285600221198,
+        "recall": 0.6968187478772784,
+        "f1-score": 0.6888895071076174,
+        "support": 8833.0
+      }
+    },
+    "confusion_matrix": {
+      "label": [
+        "Tanpa Dampak",
+        "Ringan",
+        "Sedang",
+        "Berat"
+      ],
+      "matriks": [
+        [
+          1560,
+          202,
+          64,
+          123
+        ],
+        [
+          22,
+          2549,
+          313,
+          184
+        ],
+        [
+          16,
+          696,
+          737,
+          648
+        ],
+        [
+          5,
+          104,
+          301,
+          1309
+        ]
+      ]
+    }
+  },
+  "faktor_risiko": [
+    {
+      "faktor": "Jenis bencana",
+      "penurunan_accuracy": 0.181,
+      "bobot": 0.509
+    },
+    {
+      "faktor": "Riwayat wilayah",
+      "penurunan_accuracy": 0.1069,
+      "bobot": 0.3006
+    },
+    {
+      "faktor": "Era pelaporan",
+      "penurunan_accuracy": 0.0503,
+      "bobot": 0.1414
+    },
+    {
+      "faktor": "Provinsi / lokasi",
+      "penurunan_accuracy": 0.0134,
+      "bobot": 0.0378
+    },
+    {
+      "faktor": "Bulan / musim",
+      "penurunan_accuracy": 0.004,
+      "bobot": 0.0113
+    }
+  ],
+  "catatan": [
+    "Fitur lokasi & riwayat dihitung di tingkat provinsi karena halaman Prediksi Dampak tidak memiliki input kab/kota.",
+    "Kepadatan penduduk tidak tersedia di data BNPB sehingga tidak dipakai model; input ini hanya memengaruhi rekomendasi mitigasi.",
+    "Label severity mengikuti aturan preprocessing tim (korban jiwa, warga terdampak, rumah rusak/terendam)."
+  ],
+  "waktu_latih_detik": 10.3
+}

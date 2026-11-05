@@ -151,36 +151,12 @@ def extra():
     s = s[[(y, m) for (y, m) in s.index if not (y == last_y and m > cut)]]
     aktual = {"labels": [f"{y}-{m:02d}" for y, m in s.index], "values": [int(v) for v in s.values]}
 
-    # --- BACA FORECAST (CSV ATAU JSON) ---
     forecast = None
-    fp_csv = DATA_DIR / "forecast.csv" 
-    fp_json = ROOT_DIR / "trend-modeling" / "forecast_output.json"
-    
-    if fp_csv.exists():
-        f = pd.read_csv(fp_csv)
+    fp = DATA_DIR / "forecast.csv"   # opsional: kolom bulan (YYYY-MM), prediksi, lower, upper
+    if fp.exists():
+        f = pd.read_csv(fp)
         forecast = {"labels": f.bulan.astype(str).tolist(), "prediksi": f.prediksi.round(0).tolist(),
                     "lower": f.lower.round(0).tolist(), "upper": f.upper.round(0).tolist()}
-    elif fp_json.exists():
-        with open(fp_json, 'r') as jf:
-            data_json = json.load(jf)
-            
-            # Ambil data forecast untuk NASIONAL
-            try:
-                # Cek apakah strukturnya seperti ini: {"series": {"NASIONAL": {"forecast": [...]}}}
-                if "series" in data_json and "NASIONAL" in data_json["series"]:
-                    f_list = data_json["series"]["NASIONAL"]["forecast"]
-                    
-                    # Karena di JSON semua angka desimal, kita bulatkan
-                    forecast = {
-                        "labels": [str(item["month"]) for item in f_list],
-                        "prediksi": [round(float(item.get("pred", 0))) for item in f_list],
-                        "lower": [round(float(item.get("lower", 0))) for item in f_list],
-                        "upper": [round(float(item.get("upper", 0))) for item in f_list]
-                    }
-                else:
-                    print("WARNING: Struktur JSON forecast tidak dikenali.")
-            except Exception as e:
-                print(f"Error parsing JSON forecast: {e}")
 
     top_kab = _top_kab(df)
 
@@ -192,6 +168,7 @@ def extra():
 
 # ---------- Laporan: daftar & unduhan file asli ----------
 ROOT_DIR = DATA_DIR.parent.parent
+TREN_DIR = ROOT_DIR / "trend-modeling"
 
 
 @lru_cache(maxsize=1)
@@ -202,11 +179,13 @@ def _n_dataset():
 def _files():
     f = {"dataset": (REPORTS_CSV, "Dataset BNPB (CSV)"),
          "klaster": (CLUSTERS_CSV, "Hasil Klasterisasi Risiko Wilayah (CSV)"),
-         "meta": (MODEL_DIR / "model_meta.json", "Metrik Evaluasi Model (JSON)")}
+         "meta": (MODEL_DIR / "model_meta.json", "Metrik Evaluasi Model (JSON)"),
+         "forecast": (TREN_DIR / "forecast_12_bulan.csv", "Prediksi Tren 12 Bulan (CSV)"),
+         "metrik-tren": (TREN_DIR / "metrics_all_models.csv", "Metrik Model Tren (CSV)")}
     rep = ROOT_DIR / "reports"
     if rep.exists():
         for p in sorted(rep.iterdir()):
-            if p.is_file() and p.suffix.lower() in {".pdf", ".docx", ".xlsx", ".pptx", ".csv"}:
+            if p.is_file() and p.suffix.lower() in {".pdf", ".docx", ".xlsx", ".pptx", ".csv", ".md"}:
                 f["rep-" + p.name] = (p, p.stem.replace("_", " ").replace("-", " ").title())
     return {k: v for k, v in f.items() if v[0].exists()}
 
@@ -233,3 +212,71 @@ def unduh(kode: str):
     if not f:
         raise HTTPException(status_code=404, detail="File tidak ditemukan")
     return FileResponse(f[0], filename=f[0].name)
+
+
+# ---------- Tren & prediksi: dibaca langsung dari folder trend-modeling/ ----------
+@lru_cache(maxsize=1)
+def _tren():
+    if not TREN_DIR.exists():
+        raise HTTPException(status_code=404, detail="Folder trend-modeling tidak ditemukan")
+    files = {"sum": "metrics_summary.csv", "all": "metrics_all_models.csv", "fc": "forecast_all_models.csv",
+             "best": "forecast_12_bulan.csv", "cnt": "monthly_counts.csv", "seas": "seasonality_monthly.csv",
+             "test": "test_predictions_all_models.csv"}
+    return {k: pd.read_csv(TREN_DIR / f) for k, f in files.items()}
+
+
+def _f(x):
+    return None if pd.isna(x) else round(float(x), 2)
+
+
+@router.get("/api/tren")
+def tren(seri: str = "NASIONAL", model: str = "auto", horizon: int = 12):
+    t = _tren()
+    seri = seri.upper()
+    sm = t["sum"]
+    if seri not in set(sm.seri):
+        raise HTTPException(status_code=404, detail=f"Seri tidak dikenal: {seri}")
+    srow = sm[sm.seri == seri].iloc[0]
+    mods = t["all"][t["all"].seri == seri]
+    if mods.empty:
+        raise HTTPException(status_code=404, detail=f"Tidak ada hasil model untuk seri: {seri}")
+    flag = mods[mods.is_best.astype(str).str.lower().isin(["true", "1", "1.0"])]
+    best = (flag if not flag.empty else mods.sort_values("mae")).iloc[0]   # tanpa penanda is_best -> MAE terkecil
+    if model == "auto":
+        row = best
+    else:
+        pick = mods[mods.model == model]
+        if pick.empty:
+            raise HTTPException(status_code=404, detail=f"Model tidak ada untuk {seri}: {model}")
+        row = pick.iloc[0]
+    key = row.model
+
+    fc = t["fc"][(t["fc"].seri == seri) & (t["fc"].model == key)]
+    if fc.empty and key == best.model:
+        fc = t["best"][t["best"].seri == seri]
+    fc = fc.head(max(1, horizon))
+    te = t["test"][(t["test"].seri == seri) & (t["test"].model == key)]
+    cnt = t["cnt"]
+    ak = cnt[["bulan", seri]].dropna() if seri in cnt.columns else cnt.iloc[0:0].assign(**{seri: []})[["bulan", seri]]
+    se = t["seas"][t["seas"].seri == seri].sort_values("month_num")
+
+    nama = lambda k: "Nasional (semua jenis)" if k == "NASIONAL" else jenis_display(k)
+    ada = set(t["all"].seri)
+    seri_opsi = [{"kode": k, "nama": nama(k)} for k in sm.seri if k in ada]
+    seri_opsi.sort(key=lambda x: (x["kode"] != "NASIONAL", x["nama"]))
+    return {
+        "seri": seri, "nama": nama(seri), "rata": _f(srow.rata2_per_bulan), "kecil": bool(srow.rata2_per_bulan < 5),
+        "opsi": {"seri": seri_opsi,
+                 "model": [{"kode": "auto", "label": "Otomatis (terbaik)"}] +
+                          [{"kode": m.model, "label": m.label} for m in mods.itertuples()]},
+        "model": {"kode": key, "label": row.label, "terbaik": bool(key == best.model), "terbaik_label": best.label,
+                  "mae": _f(row.mae), "rmse": _f(row.rmse), "mape": _f(row.mape)},
+        "tabel": [{"label": m.label, "mae": _f(m.mae), "rmse": _f(m.rmse), "mape": _f(m.mape),
+                   "terbaik": bool(m.model == best.model)} for m in mods.sort_values("mae").itertuples()],
+        "aktual": {"labels": ak.bulan.astype(str).tolist(), "values": [int(v) for v in ak[seri]]},
+        "uji": {"labels": te.month.astype(str).tolist(), "pred": [_f(v) for v in te.pred]},
+        "prediksi": {"labels": fc.month.astype(str).tolist(), "pred": [_f(v) for v in fc.pred],
+                     "lower": [_f(v) for v in fc.lower], "upper": [_f(v) for v in fc.upper]},
+        "musiman": {"labels": se.month_label.tolist(), "values": [_f(v) for v in se.avg],
+                    "periode": str(se.period.iloc[0]) if len(se) else ""},
+    }
