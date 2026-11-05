@@ -1,4 +1,4 @@
-/* DisasterWatch — app.js (Final, cocok dengan index.html baru) */
+/* DisasterWatch — app.js (Final) */
 (function () {
   'use strict';
 
@@ -64,6 +64,14 @@
     var bt = $('#btn-toggle-sidebar'), appEl = $('.app');
     if (bt && appEl) bt.addEventListener('click', function () { appEl.classList.toggle('sidebar-hidden'); });
 
+    /* 2b. Tombol Pengaturan di Topbar */
+    var btnSettingsTop = $('#btn-settings-top');
+    if (btnSettingsTop) {
+      btnSettingsTop.addEventListener('click', function () { 
+        showPage('pengaturan'); 
+      });
+    }
+
     /* 3. Notifikasi */
     var nb = $('#btn-notif'), np = $('#notif-panel'), nc = $('#close-notif');
     if (nb && np) {
@@ -92,8 +100,8 @@
       });
     }
 
-    /* 4. Dark mode */
-    var darkChk = $('#p-pengaturan .switch input');
+    /* 4. Dark mode & Pengaturan */
+    var darkChk = $('#setting-darkmode');
     function setDark(on) {
       document.body.classList.toggle('dark-mode', on);
       try { localStorage.setItem('dw-dark', on ? '1' : '0'); } catch (e) {}
@@ -104,8 +112,55 @@
       }
     }
     var saved = null; try { saved = localStorage.getItem('dw-dark'); } catch (e) {}
-    if (darkChk) { darkChk.checked = saved === '1'; darkChk.addEventListener('change', function () { setDark(darkChk.checked); }); }
+    if (darkChk) { 
+      darkChk.checked = saved === '1'; 
+      darkChk.addEventListener('change', function () { setDark(darkChk.checked); }); 
+    }
     if (saved === '1') setDark(true);
+
+    /* 4b. Tema Warna Aksen */
+    var themeBtns = $$('.theme-btn');
+    function setTheme(theme) {
+      // Hapus semua class theme-*
+      document.body.className = document.body.className.replace(/theme-\w+/g, '').trim();
+      // Tambahkan class baru (kecuali biru, karena biru default)
+      if (theme && theme !== 'blue') document.body.classList.add('theme-' + theme);
+      
+      // Update tombol aktif
+      themeBtns.forEach(function(btn) {
+        btn.classList.toggle('active', btn.getAttribute('data-theme') === theme);
+      });
+      
+      // Simpan ke localStorage
+      try { localStorage.setItem('dw-theme', theme); } catch (e) {}
+      
+      // Update warna grafik (jika ada)
+      if (hasChart && typeof Chart !== 'undefined') {
+        var newColor = getComputedStyle(document.body).getPropertyValue('--blue').trim();
+        Object.keys(charts).forEach(function(k) {
+          var c = charts[k];
+          if (c.data.datasets) {
+            c.data.datasets.forEach(function(ds) {
+              // Ubah borderColor dan backgroundColor yang bernilai biru default
+              if (ds.borderColor === '#2E75B6' || ds.borderColor === '#3A86FF') ds.borderColor = newColor;
+              if (ds.backgroundColor === '#2E75B6') ds.backgroundColor = newColor;
+            });
+          }
+          c.update();
+        });
+      }
+    }
+
+    // Bind klik ke setiap tombol tema
+    themeBtns.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        setTheme(btn.getAttribute('data-theme'));
+      });
+    });
+
+    // Load tema tersimpan
+    var savedTheme = null; try { savedTheme = localStorage.getItem('dw-theme'); } catch (e) {}
+    if (savedTheme) setTheme(savedTheme);
 
     /* 5. Overview */
     var fTahun = $('#f-tahun'), fJenis = $('#f-jenis'), fProv = $('#f-prov'), fReset = $('#f-reset');

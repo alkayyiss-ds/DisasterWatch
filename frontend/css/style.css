@@ -300,3 +300,16 @@ input:checked + .slider:before { transform: translateX(22px); }
   .sim-grid { grid-template-columns: 1fr; }
   .cluster-grid { grid-template-columns: 1fr; }
 }
+
+/* ===== TEMA WARNA AKSEN (BERFUNGSI) ===== */
+body.theme-blue { --blue: #2E75B6; --blue-2: #3A86FF; --blue-soft: rgba(46,117,182,0.08); }
+body.theme-green { --blue: #0E9384; --blue-2: #14B8A6; --blue-soft: rgba(14,147,132,0.08); }
+body.theme-orange { --blue: #F4A259; --blue-2: #FB923C; --blue-soft: rgba(244,162,89,0.08); }
+body.theme-red { --blue: #D92D20; --blue-2: #F04438; --blue-soft: rgba(217,45,32,0.08); }
+body.theme-purple { --blue: #7A5AF8; --blue-2: #9B8AFB; --blue-soft: rgba(122,90,248,0.08); }
+
+/* Efek cincin pada tombol yang aktif */
+.theme-btn.active {
+  box-shadow: 0 0 0 3px #fff, 0 0 0 5px var(--blue) !important;
+  transform: scale(1.1);
+}

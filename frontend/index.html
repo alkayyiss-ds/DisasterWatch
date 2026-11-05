@@ -18,7 +18,7 @@
     --muted: #667085;
     --bg-dark: #0A1220;
     --line: rgba(16, 24, 40, 0.08);
-    --glass-bg: rgba(255, 255, 255, 0.65);
+    --glass-bg: rgba(255, 255, 255, 0.45);
     --glass-border: rgba(255, 255, 255, 0.9);
     --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
     --sdg-green: #4C9F38;
@@ -36,12 +36,13 @@
     background: #FAFBFC;
   }
   .blob {
-    position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.6;
+    position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.7;
     animation: float-blob 10s infinite alternate;
   }
-  .blob-1 { top: -10%; left: -10%; width: 500px; height: 500px; background: rgba(58,134,255,0.3); }
+  .blob-1 { top: -10%; left: -10%; width: 600px; height: 600px; background: rgba(58,134,255,0.3); }
   .blob-2 { top: 40%; right: -10%; width: 600px; height: 600px; background: rgba(244,162,89,0.2); animation-delay: -5s; }
-  .blob-3 { bottom: -10%; left: 20%; width: 400px; height: 400px; background: rgba(76,159,56,0.2); animation-delay: -2s; }
+  .blob-3 { bottom: -10%; left: 20%; width: 500px; height: 500px; background: rgba(76,159,56,0.2); animation-delay: -2s; }
+  .blob-4 { bottom: 20%; right: 20%; width: 400px; height: 400px; background: rgba(217,45,32,0.1); animation-delay: -7s; }
 
   @keyframes float-blob {
     0% { transform: translate(0, 0) scale(1); }
@@ -51,7 +52,7 @@
   /* ===== NAVBAR (GLASSMORPHISM) ===== */
   .navbar {
     position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
-    width: 90%; max-width: 1000px; height: 64px;
+    width: 90%; max-width: 1100px; height: 64px;
     display: flex; align-items: center; justify-content: space-between;
     padding: 0 24px; background: var(--glass-bg);
     backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
@@ -78,65 +79,162 @@
   }
   .btn-nav:hover { background: var(--blue); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(46,117,182,0.4); }
 
+  /* ===== SECTION UMUM ===== */
+  section { padding: 100px 5%; position: relative; }
+  .section-head { text-align: center; max-width: 650px; margin: 0 auto 60px; }
+  .section-head h2 { font-family: 'Outfit'; font-size: 40px; font-weight: 800; color: var(--navy); margin-bottom: 16px; letter-spacing: -0.02em; }
+  .section-head p { font-size: 16px; color: var(--muted); line-height: 1.6; }
+
   /* ===== HERO SECTION ===== */
   .hero {
-    position: relative; min-height: 90vh; padding: 160px 5% 60px;
+    position: relative; min-height: 95vh; padding: 180px 5% 60px;
     display: flex; flex-direction: column; align-items: center; text-align: center;
     overflow: hidden;
   }
   
-  .hero-content { max-width: 750px; position: relative; z-index: 10; animation: fadeUp 1s ease-out; }
+  .hero-content { max-width: 800px; position: relative; z-index: 10; animation: fadeUp 1s ease-out; }
   .hero-badge {
     display: inline-flex; align-items: center; gap: 6px; padding: 6px 16px;
     background: #fff; border: 1px solid var(--line); border-radius: 99px;
     color: var(--blue); font-size: 12px; font-weight: 700; margin-bottom: 24px;
     box-shadow: 0 4px 12px rgba(16,24,40,0.05);
   }
-  .hero h1 { font-family: 'Outfit'; font-size: 52px; font-weight: 800; line-height: 1.1; color: var(--navy); letter-spacing: -0.03em; margin-bottom: 20px; }
+  .hero h1 { font-family: 'Outfit'; font-size: 56px; font-weight: 800; line-height: 1.1; color: var(--navy); letter-spacing: -0.03em; margin-bottom: 24px; }
   .hero h1 span { background: linear-gradient(135deg, var(--blue-light), var(--orange)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .hero p { font-size: 16px; color: var(--muted); line-height: 1.6; margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto; }
+  .hero p { font-size: 18px; color: var(--muted); line-height: 1.6; margin-bottom: 40px; max-width: 650px; margin-left: auto; margin-right: auto; }
   
   .btn-hero {
-    background: var(--navy); color: #fff; padding: 14px 32px; border-radius: 99px;
-    text-decoration: none; font-size: 15px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px;
+    background: var(--navy); color: #fff; padding: 16px 36px; border-radius: 99px;
+    text-decoration: none; font-size: 16px; font-weight: 600; display: inline-flex; align-items: center; gap: 10px;
     transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: 0 10px 30px -10px rgba(15,27,45,0.5);
   }
   .btn-hero:hover { background: var(--blue); transform: translateY(-4px) scale(1.02); box-shadow: 0 15px 35px -10px rgba(46,117,182,0.6); }
 
-  /* ===== MOCKUP DASHBOARD ===== */
+  /* ===== MOCKUP DASHBOARD (LAPTOP + HP) ===== */
   .hero-mockup {
-    position: relative; margin-top: 40px; width: 100%; max-width: 850px;
-    perspective: 1000px; z-index: 10; padding: 0 20px;
+    position: relative; margin-top: 50px; width: 100%; max-width: 1000px;
+    z-index: 10; padding: 0 20px;
+    display: flex; justify-content: center; align-items: center;
     animation: float 6s ease-in-out infinite;
   }
-  .mockup-img {
-    width: 100%; border-radius: 16px; border: 6px solid #fff;
+  .mockup-laptop {
+    width: 85%; border-radius: 16px; border: 8px solid #fff;
     box-shadow: 0 20px 50px -15px rgba(16,24,40,0.2), 0 0 60px rgba(58,134,255,0.1);
     display: block; transition: transform 0.4s ease;
   }
-  .hero-mockup:hover .mockup-img { transform: scale(1.02) translateY(-5px); }
+  .mockup-phone {
+    position: absolute; bottom: -50px; right: 2%; width: 24%; min-width: 160px;
+    border-radius: 28px; border: 8px solid #fff;
+    box-shadow: 0 20px 50px -15px rgba(16,24,40,0.3), 0 0 40px rgba(244,162,89,0.2);
+    display: block; transition: transform 0.4s ease; z-index: 15;
+  }
+  .hero-mockup:hover .mockup-laptop { transform: scale(1.02) translateY(-5px); }
+  .hero-mockup:hover .mockup-phone { transform: scale(1.05) translateY(-10px); }
 
   /* ===== STATISTIK BAR ===== */
   .stats-bar {
-    position: relative; margin: -40px auto 0; max-width: 900px;
+    position: relative; margin: -50px auto 0; max-width: 1000px;
     background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-    border-radius: 20px; box-shadow: var(--glass-shadow); border: 1px solid var(--glass-border);
-    display: grid; grid-template-columns: repeat(4, 1fr); padding: 30px; gap: 16px;
+    border-radius: 24px; box-shadow: var(--glass-shadow); border: 1px solid var(--glass-border);
+    display: grid; grid-template-columns: repeat(4, 1fr); padding: 40px; gap: 16px;
     z-index: 10;
   }
   .stat-item { text-align: center; border-right: 1px solid var(--line); transition: transform 0.3s; }
   .stat-item:hover { transform: translateY(-5px); }
   .stat-item:last-child { border-right: none; }
-  .stat-item h3 { font-family: 'Outfit'; font-size: 32px; font-weight: 800; color: var(--navy); margin-bottom: 4px; }
-  .stat-item p { font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+  .stat-item h3 { font-family: 'Outfit'; font-size: 36px; font-weight: 800; color: var(--navy); margin-bottom: 4px; }
+  .stat-item p { font-size: 13px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
 
-  /* ===== SECTION UMUM ===== */
-  section { padding: 80px 5%; position: relative; }
-  .section-head { text-align: center; max-width: 600px; margin: 0 auto 50px; }
-  .section-head h2 { font-family: 'Outfit'; font-size: 38px; font-weight: 800; color: var(--navy); margin-bottom: 16px; letter-spacing: -0.02em; }
-  .section-head p { font-size: 15px; color: var(--muted); line-height: 1.6; }
+  /* ===== MASALAH & SOLUSI SECTION ===== */
+  .problem-solution { background: transparent; }
+  .ps-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 1000px; margin: 0 auto; }
+  .ps-card { padding: 40px; border-radius: 24px; background: var(--glass-bg); backdrop-filter: blur(20px); box-shadow: var(--glass-shadow); border: 1px solid var(--glass-border); }
+  .ps-card.problem { border-top: 4px solid #D92D20; }
+  .ps-card.solution { border-top: 4px solid #0E9384; }
+  .ps-icon { width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; }
+  .ps-card.problem .ps-icon { background: #FEE4E2; color: #D92D20; }
+  .ps-card.solution .ps-icon { background: #D1FADF; color: #0E9384; }
+  .ps-card h3 { font-family: 'Outfit'; font-size: 24px; font-weight: 800; margin-bottom: 16px; color: var(--navy); }
+  .ps-card ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 16px; }
+  .ps-card ul li { display: flex; gap: 12px; font-size: 15px; line-height: 1.6; color: var(--ink); }
+  .ps-card ul li svg { flex: none; margin-top: 3px; }
+  .ps-card.problem ul li svg { color: #D92D20; }
+  .ps-card.solution ul li svg { color: #0E9384; }
+
+  /* ===== FITUR DASHBOARD SECTION (EXPLAIN) ===== */
+  .dashboard-features { background: transparent; }
+  .df-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; max-width: 1100px; margin: 0 auto; align-items: center; }
+  .df-text h2 { font-family: 'Outfit'; font-size: 40px; font-weight: 800; color: var(--navy); margin-bottom: 20px; line-height: 1.2; }
+  .df-text p { font-size: 16px; color: var(--muted); line-height: 1.7; margin-bottom: 32px; }
+  .df-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 20px; }
+  .df-list li { display: flex; gap: 16px; align-items: flex-start; }
+  .df-icon {
+    width: 48px; height: 48px; border-radius: 14px; background: var(--glass-bg); border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center; flex: none; color: var(--blue);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03); transition: transform 0.3s;
+  }
+  .df-list li:hover .df-icon { transform: scale(1.1); background: var(--blue); color: #fff; }
+  .df-list div b { display: block; font-size: 17px; color: var(--ink); margin-bottom: 4px; }
+  .df-list div span { font-size: 14.5px; color: var(--muted); line-height: 1.5; display: block; }
+  
+  .df-image { position: relative; }
+  .df-image img {
+    width: 100%; border-radius: 24px; border: 8px solid #fff;
+    box-shadow: var(--glass-shadow);
+  }
+
+  /* ===== TECH STACK SECTION (100% NO ERROR) ===== */
+  .tech-stack { background: transparent; text-align: center; }
+  .tech-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 24px;
+    max-width: 1000px; margin: 0 auto;
+  }
+  .tech-card {
+    background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border); border-radius: 20px; padding: 30px 20px;
+    box-shadow: var(--glass-shadow); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .tech-card:hover { transform: translateY(-8px); border-color: var(--blue-light); box-shadow: 0 15px 35px -10px rgba(58,134,255,0.2); }
+  .tech-card img, .tech-card svg { width: 44px; height: 44px; object-fit: contain; transition: transform 0.3s; }
+  .tech-card:hover img, .tech-card:hover svg { transform: scale(1.1); }
+  .tech-card span { font-family: 'Outfit'; font-size: 16px; font-weight: 700; color: var(--navy); }
+
+  /* ===== TESTIMONI SECTION ===== */
+  .testimonials { background: var(--bg-dark); color: #fff; }
+  .testimonials .section-head h2 { color: #fff; }
+  .testimonials .section-head p { color: #9CA3AF; }
+  .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1100px; margin: 0 auto; }
+  .testi-card {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    padding: 32px; border-radius: 24px; transition: all 0.3s;
+  }
+  .testi-card:hover { background: rgba(255,255,255,0.08); transform: translateY(-5px); }
+  .testi-text { font-size: 15px; line-height: 1.6; color: #D1D5DB; margin-bottom: 24px; font-style: italic; }
+  .testi-user { display: flex; align-items: center; gap: 12px; }
+  .testi-avatar { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, var(--blue), var(--orange)); display: flex; align-items: center; justify-content: center; font-weight: 800; color: #fff; }
+  .testi-info b { display: block; font-size: 14px; color: #fff; }
+  .testi-info span { font-size: 12px; color: #9CA3AF; }
+
+  /* ===== FAQ SECTION ===== */
+  .faq { background: transparent; }
+  .faq-grid { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+  .faq-item {
+    background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border); border-radius: 16px; box-shadow: var(--glass-shadow); overflow: hidden;
+  }
+  .faq-q {
+    padding: 24px; font-size: 16px; font-weight: 700; color: var(--navy); cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center; transition: background 0.2s;
+  }
+  .faq-q:hover { background: rgba(255,255,255,0.8); }
+  .faq-a { padding: 0 24px 24px; font-size: 15px; color: var(--muted); line-height: 1.6; display: none; }
+  .faq-item.active .faq-a { display: block; animation: fadeUp 0.3s ease-out; }
+  .faq-item.active .faq-q svg { transform: rotate(180deg); }
+  .faq-q svg { transition: transform 0.3s; }
 
   /* ===== SDGS SECTION ===== */
+  .sdgs-section { background: transparent; }
   .sdgs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1000px; margin: 0 auto; }
   .sdg-card {
     padding: 32px; border-radius: 24px; text-align: left; color: #fff; position: relative; overflow: hidden;
@@ -159,28 +257,8 @@
   .sdg-card h3 { font-family: 'Outfit'; font-size: 20px; font-weight: 700; margin-bottom: 12px; }
   .sdg-card p { font-size: 14px; line-height: 1.6; color: rgba(255,255,255,0.95); margin: 0; }
 
-  /* ===== FITUR SECTION ===== */
-  .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1000px; margin: 0 auto; }
-  .feature-card {
-    background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-    padding: 32px; border-radius: 24px; border: 1px solid var(--glass-border);
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: var(--glass-shadow);
-    position: relative; overflow: hidden;
-  }
-  .feature-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px -10px rgba(16,24,40,0.1); border-color: var(--blue-light); }
-  
-  .feature-icon { 
-    width: 56px; height: 56px; border-radius: 16px; 
-    background: linear-gradient(135deg, #E8F1FB, #fff); color: var(--blue); 
-    display: flex; align-items: center; justify-content: center; margin-bottom: 24px; 
-    border: 1px solid var(--line); transition: transform 0.3s;
-  }
-  .feature-card:hover .feature-icon { transform: scale(1.1) rotate(5deg); background: var(--blue); color: #fff; }
-  
-  .feature-card h3 { font-family: 'Outfit'; font-size: 20px; font-weight: 700; color: var(--ink); margin-bottom: 12px; }
-  .feature-card p { font-size: 14px; color: var(--muted); line-height: 1.6; }
-
   /* ===== CARA KERJA ===== */
+  .how-it-works { background: transparent; }
   .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; max-width: 900px; margin: 0 auto; position: relative; }
   .steps-grid::before { content: ''; position: absolute; top: 40px; left: 15%; right: 15%; height: 2px; background: dashed 2px var(--line); z-index: 1; }
   .step-item { position: relative; z-index: 2; text-align: center; padding: 0 16px; }
@@ -195,23 +273,23 @@
   .step-item p { font-size: 14px; color: var(--muted); line-height: 1.5; }
 
   /* ===== CTA SECTION ===== */
-  .cta-section { padding: 80px 5%; background: var(--navy); text-align: center; position: relative; overflow: hidden; }
+  .cta-section { padding: 100px 5%; background: var(--navy); text-align: center; position: relative; overflow: hidden; }
   .cta-section::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(76, 159, 56, 0.15) 0%, transparent 60%); pointer-events: none; }
-  .cta-section h2 { font-family: 'Outfit'; font-size: 38px; font-weight: 800; color: #fff; margin-bottom: 16px; position: relative; z-index: 2; letter-spacing: -0.02em; }
-  .cta-section p { font-size: 16px; color: #9CA3AF; margin-bottom: 32px; position: relative; z-index: 2; }
-  .btn-cta { background: var(--sdg-green); color: #fff; padding: 16px 40px; border-radius: 99px; font-size: 16px; font-weight: 600; text-decoration: none; display: inline-block; position: relative; z-index: 2; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: 0 10px 30px rgba(76, 159, 56, 0.4); }
+  .cta-section h2 { font-family: 'Outfit'; font-size: 42px; font-weight: 800; color: #fff; margin-bottom: 16px; position: relative; z-index: 2; letter-spacing: -0.02em; }
+  .cta-section p { font-size: 17px; color: #9CA3AF; margin-bottom: 40px; position: relative; z-index: 2; }
+  .btn-cta { background: var(--sdg-green); color: #fff; padding: 18px 48px; border-radius: 99px; font-size: 16px; font-weight: 600; text-decoration: none; display: inline-block; position: relative; z-index: 2; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: 0 10px 30px rgba(76, 159, 56, 0.4); }
   .btn-cta:hover { background: #fff; color: var(--navy); transform: scale(1.05) translateY(-3px); }
 
   /* ===== FOOTER ===== */
-  .footer { background: var(--bg-dark); padding: 60px 5% 30px; color: #9CA3AF; }
-  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; max-width: 1100px; margin: 0 auto 40px; }
-  .footer-brand { font-family: 'Outfit'; font-size: 20px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
-  .footer-desc { font-size: 13px; line-height: 1.6; max-width: 280px; }
-  .footer-col h4 { color: #fff; font-size: 14px; font-weight: 700; margin-bottom: 16px; }
-  .footer-col a { display: block; color: #9CA3AF; text-decoration: none; font-size: 13px; margin-bottom: 12px; transition: color 0.2s; }
+  .footer { background: var(--bg-dark); padding: 80px 5% 40px; color: #9CA3AF; }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; max-width: 1100px; margin: 0 auto 50px; }
+  .footer-brand { font-family: 'Outfit'; font-size: 22px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 8px; margin-bottom: 20px; }
+  .footer-desc { font-size: 14px; line-height: 1.6; max-width: 300px; }
+  .footer-col h4 { color: #fff; font-size: 15px; font-weight: 700; margin-bottom: 20px; }
+  .footer-col a { display: block; color: #9CA3AF; text-decoration: none; font-size: 14px; margin-bottom: 14px; transition: color 0.2s; }
   .footer-col a:hover { color: var(--blue-light); }
-  .footer-bottom { border-top: 1px solid #1E2D47; padding-top: 24px; text-align: center; font-size: 12px; display: flex; justify-content: center; align-items: center; gap: 12px; flex-wrap: wrap; }
-  .sdg-footer-badge { background: rgba(76, 159, 56, 0.2); color: var(--sdg-green); padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; }
+  .footer-bottom { border-top: 1px solid #1E2D47; padding-top: 24px; text-align: center; font-size: 13px; display: flex; justify-content: center; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .sdg-footer-badge { background: rgba(76, 159, 56, 0.2); color: var(--sdg-green); padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; }
 
   /* ===== ANIMASI ===== */
   @keyframes fadeUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
@@ -223,16 +301,18 @@
 
   /* ===== RESPONSIVE ===== */
   @media (max-width: 900px) {
-    .hero h1 { font-size: 38px; }
+    .hero h1 { font-size: 40px; }
     .navbar { top: 10px; padding: 0 16px; height: 56px; }
     .nav-links { display: none; }
-    .stats-bar { grid-template-columns: repeat(2, 1fr); margin: -30px 16px 0; padding: 20px; }
+    .stats-bar { grid-template-columns: repeat(2, 1fr); margin: -30px 16px 0; padding: 30px; }
     .stat-item:nth-child(2) { border-right: none; }
+    .ps-grid { grid-template-columns: 1fr; }
+    .df-grid { grid-template-columns: 1fr; gap: 40px; }
+    .testi-grid { grid-template-columns: 1fr; }
     .sdgs-grid { grid-template-columns: 1fr; }
-    .feature-grid { grid-template-columns: 1fr; }
     .steps-grid { grid-template-columns: 1fr; }
     .steps-grid::before { display: none; }
-    .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+    .footer-grid { grid-template-columns: 1fr; gap: 32px; }
   }
 </style>
 </head>
@@ -243,6 +323,7 @@
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
     <div class="blob blob-3"></div>
+    <div class="blob blob-4"></div>
   </div>
 
   <!-- NAVBAR -->
@@ -257,10 +338,10 @@
       DisasterWatch
     </a>
     <div class="nav-links">
-      <a href="#">Home</a>
+      <a href="#dashboard-info">Fitur</a>
+      <a href="#testimoni">Testimoni</a>
+      <a href="#faq">FAQ</a>
       <a href="#sdgs">SDGs</a>
-      <a href="#fitur">Fitur</a>
-      <a href="#cara-kerja">Cara Kerja</a>
     </div>
     <a href="dashboard.html" class="btn-nav">Masuk Dashboard</a>
   </nav>
@@ -282,9 +363,13 @@
       </div>
     </div>
 
-    <!-- MOCKUP DASHBOARD -->
+    <!-- MOCKUP DASHBOARD (LAPTOP + HP) -->
     <div class="hero-mockup">
-      <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop" alt="Dashboard Preview" class="mockup-img">
+      <!-- Gambar Laptop -->
+      <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop" alt="Dashboard Laptop" class="mockup-laptop">
+      
+      <!-- Gambar HP -->
+      <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=600&auto=format&fit=crop" alt="Dashboard Mobile" class="mockup-phone">
     </div>
   </section>
 
@@ -295,6 +380,206 @@
     <div class="stat-item"><h3>4</h3><p>Tingkat Risiko</p></div>
     <div class="stat-item"><h3>11 Thn</h3><p>Data Historis</p></div>
   </div>
+
+  <!-- MASALAH & SOLUSI SECTION -->
+  <section class="problem-solution" id="masalah">
+    <div class="section-head reveal">
+      <h2>Mengapa DisasterWatch Hadir?</h2>
+      <p>Indonesia adalah laboratorium bencana. Kita butuh cara baru untuk memahami dan mengantisipasinya.</p>
+    </div>
+
+    <div class="ps-grid reveal">
+      <div class="ps-card problem">
+        <div class="ps-icon"><svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg></div>
+        <h3>Tantangan Saat Ini</h3>
+        <ul>
+          <li><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg> Data bencana tersebar dan sulit divisualisasikan.</li>
+          <li><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg> Rekomendasi mitigasi seringkali bersifat umum, tidak spesifik per wilayah.</li>
+          <li><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg> Kurangnya alat simulasi prediksi dampak yang mudah diakses.</li>
+        </ul>
+      </div>
+      <div class="ps-card solution">
+        <div class="ps-icon"><svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+        <h3>Solusi Kami</h3>
+        <ul>
+          <li><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg> Dashboard interaktif dengan 44.000+ data tervalidasi.</li>
+          <li><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg> Klasterisasi risiko (K-Means) untuk rekomendasi yang tepat sasaran.</li>
+          <li><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg> Simulasi Machine Learning untuk prediksi korban dan kerugian.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION EXPLAIN FITUR DASHBOARD -->
+  <section class="dashboard-features" id="dashboard-info">
+    <div class="section-head reveal">
+      <h2>Kenali Fitur Unggulan Dashboard</h2>
+      <p>Bukan sekadar tampilan visual, ini adalah alat kerja untuk memahami pola kebencanaan secara mendalam.</p>
+    </div>
+
+    <div class="df-grid">
+      <!-- Kolom Kiri: List Fitur -->
+      <div class="df-text reveal">
+        <h2>Eksplorasi Data Tanpa Batas.</h2>
+        <p>DisasterWatch mengintegrasikan data BNPB dengan model Machine Learning untuk memberikan gambaran menyeluruh tentang risiko bencana di Indonesia.</p>
+        
+        <ul class="df-list">
+          <li>
+            <div class="df-icon"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg></div>
+            <div>
+              <b>Overview Komprehensif</b>
+              <span>Ringkasan KPI kebencanaan, tren bulanan, dan komposisi bencana dalam satu layar.</span>
+            </div>
+          </li>
+          <li>
+            <div class="df-icon"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 4l6 2 6-2v16l-6 2-6-2-6 2V6z"/><path d="M9 4v16M15 6v16"/></svg></div>
+            <div>
+              <b>Peta Wilayah Interaktif</b>
+              <span>Sebaran titik bencana dan tingkat risiko di 38 provinsi dengan visualisasi Leaflet.</span>
+            </div>
+          </li>
+          <li>
+            <div class="df-icon"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg></div>
+            <div>
+              <b>Analitik Tren & Prediksi</b>
+              <span>Prediksi jumlah kejadian hingga 12 bulan ke depan dengan algoritma XGBoost.</span>
+            </div>
+          </li>
+          <li>
+            <div class="df-icon"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="7" cy="8" r="3"/><circle cx="17" cy="9" r="3"/><circle cx="12" cy="17" r="3"/></svg></div>
+            <div>
+              <b>Simulasi Mitigasi & Klaster</b>
+              <span>Simulasikan dampak bencana dan dapatkan rekomendasi tindakan preventif.</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Kolom Kanan: Gambar Dashboard -->
+      <div class="df-image reveal">
+        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop" alt="Fitur Dashboard">
+      </div>
+    </div>
+  </section>
+
+  <!-- TECH STACK SECTION (100% NO ERROR) -->
+  <section class="tech-stack">
+    <div class="section-head reveal">
+      <h2>Didukung Teknologi Terbaik</h2>
+      <p>Kami menggunakan tools dan library modern untuk memastikan akurasi dan performa.</p>
+    </div>
+    
+    <div class="tech-grid reveal">
+      <!-- Python (Logo Resmi) -->
+      <div class="tech-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg" alt="Python Logo">
+        <span>Python</span>
+      </div>
+      
+      <!-- Scikit-Learn (Logo Resmi) -->
+      <div class="tech-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Scikit_learn_logo_small.svg" alt="Scikit-Learn Logo">
+        <span>Scikit-Learn</span>
+      </div>
+      
+      <!-- Chart.js (SVG Lokal - Anti Rusak) -->
+      <div class="tech-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#FF6384" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 44px; height: 44px;">
+          <path d="M21.21 15.89A10 10 0 1 1 8 2.83M22 12A10 10 0 0 0 12 2v10z"/>
+        </svg>
+        <span>Chart.js</span>
+      </div>
+      
+      <!-- Leaflet (SVG Lokal - Anti Rusak) -->
+      <div class="tech-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#199900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 44px; height: 44px;">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+        <span>Leaflet</span>
+      </div>
+      
+      <!-- XGBoost (Logo Resmi) -->
+      <div class="tech-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/69/XGBoost_logo.png" alt="XGBoost Logo">
+        <span>XGBoost</span>
+      </div>
+      
+      <!-- Data BNPB (SVG Lokal) -->
+      <div class="tech-card">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#667085" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+        </svg>
+        <span>Data BNPB</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONI SECTION -->
+  <section class="testimonials" id="testimoni">
+    <div class="section-head reveal">
+      <h2>Apa Kata Mereka?</h2>
+      <p>Dengarkan pengalaman para praktisi dan peneliti yang telah menggunakan DisasterWatch.</p>
+    </div>
+    <div class="testi-grid reveal">
+      <div class="testi-card">
+        <div class="testi-text">"Dashboard ini sangat membantu kami dalam memetakan daerah rawan bencana. Fitur prediksi musiman sangat akurat untuk persiapan logistik."</div>
+        <div class="testi-user">
+          <div class="testi-avatar">BS</div>
+          <div class="testi-info">
+            <b>Budi Santoso</b>
+            <span>Relawan BNPB</span>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-text">"Sebagai peneliti, saya mengapresiasi transparansi data dan visualisasi klaster yang rapi. Memudahkan saya dalam menganalisis pola bencana."</div>
+        <div class="testi-user">
+          <div class="testi-avatar">RA</div>
+          <div class="testi-info">
+            <b>Rina Astuti</b>
+            <span>Peneliti Kebencanaan UI</span>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-text">"Antarmuka yang sangat modern dan mudah digunakan. Simulasi dampak bencananya sangat membantu kami dalam sosialisasi mitigasi ke warga."</div>
+        <div class="testi-user">
+          <div class="testi-avatar">DH</div>
+          <div class="testi-info">
+            <b>Dewi Handayani</b>
+            <span>Aktivis Lingkungan</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ SECTION -->
+  <section class="faq" id="faq">
+    <div class="section-head reveal">
+      <h2>Pertanyaan yang Sering Diajukan</h2>
+      <p>Beberapa hal yang mungkin ingin kamu ketahui sebelum menggunakan DisasterWatch.</p>
+    </div>
+    <div class="faq-grid reveal">
+      <div class="faq-item">
+        <div class="faq-q">Dari mana data kebencanaan ini berasal? <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+        <div class="faq-a">Data bersumber dari Badan Nasional Penanggulangan Bencana (BNPB) melalui platform DIBI (Data Informasi Bencana Indonesia). Data mencakup laporan kejadian dari tahun 2015 hingga 2026.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Apakah dashboard ini bisa diakses secara gratis? <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+        <div class="faq-a">Ya, DisasterWatch sepenuhnya gratis dan open-source. Kami percaya bahwa akses terhadap data kebencanaan adalah hak semua orang untuk bersama-sama membangun Indonesia yang lebih tangguh.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Bagaimana cara model ML memprediksi korban jiwa? <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+        <div class="faq-a">Kami melatih model Random Forest dengan data historis BNPB yang mencakup berbagai fitur seperti jenis bencana, lokasi, dan kepadatan penduduk. Model ini kemudian memperkirakan tingkat dampak (ringan, sedang, berat) dan mengestimasi jumlah korban berdasarkan median data historis.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Apakah data di sini sudah mencakup semua provinsi di Indonesia? <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+        <div class="faq-a">Saat ini dashboard mencakup 38 provinsi di Indonesia. Kami terus melakukan pembaruan data secara berkala untuk memastikan akurasi dan cakupan yang maksimal.</div>
+      </div>
+    </div>
+  </section>
 
   <!-- SDGS SECTION -->
   <section class="sdgs-section" id="sdgs">
@@ -318,37 +603,6 @@
         <div class="sdg-num">9</div>
         <h3>Inovasi & Infrastruktur</h3>
         <p>Memanfaatkan teknologi Machine Learning dan visualisasi data untuk mendukung pengambilan keputusan infrastruktur yang lebih aman.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- FITUR SECTION -->
-  <section class="features" id="fitur">
-    <div class="section-head reveal">
-      <h2>Analitik Cerdas, Mitigasi Tepat.</h2>
-      <p>Jelajahi fitur unggulan DisasterWatch untuk memahami pola bencana dan mengambil keputusan yang lebih baik.</p>
-    </div>
-    <div class="feature-grid reveal">
-      <div class="feature-card">
-        <div class="feature-icon">
-          <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="8" r="3"/><circle cx="17" cy="9" r="3"/><circle cx="12" cy="17" r="3"/></svg>
-        </div>
-        <h3>Klasterisasi Risiko</h3>
-        <p>Pengelompokan 412 wilayah Indonesia ke dalam 4 tingkat risiko menggunakan algoritma K-Means.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">
-          <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 4l6 2 6-2v16l-6 2-6-2-6 2V6z"/><path d="M9 4v16M15 6v16"/></svg>
-        </div>
-        <h3>Peta Interaktif</h3>
-        <p>Visualisasi sebaran 200+ titik kejadian bencana di seluruh Indonesia secara langsung.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">
-          <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>
-        </div>
-        <h3>Prediksi & Mitigasi</h3>
-        <p>Simulasikan kondisi bencana dan dapatkan estimasi korban serta rekomendasi tindakan preventif.</p>
       </div>
     </div>
   </section>
@@ -402,7 +656,7 @@
       </div>
       <div class="footer-col">
         <h4>Produk</h4>
-        <a href="#fitur">Fitur</a>
+        <a href="#dashboard-info">Fitur Dashboard</a>
         <a href="#">Peta Interaktif</a>
         <a href="#">Prediksi Dampak</a>
         <a href="#">Klaster Risiko</a>
@@ -430,15 +684,14 @@
     </div>
   </footer>
 
-  <!-- SCRIPT UNTUK ANIMASI SCROLL -->
+  <!-- SCRIPT UNTUK ANIMASI SCROLL & FAQ ACCORDION -->
   <script>
     document.addEventListener("DOMContentLoaded", function() {
+      // Scroll Reveal
       const reveals = document.querySelectorAll('.reveal');
-      
       const revealOnScroll = function() {
         const windowHeight = window.innerHeight;
         const elementVisible = 100;
-        
         reveals.forEach((reveal) => {
           const elementTop = reveal.getBoundingClientRect().top;
           if (elementTop < windowHeight - elementVisible) {
@@ -446,10 +699,20 @@
           }
         });
       };
-      
-      // Jalankan saat halaman dimuat dan saat scroll
       window.addEventListener("scroll", revealOnScroll);
-      revealOnScroll(); // Panggil sekali saat load
+      revealOnScroll(); 
+
+      // FAQ Accordion
+      const faqItems = document.querySelectorAll('.faq-item');
+      faqItems.forEach(item => {
+        const question = item.querySelector('.faq-q');
+        question.addEventListener('click', () => {
+          faqItems.forEach(otherItem => {
+             if (otherItem !== item) otherItem.classList.remove('active');
+          });
+          item.classList.toggle('active');
+        });
+      });
     });
   </script>
 </body>
