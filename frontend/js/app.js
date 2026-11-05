@@ -1,436 +1,429 @@
-/* ============================================================
-   DisasterWatch — ALL IN ONE SCRIPT (v6 FINAL)
-   ============================================================ */
+/* DisasterWatch — app.js (Final Storytelling Version) */
 (function () {
   'use strict';
 
-  var charts = {};
-  var petaUtama = null; 
-  var petaWilayah = null;
+  function main() {
+    var $ = function (s, r) { return (r || document).querySelector(s); };
+    var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+    var fmt = function (n) { return (n == null ? '–' : Number(n).toLocaleString('id-ID')); };
+    var API = 'http://127.0.0.1:8000';
+    var hasChart = typeof window.Chart !== 'undefined';
+    var hasLeaflet = typeof window.L !== 'undefined';
+    var charts = {};
+    var DATA = { topProvinsi: [], petaOverview: [], petaWilayah: [] };
 
-  // ==========================================
-  // BACKEND API — PREDIKSI DAMPAK (Random Forest)
-  // Saat dashboard dibuka dari server backend (http://localhost:8000) API dipanggil di origin yang sama.
-  // Saat dibuka langsung dari file atau server lain (mis. Live Server), API dipanggil ke localhost:8000.
-  // Ubah dengan mendefinisikan window.DW_API_BASE sebelum app.js dimuat bila backend berjalan di alamat lain.
-  // ==========================================
-  var API_BASE = window.DW_API_BASE || (location.protocol !== 'file:' && location.port === '8000' ? '' : 'http://localhost:8000');
-  var FAKTOR = null;          // faktor risiko dominan dari /api/prediksi/meta
-  var simTimer = null;        // debounce perubahan dropdown
-  var simSeq = 0;             // abaikan respons lama bila pengguna mengganti pilihan dengan cepat
-  var KLASTER_PILL = { 0: 'green', 1: 'blue', 2: 'orange', 3: 'red' };
+    function api(url, opts) {
+      return fetch(API + url, opts).then(function (r) {
+        return r.json().then(function (d) { if (!r.ok) throw new Error(d.detail || ('HTTP ' + r.status)); return d; });
+      });
+    }
+    function setChart(id, cfg) {
+      var el = $('#' + id); if (!el || !hasChart) return;
+      if (charts[id]) charts[id].destroy();
+      cfg.options = Object.assign({ responsive: true, maintainAspectRatio: false }, cfg.options || {});
+      charts[id] = new Chart(el, cfg);
+    }
+    function afterRender() { if (window.markEmptyCharts) setTimeout(window.markEmptyCharts, 200); }
+    function setText(sel, t) { var e = $(sel); if (e) e.textContent = t; }
+    function setEl(e, t) { if (e) e.textContent = t; }
 
-  function apiGet(path) {
-    return fetch(API_BASE + path).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); });
-  }
-  function apiPost(path, body) {
-    return fetch(API_BASE + path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
-      .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.detail ? JSON.stringify(j.detail) : 'HTTP ' + r.status); return j; }); });
-  }
-  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
-  function setText(id, txt) { var el = document.getElementById(id); if (el) el.textContent = txt; }
-
-  function fillSelect(el, items) {
-    // items: [{value, label}] — pertahankan pilihan saat ini (dicocokkan lewat label atau value)
-    if (!el || !items || !items.length) return;
-    var cur = (el.value || '').toLowerCase();
-    var html = '', found = false;
-    items.forEach(function (it) {
-      var sel = !found && (String(it.value).toLowerCase() === cur || String(it.label).toLowerCase() === cur);
-      if (sel) found = true;
-      html += '<option value="' + esc(it.value) + '"' + (sel ? ' selected' : '') + '>' + esc(it.label) + '</option>';
+    /* 1. Navigasi */
+    function showPage(t) {
+      $$('.page').forEach(function (p) { p.classList.toggle('on', p.id === 'p-' + t); });
+      $$('.nav-item').forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-t') === t); });
+      window.scrollTo(0, 0);
+      setTimeout(function () {
+        if (t === 'peta' && window.__mapWilayah) window.__mapWilayah.invalidateSize();
+        if (t === 'overview' && window.__mapOverview) window.__mapOverview.invalidateSize();
+      }, 150);
+    }
+    document.addEventListener('click', function (e) {
+      var b = e.target.closest ? e.target.closest('.nav-item[data-t]') : null;
+      if (b) showPage(b.getAttribute('data-t'));
     });
-    el.innerHTML = html;
-  }
 
-  function showSimStatus(msg) {
-    var el = document.getElementById('sim-status');
-    if (!el) return;
-    if (msg) { el.innerHTML = msg; el.hidden = false; } else { el.hidden = true; el.innerHTML = ''; }
-  }
+    /* 2. Sidebar */
+    var bt = $('#btn-toggle-sidebar'), appEl = $('.app');
+    if (bt && appEl) bt.addEventListener('click', function () { appEl.classList.toggle('sidebar-hidden'); });
 
-  function backendOfflineMsg() {
-    return '<b>Backend prediksi belum terhubung.</b> Jalankan dari folder repo: <code>uvicorn backend.app:app --port 8000</code>, ' +
-           'lalu buka <code>http://localhost:8000</code>.';
-  }
+    /* 3. Notifikasi */
+    var nb = $('#btn-notif'), np = $('#notif-panel'), nc = $('#close-notif');
+    if (nb && np) {
+      nb.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var vis = np.style.display === 'block';
+        np.style.display = vis ? 'none' : 'block';
+        nb.setAttribute('aria-expanded', String(!vis));
+        var dot = nb.querySelector('.dot'); if (!vis && dot) dot.style.display = 'none';
+      });
+      if (nc) nc.addEventListener('click', function (e) { e.stopPropagation(); np.style.display = 'none'; nb.setAttribute('aria-expanded', 'false'); });
+      document.addEventListener('click', function (e) {
+        if (!np.contains(e.target) && !nb.contains(e.target)) { np.style.display = 'none'; nb.setAttribute('aria-expanded', 'false'); }
+      });
+      $$('.notif-trash').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var it = btn.closest('.notif-item'); if (!it) return;
+          it.style.transition = 'opacity .2s ease, transform .2s ease'; it.style.opacity = '0'; it.style.transform = 'translateX(8px)';
+          setTimeout(function () {
+            it.remove();
+            var body = $('.notif-body');
+            if (body && !$('.notif-item', body)) body.innerHTML = '<div class="notif-empty">Tidak ada pemberitahuan.</div>';
+          }, 200);
+        });
+      });
+    }
 
-  function loadPrediksiMeta() {
-    return apiGet('/api/prediksi/meta').then(function (m) {
-      fillSelect(document.getElementById('sim-jenis'), m.opsi.jenis_bencana);
-      fillSelect(document.getElementById('sim-prov'), m.opsi.provinsi);
-      fillSelect(document.getElementById('sim-bulan'), m.opsi.bulan);
-
-      setText('kpi-akurasi', m.kpi.akurasi.toFixed(2).replace('.', ','));
-      setText('kpi-wilayah', m.kpi.wilayah_terklasifikasi.toLocaleString('id-ID'));
-      setText('kpi-tingkat', m.kpi.tingkat_risiko);
-      setText('kpi-rekomendasi', m.kpi.rekomendasi_mitigasi);
-      var mb = document.getElementById('model-badge');
-      if (mb) mb.title = 'Akurasi ' + m.model.metrik.accuracy.toFixed(3) + ' · balanced accuracy ' + m.model.metrik.balanced_accuracy.toFixed(3) +
-                         ' · MSE ' + m.model.metrik.mse.toFixed(4) + ' · data uji ' + m.model.metrik.n_uji.toLocaleString('id-ID') + ' laporan';
-
-      FAKTOR = m.faktor_risiko;
-      if (charts.feature) {
-        charts.feature.data.labels = FAKTOR.map(function (f) { return f.faktor; });
-        charts.feature.data.datasets[0].data = FAKTOR.map(function (f) { return Math.round(f.bobot * 1000) / 10; });
-        charts.feature.update();
+    /* 4. Dark mode */
+    var darkChk = $('#p-pengaturan .switch input');
+    function setDark(on) {
+      document.body.classList.toggle('dark-mode', on);
+      try { localStorage.setItem('dw-dark', on ? '1' : '0'); } catch (e) {}
+      if (hasChart) {
+        Chart.defaults.color = on ? '#C9D4E5' : '#667085';
+        Chart.defaults.borderColor = on ? '#2A3A5E' : 'rgba(0,0,0,0.1)';
+        Object.keys(charts).forEach(function (k) { charts[k].update(); });
       }
+    }
+    var saved = null; try { saved = localStorage.getItem('dw-dark'); } catch (e) {}
+    if (darkChk) { darkChk.checked = saved === '1'; darkChk.addEventListener('change', function () { setDark(darkChk.checked); }); }
+    if (saved === '1') setDark(true);
 
-      var tb = document.getElementById('klaster-ringkasan');
-      if (tb && m.klaster.ringkasan.length) {
-        tb.innerHTML = m.klaster.ringkasan.map(function (k) {
-          return '<tr><td><span class="pill ' + (KLASTER_PILL[k.klaster] || 'blue') + '">' + esc(k.pendek) + '</span></td><td>' +
-                 k.jumlah_wilayah.toLocaleString('id-ID') + '</td></tr>';
-        }).join('');
-        setText('klaster-sub', m.klaster.total_wilayah.toLocaleString('id-ID') + ' kab/kota unik per klaster risiko (K-Means)');
-      }
-      return m;
-    });
-  }
+    /* 5. Overview */
+    var fTahun = $('#f-tahun'), fJenis = $('#f-jenis'), fProv = $('#f-prov'), fReset = $('#f-reset');
 
-  function setupCharts() {
-    if (typeof Chart === 'undefined') return;
-    Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
-    Chart.defaults.font.size = 11.5;
-    Chart.defaults.color = '#667085';
-    Chart.defaults.borderColor = '#F2F4F7';
-    Chart.defaults.plugins.legend.display = false;
-    Chart.defaults.plugins.tooltip.backgroundColor = '#0F1B2D';
-    Chart.defaults.plugins.tooltip.padding = 10;
-    Chart.defaults.plugins.tooltip.cornerRadius = 8;
-    Chart.defaults.plugins.tooltip.titleFont = { size: 12, weight: '700' };
-    Chart.defaults.plugins.tooltip.bodyFont = { size: 12 };
-    Chart.defaults.plugins.tooltip.displayColors = false;
-    Chart.defaults.animation.duration = 700;
-  }
-
-  function drawMonthly(data, label) {
-    var ctx = document.getElementById('c-monthly');
-    if (!ctx) return;
-    var grad = ctx.getContext('2d').createLinearGradient(0, 0, 0, 280);
-    grad.addColorStop(0, 'rgba(46,117,182,.25)');
-    grad.addColorStop(1, 'rgba(46,117,182,0)');
-    if (charts.monthly) charts.monthly.destroy();
-    charts.monthly = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'],
-        datasets: [{ label: label || 'Kejadian 2026', data: data, borderColor: '#2E75B6', backgroundColor: grad, borderWidth: 2.5, pointBackgroundColor: '#fff', pointBorderColor: '#2E75B6', pointBorderWidth: 2.5, pointRadius: 4, pointHoverRadius: 6, tension: .35, fill: true }]
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false, interaction: { intersect: false, mode: 'index' },
-        plugins: { tooltip: { callbacks: { label: function (c) { return c.dataset.label + ': ' + c.parsed.y + ' kejadian'; } } } },
-        scales: { x: { grid: { display: false }, ticks: { font: { size: 11, weight: '600' } } }, y: { beginAtZero: true, grid: { color: '#F2F4F7' }, ticks: { font: { size: 11 } } } }
-      }
-    });
-  }
-
-  function drawKomposisi(dataKomposisi) {
-    var ctx = document.getElementById('c-komposisi');
-    if (!ctx) return;
-    var labels = dataKomposisi ? dataKomposisi.labels : (window.DATA_ASLI ? window.DATA_ASLI.komposisi.labels : []);
-    var data = dataKomposisi ? dataKomposisi.data : (window.DATA_ASLI ? window.DATA_ASLI.komposisi.data : []);
-    if (charts.komposisi) charts.komposisi.destroy();
-    charts.komposisi = new Chart(ctx, {
-      type: 'doughnut',
-      data: { labels: labels, datasets: [{ data: data, backgroundColor: ['#FB5607','#3A86FF','#6C8EAD','#E9C46A','#8D6E63','#8338EC','#2A9D8F'], borderWidth: 0, hoverOffset: 8 }] },
-      options: {
-        responsive: true, maintainAspectRatio: false, cutout: '62%',
-        plugins: {
-          legend: { display: true, position: 'right', labels: { boxWidth: 10, boxHeight: 10, padding: 12, font: { size: 11.5, weight: '600' }, usePointStyle: true, pointStyle: 'rectRounded' } },
-          tooltip: { callbacks: { label: function (c) { var total = data.reduce(function(a,b){return a+b;}, 0); return c.label + ': ' + c.parsed + ' (' + (c.parsed / total * 100).toFixed(1) + '%)'; } } }
+    function trendHtml(p, pemb) {
+      if (p == null) return '<span class="trend flat">— n/a</span> vs tahun lalu';
+      var cls = p > 0 ? 'up' : p < 0 ? 'down' : 'flat', ar = p > 0 ? '▲' : p < 0 ? '▼' : '—';
+      return '<span class="trend ' + cls + '">' + ar + ' ' + Math.abs(p).toLocaleString('id-ID') + '%</span> vs tahun lalu' + (pemb ? ' (' + pemb + ')' : '');
+    }
+    function renderTopProvinsi(rows) {
+      var tb = $('#top-prov-tbody'); if (!tb) return;
+      tb.innerHTML = rows.slice(0, 5).map(function (r, i) {
+        return '<tr><td><span class="rank">' + (i + 1) + '</span>' + r.nama + '</td><td>' + fmt(r.nilai) + '</td></tr>';
+      }).join('');
+    }
+    function warna(r) { return r === 'tinggi' ? '#D92D20' : r === 'sedang' ? '#F4A259' : '#0E9384'; }
+    function drawMaps() {
+      if (!hasLeaflet) return;
+      [['map-overview', '__mapOverview', false, 'petaOverview'], ['map-wilayah', '__mapWilayah', true, 'petaWilayah']].forEach(function (a) {
+        var el = $('#' + a[0]); if (!el) return;
+        var m = window[a[1]];
+        if (!m) {
+          m = L.map(el).setView([-2.5, 118], 5);
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap' }).addTo(m);
+          m.__pts = L.layerGroup().addTo(m); window[a[1]] = m;
         }
-      }
-    });
-  }
-
-  function drawOtherCharts() {
-    var ctxD = document.getElementById('c-dominan');
-    if (ctxD) {
-      if (charts.dominan) charts.dominan.destroy();
-      charts.dominan = new Chart(ctxD, {
-        type: 'bar',
-        data: { labels: ['Jawa Tengah','Jawa Timur','Jawa Barat','Sulawesi Selatan','Sulawesi Tengah'], datasets: [{ label: 'Banjir', data: [216,55,94,62,30], backgroundColor: '#3A86FF', borderRadius: 0, barThickness: 24 },{ label: 'Karhutla', data: [118,179,59,29,12], backgroundColor: '#FB5607', borderRadius: 0, barThickness: 24 },{ label: 'Tanah longsor', data: [59,42,83,53,68], backgroundColor: '#8D6E63', borderRadius: 0, barThickness: 24 }] },
-        options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: true, position: 'bottom', labels: { boxWidth: 10, boxHeight: 10, padding: 14, font: { size: 11.5, weight: '600' }, usePointStyle: true, pointStyle: 'rectRounded' } } }, scales: { x: { stacked: true, grid: { color: '#F2F4F7' }, ticks: { font: { size: 11 } } }, y: { stacked: true, grid: { display: false }, ticks: { font: { size: 11.5, weight: '600' } } } } }
+        m.__pts.clearLayers();
+        DATA[a[3]].forEach(function (p) {
+          L.circleMarker([p.lat, p.lng], { radius: a[2] ? (p.risiko === 'tinggi' ? 14 : 10) : 8, color: '#fff', weight: 2, fillColor: warna(p.risiko), fillOpacity: 0.88 })
+            .addTo(m.__pts).bindPopup('<b>' + p.nama + '</b><br>' + fmt(p.n) + ' laporan · risiko ' + p.risiko);
+        });
+        setTimeout(function () { m.invalidateSize(); }, 200);
       });
     }
 
-    var ctxF = document.getElementById('c-feature');
-    if (ctxF) {
-      if (charts.feature) charts.feature.destroy();
-      // Data diisi dari /api/prediksi/meta (permutation importance model Random Forest)
-      charts.feature = new Chart(ctxF, {
-        type: 'bar',
-        data: { labels: FAKTOR ? FAKTOR.map(function (f) { return f.faktor; }) : [],
-                datasets: [{ data: FAKTOR ? FAKTOR.map(function (f) { return Math.round(f.bobot * 1000) / 10; }) : [],
-                             backgroundColor: '#2E75B6', borderRadius: 6, barThickness: 18 }] },
-        options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false },
-                   tooltip: { callbacks: { label: function (c) { return c.parsed.x.toLocaleString('id-ID') + '% kontribusi'; } } } },
-                   scales: { x: { beginAtZero: true, grid: { color: '#F2F4F7' }, ticks: { callback: function (v) { return v + '%'; } } }, y: { grid: { display: false } } } }
-      });
+    function loadOverview() {
+      var q = '?tahun=' + (fTahun ? fTahun.value : 0) + '&jenis=' + encodeURIComponent(fJenis ? fJenis.value : 'semua') +
+              '&provinsi=' + encodeURIComponent(fProv ? fProv.value : 'semua');
+      return api('/api/overview' + q).then(function (r) {
+        if (fProv && fProv.options.length <= 1 && r.petaTitik) {
+            var currentVal = fProv.value;
+            fProv.innerHTML = '<option value="semua">Semua provinsi</option>';
+            var sortedProv = r.petaTitik.map(function(p) { return p.nama; }).sort();
+            sortedProv.forEach(function(nama) {
+                var opt = document.createElement('option');
+                opt.value = nama.toUpperCase(); 
+                opt.textContent = nama;
+                fProv.appendChild(opt);
+            });
+            fProv.value = currentVal;
+        }
+
+        setText('#kpi-total', fmt(r.kpi.total)); setText('#kpi-meninggal', fmt(r.kpi.meninggal));
+        setText('#kpi-rumah', fmt(r.kpi.rumah)); setText('#kpi-prov', fmt(r.kpi.prov));
+        [['kpi-total', 'total'], ['kpi-meninggal', 'meninggal'], ['kpi-rumah', 'rumah']].forEach(function (x) {
+          var foot = $('#' + x[0]).parentNode.querySelector('.kpi-foot'); if (foot) foot.innerHTML = trendHtml(r.trend[x[1]], r.pembanding);
+        });
+        var pf = $('#kpi-prov').parentNode.querySelector('.kpi-foot'); if (pf) pf.textContent = 'dari 38 provinsi';
+        setText('#p-overview .grid-2 .card-head p', 'Data tahun ' + r.tahun);
+
+        setChart('c-monthly', { type: 'line', data: { labels: r.monthly.labels, datasets: [{ label: 'Kejadian', data: r.monthly.values,
+          borderColor: '#2E75B6', backgroundColor: 'rgba(46,117,182,0.1)', fill: true, tension: 0.4, pointRadius: 2, borderWidth: 3 }] },
+          options: { plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c){ return ' '+c.parsed.y.toLocaleString('id-ID')+' kejadian'; } } } }, 
+          scales: { y: { beginAtZero: true, grid: { color: '#F2F4F7' }, border:{display:false} }, x: { grid: { display: false }, border:{display:false} } } } });
+        
+        setChart('c-komposisi', { type: 'doughnut', data: { labels: r.komposisi.labels, datasets: [{ data: r.komposisi.values,
+          backgroundColor: ['#2E75B6', '#F4A259', '#0E9384', '#D92D20', '#8A9BB8', '#7A5AF8', '#3A86FF', '#FB5607', '#667085'], borderWidth: 2, borderColor: '#fff' }] },
+          options: { cutout: '65%', plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8, padding: 20 } }, tooltip: { callbacks: { label: function(c){ return ' '+c.label+': '+c.parsed.toLocaleString('id-ID')+' kejadian'; } } } } } });
+
+        DATA.topProvinsi = r.topProvinsi.map(function (i) { return { nama: i.provinsi, nilai: i.jumlah_kejadian }; });
+        renderTopProvinsi(DATA.topProvinsi);
+        DATA.petaOverview = r.petaTitik; drawMaps(); afterRender();
+      }).catch(function (e) { console.error('Overview gagal:', e); });
     }
-
-    var ctxC = document.getElementById('c-cluster-impact');
-    if (ctxC) {
-      if (charts.clusterImpact) charts.clusterImpact.destroy();
-      charts.clusterImpact = new Chart(ctxC, {
-        type: 'bar',
-        data: { labels: ['Risiko Rendah','Multi-Bencana','Kemanusiaan Akut','Katastropik'], datasets: [{ label: 'Rata-rata Korban Jiwa', data: [0.07, 0.29, 0.38, 99.85], backgroundColor: '#D92D20', borderRadius: 6, barThickness: 22 }, { label: 'Rata-rata Terdampak', data: [45, 2563, 6817, 23422], backgroundColor: '#2E75B6', borderRadius: 6, barThickness: 22 }] },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { boxWidth: 10, boxHeight: 10, padding: 14, font: { size: 11.5, weight: '600' }, usePointStyle: true, pointStyle: 'rectRounded' } }, tooltip: { callbacks: { label: function (c) { var v = c.parsed.y; return c.dataset.label + ': ' + (v >= 1000 ? v.toLocaleString('id-ID') : v); } } } }, scales: { x: { grid: { display: false }, ticks: { font: { size: 11.5, weight: '600' } } }, y: { type: 'logarithmic', beginAtZero: false, grid: { color: '#F2F4F7' }, title: { display: true, text: 'Skala logaritmik' } } } }
-      });
-    }
-
-    var ctxFo = document.getElementById('c-forecast');
-    if (ctxFo) {
-      if (charts.forecast) charts.forecast.destroy();
-      var labels = []; for(let i=1; i<=12; i++) labels.push('2025-'+i.toString().padStart(2,'0')); for(let i=1; i<=12; i++) labels.push('2026-'+i.toString().padStart(2,'0')); for(let i=1; i<=12; i++) labels.push('2027-'+i.toString().padStart(2,'0'));
-      var actualData = [471,391,423,164,233,181,351,279,205,215,277,247, 287,183,217,192,166,121,247,319,345,259, null, null].concat(new Array(12).fill(null));
-      var testPredData = new Array(10).fill(null).concat([250,257,361,361,359,193,231,173,272,236,224,258]).concat(new Array(12).fill(null));
-      var forecastData = new Array(22).fill(null).concat([254,238,272,187,233,183,146,141,218,292,284,244]);
-      var upperData = new Array(22).fill(null).concat([421,405,439,354,401,350,313,308,385,459,451,412]);
-      var lowerData = new Array(22).fill(null).concat([86,71,104,19,66,15,0,0,51,124,116,77]);
-
-      charts.forecast = new Chart(ctxFo, {
-        type: 'line', data: { labels: labels, datasets: [ { label: 'Batas Atas', data: upperData, borderColor: 'transparent', backgroundColor: 'rgba(58,134,255,0.1)', fill: '+1', pointRadius: 0 }, { label: 'Batas Bawah', data: lowerData, borderColor: 'transparent', backgroundColor: 'transparent', fill: false, pointRadius: 0 }, { label: 'Aktual', data: actualData, borderColor: '#1F3A5F', borderWidth: 2, pointRadius: 0, tension: 0.3 }, { label: 'Prediksi Uji', data: testPredData, borderColor: '#3A86FF', borderWidth: 2, borderDash: [5, 5], pointRadius: 0, tension: 0.3 }, { label: 'Ramalan Depan', data: forecastData, borderColor: '#3A86FF', borderWidth: 2, borderDash: [2, 3], pointRadius: 0, tension: 0.3 } ] },
-        options: { responsive: true, maintainAspectRatio: false, interaction: { intersect: false, mode: 'index' }, plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c) { if (c.parsed.y === null) return null; return c.dataset.label + ': ' + c.parsed.y; } } } }, scales: { x: { grid: { display: false }, ticks: { font: { size: 10 }, maxTicksLimit: 10 } }, y: { beginAtZero: true, grid: { color: '#F2F4F7' }, ticks: { font: { size: 11 } } } } }
-      });
-    }
-
-    var ctxSe = document.getElementById('c-seasonal');
-    if (ctxSe) {
-      if (charts.seasonal) charts.seasonal.destroy();
-      charts.seasonal = new Chart(ctxSe, { type: 'bar', data: { labels: ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'], datasets: [{ data: [452.09, 482.36, 411.36, 279.45, 221.18, 195.27, 243.36, 257.45, 287.0, 310.64, 337.64, 330.55], backgroundColor: '#93B5E1', borderRadius: 4, barThickness: 18 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false }, ticks: {font: {size: 10}} }, y: { beginAtZero: true, grid: { color: '#F2F4F7' } } } } });
-    }
-  }
-
-  function initAllCharts() { setupCharts(); var monthlyData = (window.DATA_ASLI && window.DATA_ASLI.monthly) ? window.DATA_ASLI.monthly : [0,0,0,0,0,0,0,0,0,0,0,0]; drawMonthly(monthlyData, 'Kejadian 2026'); drawKomposisi(); drawOtherCharts(); }
-  function resizeAllCharts() { Object.values(charts).forEach(function (c) { if (c && c.resize) c.resize(); }); }
-
-  var dataFilters = {
-    '2026': { total: 44280, meninggal: 11795, rumah: '1,4 jt', prov: 78, monthly: [210,148,172,160,138,104,196,268,345,178,240,190], komposisi: { labels: ['Banjir', 'Cuaca Ekstrem', 'Tanah Longsor', 'Karhutla', 'Gempa'], data: [45, 25, 15, 10, 5] } },
-    '2025': { total: 41000, meninggal: 10000, rumah: '1,1 jt', prov: 78, monthly: [180,130,150,140,120,90,180,220,300,160,200,170], komposisi: { labels: ['Banjir', 'Cuaca Ekstrem', 'Tanah Longsor', 'Karhutla', 'Gempa'], data: [40, 28, 12, 15, 5] } },
-    '2024': { total: 38500, meninggal: 9500, rumah: '0,9 jt', prov: 78, monthly: [150,110,140,130,110,80,150,200,280,140,180,150], komposisi: { labels: ['Banjir', 'Cuaca Ekstrem', 'Tanah Longsor', 'Karhutla', 'Gempa'], data: [35, 30, 10, 20, 5] } }
-  };
-
-  function updateOverview(year) {
-    var d = dataFilters[year] || dataFilters['2026'];
-    animateValue(document.getElementById('kpi-total'), 0, d.total, 800, true);
-    animateValue(document.getElementById('kpi-meninggal'), 0, d.meninggal, 800, true);
-    document.getElementById('kpi-rumah').textContent = d.rumah;
-    document.getElementById('kpi-prov').textContent = d.prov;
-    drawMonthly(d.monthly, 'Kejadian ' + year);
-    drawKomposisi(d.komposisi);
-  }
-
-  function updateSim() {
-    clearTimeout(simTimer);
-    simTimer = setTimeout(runPrediksi, 150);
-  }
-
-  function runPrediksi() {
-    var val = function (id, d) { var el = document.getElementById(id); return el && el.value ? el.value : d; };
-    var body = { jenis_bencana: val('sim-jenis', 'Banjir'), provinsi: val('sim-prov', 'Jawa Tengah'),
-                 bulan: val('sim-bulan', 'Januari'), kepadatan_penduduk: val('sim-kepadatan', 'Sedang') };
-    var seq = ++simSeq;
-    var box = document.getElementById('sim-result');
-    if (box) box.classList.add('loading');
-    apiPost('/api/prediksi', body).then(function (r) {
-      if (seq !== simSeq) return;               // ada permintaan yang lebih baru
-      showSimStatus(null);
-      renderPrediksi(r);
-    }).catch(function (err) {
-      if (seq !== simSeq) return;
-      var offline = err instanceof TypeError;   // fetch gagal = server tidak bisa dihubungi
-      showSimStatus(offline ? backendOfflineMsg() : '<b>Prediksi gagal:</b> ' + esc(err.message));
-      setText('sim-val', 'Prediksi tidak tersedia');
-      var sb = document.getElementById('sim-bar'); if (sb) sb.style.width = '0%';
-      ['sim-korban', 'sim-terdampak', 'sim-rusak'].forEach(function (id) { setText(id, '–'); setText(id + '-d', ''); });
-      setText('sim-basis', ''); setText('sim-proba', '');
-      var bd = document.getElementById('mitigasi-badge'); if (bd) { bd.className = 'pill'; bd.textContent = '–'; }
-      var ml = document.getElementById('mitigation-list'); if (ml) ml.innerHTML = '';
-    }).then(function () { if (box) box.classList.remove('loading'); });
-  }
-
-  function renderPrediksi(r) {
-    var p = r.prediksi, e = r.estimasi, k = r.klaster_provinsi, inp = r.input;
-    var pct = Math.round(p.probabilitas * 100);
-    setText('sim-val', p.kelas + ' · ' + pct + '%');
-    var sb = document.getElementById('sim-bar'); if (sb) sb.style.width = pct + '%';
-
-    var pr = document.getElementById('sim-proba');
-    if (pr) pr.innerHTML = p.peluang.map(function (x) {
-      return '<span class="' + (x.kode === p.kode ? 'on' : '') + '">' + esc(x.kelas) + ' ' + Math.round(x.p * 100) + '%</span>';
-    }).join('');
-
-    if (e && e.tersedia) {
-      setText('sim-korban', e.korban_jiwa.teks); setText('sim-korban-d', e.korban_jiwa.detail);
-      setText('sim-terdampak', e.terdampak.teks); setText('sim-terdampak-d', e.terdampak.detail);
-      setText('sim-rusak', e.kerusakan.teks); setText('sim-rusak-d', e.kerusakan.detail);
-      setText('sim-basis', 'Estimasi = ' + e.basis.charAt(0).toLowerCase() + e.basis.slice(1) + '.');
-    } else {
-      ['sim-korban', 'sim-terdampak', 'sim-rusak'].forEach(function (id) { setText(id, '–'); setText(id + '-d', ''); });
-      setText('sim-basis', e ? e.basis : '');
-    }
-
-    var badge = document.getElementById('mitigasi-badge');
-    if (badge) { badge.className = 'pill ' + p.badge.warna; badge.textContent = p.badge.teks; }
-    setText('mitigasi-sub', (k ? 'Klaster ' + k.klaster + ' — ' + k.pendek.replace(/^Tingkat [IV]+ - /, '') + ' · ' : '') +
-                            inp.provinsi_label + ' · ' + inp.bulan_label + ' · prediksi ' + p.kelas);
-
-    var list = document.getElementById('mitigation-list');
-    if (list) list.innerHTML = r.mitigasi.map(function (m, i) {
-      return '<li class="' + (m.urgent ? 'urgent' : '') + '"><span class="m-icon">' + (i + 1) + '</span><div><b>' + esc(m.t) +
-             '<span class="m-src">' + esc(m.sumber) + '</span></b><span style="font-size:12.5px;color:var(--muted);">' + esc(m.d) + '</span></div></li>';
-    }).join('');
-  }
-
-  function initMap(elementId, zoom) {
-    var el = document.getElementById(elementId); if (!el || !window.L) return null;
-    var map = L.map(elementId).setView([-2.5489, 118.0149], zoom);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap contributors', maxZoom: 19 }).addTo(map);
-    if (window.DATA_ASLI && window.DATA_ASLI.map_points) {
-      window.DATA_ASLI.map_points.forEach(function(p) {
-        var color = p.jenis.indexOf('BANJIR') >= 0 ? '#3A86FF' : p.jenis.indexOf('KEBAKARAN') >= 0 ? '#FB5607' : p.jenis.indexOf('CUACA') >= 0 ? '#E9C46A' : '#2A9D8F';
-        var popup = '<div style="font-family:Inter,sans-serif;padding:2px 4px;"><b style="color:' + color + ';font-size:13.5px;">' + p.jenis + '</b><br><span style="color:#667085;font-size:12px;">' + p.prov + '</span></div>';
-        var marker = L.circleMarker([p.lat, p.lng], { radius: 8, fillColor: color, color: '#fff', weight: 2, fillOpacity: 0.9, opacity: 1 }).addTo(map).bindPopup(popup);
-        marker._jenis = p.jenis.toLowerCase();
-      });
-    }
-    return map;
-  }
-
-  function animateValue(obj, start, end, duration, formatted) {
-    if (!obj) return;
-    var startTs = null;
-    function step(ts) {
-      if (!startTs) startTs = ts;
-      var p = Math.min((ts - startTs) / duration, 1);
-      var val = Math.floor(p * (end - start) + start);
-      obj.innerHTML = formatted ? val.toLocaleString('id-ID') : val;
-      if (p < 1) window.requestAnimationFrame(step);
-    }
-    window.requestAnimationFrame(step);
-  }
-
-  document.addEventListener('DOMContentLoaded', function () {
-    initAllCharts();
-
-    // NAV
-    var navs = document.querySelectorAll('.nav-item[data-t]');
-    var pages = ['overview', 'peta', 'prediksi', 'klaster', 'tren', 'laporan', 'pengaturan'];
-    var sections = pages.map(function (k) { return document.getElementById('p-' + k); });
-    navs.forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var t = btn.dataset.t;
-        navs.forEach(function (b) { b.classList.toggle('on', b === btn); });
-        sections.forEach(function (s) { if (s) s.classList.toggle('on', s.id === 'p-' + t); });
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        setTimeout(resizeAllCharts, 60);
-        if (t === 'peta' && !petaWilayah) { setTimeout(function() { petaWilayah = initMap('map-wilayah', 5); }, 100); }
-      });
+    [fTahun, fJenis, fProv].forEach(function (el) { if (el) el.addEventListener('change', loadOverview); });
+    if (fReset) fReset.addEventListener('click', function () {
+      if (fTahun) fTahun.selectedIndex = 0; if (fJenis) fJenis.value = 'semua'; if (fProv) fProv.value = 'semua'; loadOverview();
     });
 
-    // TABLE TOP 5
-    var tbody = document.getElementById('top-prov-tbody');
-    if (tbody && window.DATA_ASLI && window.DATA_ASLI.top_prov) {
-      var html = '';
-      window.DATA_ASLI.top_prov.labels.forEach(function(label, i) { html += '<tr class="anim-row"><td><span class="rank">' + (i + 1) + '</span>' + label + '</td><td>' + window.DATA_ASLI.top_prov.data[i].toLocaleString('id-ID') + '</td></tr>'; });
-      tbody.innerHTML = html;
+    /* Peta Wilayah */
+    var mapJenis = $('#map-filter-jenis'), mapPeriode = $('#p-peta .filter-group select');
+    function loadPeta() {
+      var dari = mapPeriode ? (parseInt(mapPeriode.value.slice(0, 4), 10) || 0) : 0;
+      return api('/api/overview?tahun=-1&dari=' + dari + '&jenis=' + encodeURIComponent(mapJenis ? mapJenis.value : 'semua')).then(function (r) {
+        DATA.petaWilayah = r.petaTitik; drawMaps();
+        var kab = $('#p-peta tbody');
+        if (kab) kab.innerHTML = r.topKab.map(function (k, i) {
+          return '<tr><td><span class="rank">' + (i + 1) + '</span>' + k.nama + '</td><td>' + fmt(k.n) + '</td></tr>'; }).join('');
+      }).catch(function (e) { console.error('Peta gagal:', e); });
+    }
+    [mapJenis, mapPeriode].forEach(function (el) { if (el) el.addEventListener('change', loadPeta); });
+
+    /* 6. Model Metadata */
+    function loadMeta() {
+      return api('/api/dashboard-data').then(function (r) {
+        setText('#kpi-akurasi', r.kpi.akurasi + '%'); setText('#kpi-wilayah', fmt(r.kpi.wilayah));
+        if (r.feature && r.feature.labels.length) {
+          setChart('c-feature', { type: 'bar', data: { labels: r.feature.labels, datasets: [{ data: r.feature.values,
+            backgroundColor: ['#2E75B6', '#3A86FF', '#F4A259', '#0E9384', '#8A9BB8'], borderRadius: 6 }] },
+            options: { indexAxis: 'y', plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c){ return ' Bobot: '+(c.parsed.x*100).toFixed(1)+'%'; } } } },
+            scales: { x: { grid: { color: '#F2F4F7' }, border:{display:false} }, y: { grid: { display: false }, border:{display:false} } } } });
+        }
+        afterRender();
+      }).catch(function (e) { console.error('Meta gagal:', e); });
     }
 
-    // FILTER OVERVIEW
-    var fTahun = document.getElementById('f-tahun');
-    if (fTahun) fTahun.addEventListener('change', function (e) { updateOverview(e.target.value); });
+    /* 7. Extra Data (Klaster, Tren, dll) */
+    var PILL = ['green', 'blue', 'orange', 'red'];
+    function loadExtra() {
+      return api('/api/extra').then(function (x) {
+        // Ubah dari Stacked Bar menjadi Grouped Bar (Berjejer) agar lebih mudah dibaca
+        setChart('c-dominan', { type: 'bar', data: { labels: x.dominan.labels, datasets: [
+          { label: 'Banjir', data: x.dominan.banjir, backgroundColor: '#2E75B6', borderRadius: 4 },
+          { label: 'Cuaca ekstrem', data: x.dominan.cuaca, backgroundColor: '#F4A259', borderRadius: 4 },
+          { label: 'Tanah longsor', data: x.dominan.longsor, backgroundColor: '#0E9384', borderRadius: 4 }] },
+          options: { plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8, padding: 16 } }, tooltip: { callbacks: { label: function(c){ return ' '+c.dataset.label+': '+c.parsed.y.toLocaleString('id-ID'); } } } },
+          scales: { x: { stacked: false, grid: { display: false }, border:{display:false} }, y: { stacked: false, beginAtZero: true, grid: { color: '#F2F4F7' }, border:{display:false} } } } });
 
-    // SIMULASI PREDIKSI DAMPAK (backend Random Forest)
-    ['sim-jenis', 'sim-prov', 'sim-bulan', 'sim-kepadatan'].forEach(function(id) { var el = document.getElementById(id); if (el) el.addEventListener('change', updateSim); });
-    loadPrediksiMeta().then(runPrediksi).catch(function () {
-      showSimStatus(backendOfflineMsg());
-      setText('sim-val', 'Prediksi tidak tersedia');
-      setText('klaster-ringkasan', '');
-    });
+        if (x.klasterImpact) setChart('c-cluster-impact', { type: 'bar', data: { labels: x.klasterImpact.labels, datasets: [
+          { label: 'Korban jiwa', data: x.klasterImpact.korban, backgroundColor: '#D92D20', borderRadius: 4 },
+          { label: 'Terdampak', data: x.klasterImpact.terdampak, backgroundColor: '#3A86FF', borderRadius: 4 }] },
+          options: { plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8 } }, tooltip: { callbacks: { label: function(c){ return ' '+c.dataset.label+': '+c.parsed.y.toLocaleString('id-ID'); } } } },
+          scales: { y: { beginAtZero: true, grid: { color: '#F2F4F7' }, border:{display:false} }, x: { grid: { display: false }, border:{display:false} } } } });
 
-    // MAP OVERVIEW
-    var mapCheck = setInterval(function() { if (document.getElementById('map-overview') && window.L) { petaUtama = initMap('map-overview', 4); clearInterval(mapCheck); } }, 200);
+        setChart('c-seasonal', { type: 'bar', data: { labels: x.seasonal.labels, datasets: [{ data: x.seasonal.values, backgroundColor: '#3A86FF', borderRadius: 6 }] },
+          options: { plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c){ return ' Rata-rata: '+c.parsed.y.toLocaleString('id-ID')+' kejadian'; } } } },
+          scales: { y: { beginAtZero: true, grid: { color: '#F2F4F7' }, border:{display:false} }, x: { grid: { display: false }, border:{display:false} } } } });
 
-    // MAP FILTER (Di tab Peta Wilayah)
-    var mapFilter = document.getElementById('map-filter-jenis');
-    if (mapFilter) {
-      mapFilter.addEventListener('change', function(e) {
-        var val = e.target.value.toLowerCase();
-        if (!petaWilayah) petaWilayah = initMap('map-wilayah', 5);
-        if (petaWilayah) {
-          petaWilayah.eachLayer(function(layer) {
-            if (layer._jenis) {
-              if (val === 'semua' || layer._jenis.indexOf(val) >= 0) { layer.addTo(petaWilayah); } else { petaWilayah.removeLayer(layer); }
-            }
+        var ktb = $('#klaster-ringkasan');
+        if (ktb && x.klaster.length) ktb.innerHTML = x.klaster.map(function (k) {
+          return '<tr><td>Klaster ' + k.id + ' — ' + k.nama + '</td><td>' + fmt(k.wilayah) + '</td></tr>'; }).join('');
+        var kp = $('#p-klaster .grid-2e tbody');
+        if (kp && x.klasterProv.length) kp.innerHTML = x.klasterProv.map(function (r) {
+          return '<tr><td>' + r.nama + '</td><td><span class="pill ' + PILL[r.klaster] + '">' + r.label + '</span></td></tr>'; }).join('');
+        
+        if (x.klaster.length) {
+          var cards = $$('#p-klaster .cluster-card'), tot = x.klasterTotal || x.klaster.reduce(function (a, k) { return a + k.wilayah; }, 0);
+          x.klaster.forEach(function (k) {
+            var c = cards[k.id]; if (!c) return; var bs = $$('.cc-stat b', c);
+            setEl(c.querySelector('.cc-title'), 'Klaster ' + k.id); setEl(c.querySelector('.cc-subtitle'), k.pendek);
+            if (bs[0]) bs[0].textContent = fmt(k.wilayah);
+            if (bs[1]) bs[1].textContent = (k.wilayah / tot * 100).toLocaleString('id-ID', { maximumFractionDigits: 1 }) + '%';
           });
+          setText('#p-klaster .page-head p', 'Pengelompokan ' + fmt(tot) + ' wilayah berdasarkan karakteristik dampak bencana (K-Means, k=' + x.klaster.length + ')');
         }
-      });
-    }
 
-    // SIDEBAR TOGGLE
-    var btnToggle = document.getElementById('btn-toggle-sidebar');
-    var appContainer = document.querySelector('.app');
-    if (btnToggle && appContainer) {
-      btnToggle.addEventListener('click', function() { appContainer.classList.toggle('sidebar-hidden'); setTimeout(resizeAllCharts, 450); });
-    }
-
-    // COUNT-UP KPI
-    if (window.DATA_ASLI && window.DATA_ASLI.kpi) {
-      animateValue(document.getElementById('kpi-total'),     0, window.DATA_ASLI.kpi.total,     1500, true);
-      animateValue(document.getElementById('kpi-meninggal'), 0, window.DATA_ASLI.kpi.meninggal, 1500, true);
-      animateValue(document.getElementById('kpi-prov'),      0, window.DATA_ASLI.kpi.prov,      1500, false);
-      var kpiRumah = document.getElementById('kpi-rumah');
-      if (kpiRumah) kpiRumah.textContent = window.DATA_ASLI.kpi.rumah;
-    }
-
-    // SEARCH
-    var searchInput = document.getElementById('search-input');
-    if (searchInput) {
-      searchInput.addEventListener('input', function (e) {
-        var val = e.target.value.toLowerCase().trim();
-        var rows = document.querySelectorAll('#top-prov-tbody tr');
-        rows.forEach(function (row) { row.style.display = row.textContent.toLowerCase().indexOf(val) >= 0 ? '' : 'none'; });
-      });
-    }
-
-    // EXPORT CSV
-    var btnExport = document.getElementById('btn-export');
-    if (btnExport) {
-      btnExport.addEventListener('click', function () {
-        if (!window.DATA_ASLI || !window.DATA_ASLI.top_prov) return;
-        var csv = 'Provinsi,Kejadian\n';
-        window.DATA_ASLI.top_prov.labels.forEach(function (label, i) { csv += '"' + label + '",' + window.DATA_ASLI.top_prov.data[i] + '\n'; });
-        var blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
-        var link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = 'Data_Top_Provinsi_BNPB.csv';
-        link.click();
-        URL.revokeObjectURL(link.href);
-      });
-    }
-
-    // DARK MODE
-    var darkSwitch = document.querySelector('.switch input[type="checkbox"]');
-    if (darkSwitch) {
-      darkSwitch.addEventListener('change', function (e) {
-        var isDark = e.target.checked;
-        document.body.classList.toggle('dark-mode', isDark);
-        if (typeof Chart !== 'undefined') {
-          Chart.defaults.color = isDark ? '#98A2B3' : '#667085';
-          Chart.defaults.borderColor = isDark ? '#2A3A5E' : '#F2F4F7';
-          Object.values(charts).forEach(function (c) {
-            if (!c) return;
-            if (c.options.scales) {
-              Object.values(c.options.scales).forEach(function (s) {
-                if (s.grid)  s.grid.color  = isDark ? '#2A3A5E' : '#F2F4F7';
-                if (s.ticks) s.ticks.color = isDark ? '#98A2B3' : '#667085';
-              });
-            }
-            c.update('none');
+        var a = x.aktual, f = x.forecast, labels = a.labels.slice(), pad = function (n) { return new Array(n).fill(null); };
+        var ds = [{ 
+            label: 'Aktual', 
+            data: a.values.concat(f ? pad(f.labels.length) : []), 
+            borderColor: '#1F3A5F', // Warna Navy (Sesuai legenda)
+            backgroundColor: 'transparent', 
+            tension: 0.3, 
+            pointRadius: 1.5, 
+            borderWidth: 2.5,
+            pointBackgroundColor: '#1F3A5F'
+        }];
+        
+        if (f) {
+          labels = labels.concat(f.labels);
+          ds.push({ 
+              label: 'Prediksi', 
+              data: pad(a.labels.length).concat(f.prediksi), 
+              borderColor: '#3A86FF', // Warna Biru (Sesuai legenda)
+              borderDash: [6, 4], 
+              backgroundColor: 'transparent', 
+              tension: 0.3, 
+              pointRadius: 2,
+              borderWidth: 2.5,
+              pointBackgroundColor: '#3A86FF'
           });
+          ds.push({ 
+              label: 'Interval', 
+              data: pad(a.labels.length).concat(f.lower), 
+              borderColor: 'rgba(58,134,255,0.4)', 
+              backgroundColor: 'rgba(58,134,255,0.15)', 
+              fill: '+1', 
+              pointRadius: 0 
+          });
+          ds.push({ 
+              label: 'Batas Atas', 
+              data: pad(a.labels.length).concat(f.upper), 
+              borderColor: 'transparent', 
+              fill: false, 
+              pointRadius: 0 
+          });
+          
+          var ft = $$('#p-tren table.tbl')[1];
+          if (ft) ft.querySelector('tbody').innerHTML = f.labels.map(function (l, i) {
+            return '<tr><td>' + l + '</td><td>' + fmt(f.prediksi[i]) + '</td><td>' + fmt(f.lower[i]) + '</td><td>' + fmt(f.upper[i]) + '</td></tr>'; }).join('');
         }
-      });
+        
+        setChart('c-forecast', { 
+          type: 'line', 
+          data: { labels: labels, datasets: ds },
+          options: { 
+            interaction: { mode: 'index', intersect: false }, 
+            plugins: { 
+              legend: { display: false }, 
+              tooltip: { 
+                callbacks: { 
+                  label: function(c){ return ' '+c.dataset.label+': '+(c.parsed.y==null?'-':c.parsed.y.toLocaleString('id-ID')); } 
+                } 
+              } 
+            },
+            scales: { 
+              y: { beginAtZero: true, grid: { color: '#F2F4F7' }, border:{display:false} }, 
+              x: { grid: { display: false }, ticks: { maxTicksLimit: 12 }, border:{display:false} } 
+            } 
+          } 
+        });
+        
+        setText('#p-tren .card-head p', 'Laporan per bulan dari BNPB, ' + a.labels[0] + ' sampai ' + a.labels[a.labels.length - 1] +
+          (f ? ', ditambah prediksi ke depan.' : '. Prediksi belum tersedia: letakkan forecast.csv di data/processed.'));
+        if (!f) { var ft2 = $$('#p-tren table.tbl')[1]; if (ft2) ft2.querySelector('tbody').innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--muted)">Belum ada hasil prediksi.</td></tr>'; }
+        setText('#p-tren .grid-2e .card:nth-child(2) p[style*="center"]', 'Rata-rata laporan per bulan, ' + x.seasonal.periode + '.');
+        afterRender();
+      }).catch(function (e) { console.error('Extra gagal:', e); });
     }
-  });
+
+    /* 7b. Laporan */
+    function loadLaporan() {
+      return api('/api/laporan').then(function (items) {
+        var box = $('#p-laporan .card'); if (!box) return;
+        box.innerHTML = items.map(function (it) {
+          return '<div class="report-card" style="padding:20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px">' +
+            '<div style="display:flex;gap:16px;align-items:center"><div style="width:48px;height:48px;border-radius:12px;background:#E8F1FB;display:flex;align-items:center;justify-content:center;color:var(--blue);font-size:11px;font-weight:800">' + it.tipe + '</div>' +
+            '<div><b style="font-size:15px;color:var(--ink);display:block;margin-bottom:4px">' + it.judul + '</b><span style="font-size:12px;color:var(--muted)">' + it.deskripsi + '</span></div></div>' +
+            '<a class="btn-download" style="text-decoration:none" download href="' + API + '/api/unduh/' + encodeURIComponent(it.kode) + '">Unduh</a></div>'; }).join('');
+      }).catch(function (e) { console.error('Laporan gagal:', e); });
+    }
+
+    /* 8. Prediksi & mitigasi */
+    var simJenis = $('#sim-jenis'), simProv = $('#sim-prov'), simBulan = $('#sim-bulan'), simKep = $('#sim-kepadatan');
+    var LBL = ['Tanpa Dampak', 'Ringan', 'Sedang', 'Berat'];
+
+    function hitungPrediksi() {
+      var jenis = simJenis ? simJenis.value : 'Banjir', prov = simProv ? simProv.value : 'Jawa Tengah';
+      var bulan = simBulan ? simBulan.value : 'Januari', kep = simKep ? simKep.value : 'Sedang';
+      var box = $('#sim-result'), st = $('#sim-status');
+      setText('#sim-val', 'Memproses model ML...'); if (box) box.classList.add('loading'); if (st) st.hidden = true;
+
+      api('/api/prediksi', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ jenis_bencana: jenis, provinsi: prov, bulan: bulan, kepadatan: kep }) })
+      .then(function (d) {
+        var t = d.tingkat;
+        setText('#sim-val', d.label);
+        var bar = $('#sim-bar'); if (bar) { bar.style.width = ((t + 1) * 25) + '%'; bar.style.background = ['#0E9384', '#3A86FF', '#F4A259', '#D92D20'][t]; }
+        var pr = $('#sim-proba');
+        if (pr) pr.innerHTML = d.probabilitas.map(function (p, i) { return '<span class="' + (i === t ? 'on' : '') + '">' + LBL[i] + ' ' + p + '%</span>'; }).join('');
+        setText('#sim-korban', fmt(d.korban) + ' jiwa'); setText('#sim-terdampak', fmt(d.terdampak) + ' jiwa'); setText('#sim-rusak', fmt(d.rusak) + ' unit');
+        var r = d.rentang;
+        setText('#sim-korban-d', r ? 'rentang tipikal ' + fmt(r.korban[0]) + '–' + fmt(r.korban[1]) : '');
+        setText('#sim-terdampak-d', r ? 'rentang tipikal ' + fmt(r.terdampak[0]) + '–' + fmt(r.terdampak[1]) : '');
+        setText('#sim-rusak-d', r ? 'rentang tipikal ' + fmt(r.rusak[0]) + '–' + fmt(r.rusak[1]) : '');
+        setText('#sim-basis', d.n_historis
+          ? 'Tingkat dampak dari model Random Forest. Estimasi angka = median ' + fmt(d.n_historis) + ' laporan BNPB historis (' + d.basis_estimasi + ').'
+          : 'Tingkat dampak dari model Random Forest. Estimasi angka tidak tersedia: ' + d.basis_estimasi + '.');
+        renderMitigasi(t, d.label, jenis, prov, kep);
+      })
+      .catch(function (e) {
+        console.error('Prediksi gagal:', e);
+        setText('#sim-val', 'Prediksi gagal');
+        if (st) { st.hidden = false; st.textContent = 'Gagal memuat prediksi: ' + e.message + '. Pastikan backend berjalan di ' + API + '.'; }
+      })
+      .then(function () { if (box) box.classList.remove('loading'); });
+    }
+
+    function renderMitigasi(t, label, jenis, prov, kep) {
+      var list = $('#mitigation-list'), badge = $('#mitigasi-badge'); if (!list) return;
+      var it = [];
+      if (t >= 3) {
+        it.push({ u: 1, t: 'Evakuasi & peringatan dini', d: 'Aktifkan sirene, evakuasi zona merah, dan siagakan posko darurat di ' + prov + '.' });
+        it.push({ u: 1, t: 'Logistik darurat', d: 'Siapkan tenda, air bersih, dan obat-obatan untuk warga terdampak.' });
+        it.push({ u: 0, t: 'Koordinasi lintas sektor', d: 'Libatkan BNPB, TNI/Polri, dan relawan untuk respons cepat.' });
+      } else if (t === 2) {
+        it.push({ u: 1, t: 'Peningkatan kesiapsiagaan', d: 'Cek jalur evakuasi dan pastikan posko siaga di ' + prov + '.' });
+        it.push({ u: 0, t: 'Sosialisasi warga', d: 'Edukasi mitigasi ' + jenis.toLowerCase() + ' untuk warga.' });
+      } else {
+        it.push({ u: 0, t: 'Pemantauan rutin', d: 'Pantau prakiraan cuaca dan kondisi lingkungan di ' + prov + '.' });
+        it.push({ u: 0, t: 'Kesiapsiagaan dasar', d: 'Pastikan perlengkapan darurat keluarga tersedia.' });
+      }
+      if (jenis === 'Banjir') it.push({ u: 0, t: 'Normalisasi drainase', d: 'Bersihkan saluran air dan sungai di area rawan.' });
+      if (jenis === 'Tanah longsor') it.push({ u: 0, t: 'Penguatan lereng', d: 'Pasang bronjong dan tanam vegetasi penahan di lereng rawan.' });
+      if (jenis === 'Karhutla') it.push({ u: 0, t: 'Patroli api', d: 'Tingkatkan patroli dan deteksi titik panas di lahan gambut.' });
+      if (kep === 'Tinggi' || kep === 'Sangat tinggi') it.push({ u: 0, t: 'Zonasi tata ruang', d: 'Perketat izin bangunan di zona rawan bencana.' });
+      list.innerHTML = it.map(function (x) {
+        return '<li class="' + (x.u ? 'urgent' : '') + '"><span class="m-icon">' + (x.u ? '!' : '✓') + '</span><div><b>' + x.t + '</b>' + x.d + '</div></li>'; }).join('');
+      if (badge) { badge.textContent = label; badge.className = 'pill ' + ['green', 'blue', 'orange', 'red'][t]; }
+      setText('#kpi-tingkat', t + 1); setText('#kpi-rekomendasi', it.length);
+    }
+    [simJenis, simProv, simBulan, simKep].forEach(function (el) { if (el) el.addEventListener('change', hitungPrediksi); });
+
+    /* 9. Export & pencarian */
+    var ex = $('#btn-export');
+    if (ex) ex.addEventListener('click', function () {
+      var rows = [['Provinsi', 'Kejadian']].concat(DATA.topProvinsi.map(function (r) { return [r.nama, r.nilai]; }));
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([rows.map(function (r) { return r.join(','); }).join('\n')], { type: 'text/csv;charset=utf-8;' }));
+      a.download = 'disasterwatch-export.csv'; a.click();
+    });
+    var si = $('#search-input');
+    if (si) si.addEventListener('input', function () {
+      var q = this.value.toLowerCase().trim();
+      var rows = DATA.topProvinsi.filter(function (r) { return r.nama.toLowerCase().indexOf(q) !== -1; });
+      renderTopProvinsi(rows.length ? rows : DATA.topProvinsi);
+    });
+
+    /* 10. Mulai */
+    var autoChk = $('#set-autorefresh'), timer = null;
+    function setAuto(on) {
+      try { localStorage.setItem('dw-auto', on ? '1' : '0'); } catch (e) {}
+      clearInterval(timer);
+      if (on) timer = setInterval(function () { loadOverview(); loadMeta(); loadExtra(); loadPeta(); loadLaporan(); }, 300000);
+    }
+    if (autoChk) {
+      var sa = null; try { sa = localStorage.getItem('dw-auto'); } catch (e) {}
+      autoChk.checked = sa === '1'; setAuto(autoChk.checked);
+      autoChk.addEventListener('change', function () { setAuto(autoChk.checked); });
+    }
+
+    // Inisialisasi Global Chart.js untuk gaya Storytelling
+    if (hasChart) {
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.font.size = 12;
+        Chart.defaults.color = '#667085';
+        Chart.defaults.plugins.tooltip.backgroundColor = '#0F1B2D';
+        Chart.defaults.plugins.tooltip.titleFont = { size: 13, weight: 'bold' };
+        Chart.defaults.plugins.tooltip.bodyFont = { size: 13 };
+        Chart.defaults.plugins.tooltip.padding = 10;
+        Chart.defaults.plugins.tooltip.cornerRadius = 8;
+    }
+
+    loadOverview(); loadMeta(); loadExtra(); loadPeta(); loadLaporan(); hitungPrediksi();
+    setText('#model-badge', 'Random Forest');
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', main); else main();
 })();

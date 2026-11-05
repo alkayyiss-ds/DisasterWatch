@@ -1,0 +1,90 @@
+/* ui-patch.css — tambahan perbaikan UI/UX (muat SETELAH style.css) */
+html { scroll-behavior: smooth; }
+
+/* Fokus keyboard yang jelas */
+.nav-item:focus-visible, .icon-btn:focus-visible, .btn-primary:focus-visible,
+.select:focus-visible, .btn-download:focus-visible, input:focus-visible + .slider {
+  outline: 3px solid rgba(46,117,182,.45); outline-offset: 2px;
+}
+.nav-item[aria-current="page"] { font-weight: 700; }
+
+/* Filter bar halaman Tren: rapi, sejajar, responsif */
+#p-tren .filterbar { display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-end; }
+#p-tren .filter-group { flex: 1 1 200px; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+#p-tren .filter-group label { font-size: 12px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+#p-tren .filter-group .select { width: 100%; }
+#p-tren .filterbar > div:last-child { display: flex; flex-wrap: wrap; gap: 16px; padding-bottom: 12px; }
+#p-tren .filterbar > div:last-child label { font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; cursor: pointer; }
+
+/* Placeholder grafik kosong / belum ada data (dengan efek blur kaca) */
+.chart-wrap { position: relative; }
+.chart-empty {
+  position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 8px; text-align: center; padding: 24px; background: rgba(255,255,255,0.85); backdrop-filter: blur(4px);
+  color: var(--muted); font-size: 14px; line-height: 1.5; border-radius: 12px; z-index: 2; pointer-events: none;
+}
+.chart-empty b { color: var(--ink); font-size: 15px; }
+
+/* Panel notifikasi (dengan efek kaca / glassmorphism) */
+.notif-panel {
+  background: rgba(255,255,255,0.95) !important; 
+  backdrop-filter: blur(20px); 
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.8) !important;
+  box-shadow: 0 24px 48px -12px rgba(16,24,40,0.15) !important;
+}
+.notif-header { background: var(--navy) !important; }
+.notif-empty { padding: 32px 16px; text-align: center; color: var(--muted); font-size: 13px; }
+
+/* Tabel & kartu: sentuhan kecil */
+.tbl tbody tr { transition: background .15s ease; }
+.tbl tbody tr:hover { background: rgba(249,250,251,0.9); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  .page.on .anim-card { opacity: 1 !important; }
+}
+
+/* ============================================================
+   FIX PAKSA: MEMPERBAIKI DROPDOWN YANG TUMPANG TINDIH
+   ============================================================ */
+select.select {
+  appearance: auto !important; 
+  -webkit-appearance: auto !important;
+  -moz-appearance: auto !important;
+  padding: 10px 16px !important;
+  height: 40px !important; 
+  min-height: 40px !important;
+  line-height: 1.5 !important;
+  background-image: none !important; 
+  background-color: #ffffff !important;
+  border-radius: 10px !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02) !important;
+}
+
+select.select option {
+  padding: 12px !important;
+  line-height: 1.5 !important;
+  background-color: #ffffff !important;
+  color: #101828 !important;
+}
+
+#p-peta .filter-group select {
+  padding: 10px 16px !important;
+  line-height: 1.5 !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  appearance: auto !important;
+  -webkit-appearance: auto !important;
+  -moz-appearance: auto !important;
+  background-image: none !important;
+  background-color: #fff !important;
+  border-radius: 10px !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02) !important;
+}
+#p-peta .filter-group select option {
+  padding: 12px !important;
+  background-color: #ffffff !important;
+  color: #101828 !important;
+}

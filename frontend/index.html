@@ -8,10 +8,14 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap">
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/ui-patch.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
+<!-- Library Eksternal -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- Script Custom -->
 <script src="js/data_asli.js"></script>
 <script src="js/app.js"></script>
 
@@ -99,6 +103,135 @@
     .grid-4 { grid-template-columns: 1fr; }
     .filterbar { flex-direction: column; align-items: stretch; }
   }
+
+  /* --- PANEL NOTIFIKASI DROPDOWN --- */
+  .notif-panel {
+    position: absolute;
+    top: 64px;
+    right: 28px;
+    width: min(380px, calc(100vw - 32px));
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 12px 32px -8px rgba(16,24,40,0.15);
+    border: 1px solid var(--line);
+    z-index: 1000;
+    overflow: hidden;
+    animation: fadeInDown 0.2s ease-out;
+  }
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .notif-header {
+    background: var(--navy);
+    color: #fff;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .notif-header h3 {
+    margin: 0;
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .close-btn {
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: #fff;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .close-btn:hover { background: rgba(255,255,255,0.2); }
+  .notif-body {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .notif-item {
+    display: flex;
+    gap: 12px;
+    padding: 16px;
+    border-radius: 10px;
+    background: #F9FAFB;
+    border: 1px solid var(--line-2);
+    position: relative;
+  }
+  .notif-item.unread {
+    background: #F0FDF4;
+    border-color: #D1FADF;
+  }
+  .notif-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #0E9384;
+    position: absolute;
+    top: 16px;
+    left: 10px;
+  }
+  .notif-item.unread .notif-content { margin-left: 12px; }
+  .notif-content { flex: 1; min-width: 0; }
+  .notif-content b {
+    display: block;
+    font-size: 12px;
+    color: var(--ink);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+  }
+  .notif-content p {
+    margin: 0 0 6px;
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+  .notif-time { font-size: 11.5px; color: var(--muted-2); }
+  .notif-trash {
+    align-self: flex-start;
+    flex: none;
+    background: none;
+    border: none;
+    color: var(--muted-2);
+    cursor: pointer;
+    padding: 4px;
+  }
+  .notif-trash:hover { color: var(--red); }
+  @media (max-width: 600px) {
+    .notif-panel {
+      top: 60px;
+      right: 12px;
+      width: calc(100vw - 24px);
+    }
+  }
+
+  /* --- FIX DROPDOWN PETA WILAYAH --- */
+  #p-peta .filter-group select {
+    padding: 8px 12px !important;
+    line-height: 1.5 !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    appearance: auto !important;
+    -webkit-appearance: auto !important;
+    -moz-appearance: auto !important;
+    background-image: none !important;
+  }
+  #p-peta .filter-group select option {
+    padding: 10px;
+    line-height: 1.5;
+    background-color: #ffffff;
+    color: #101828;
+  }
 </style>
 </head>
 <body>
@@ -117,34 +250,34 @@
     </div>
 
     <div class="nav-section">Menu Utama</div>
-    <button class="nav-item on" data-t="overview">
+    <button type="button" class="nav-item on" data-t="overview">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
       <span class="lbl-txt">Overview</span>
     </button>
-    <button class="nav-item" data-t="peta">
+    <button type="button" class="nav-item" data-t="peta">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 4l6 2 6-2v16l-6 2-6-2-6 2V6z"/><path d="M9 4v16M15 6v16"/></svg>
       <span class="lbl-txt">Peta Wilayah</span>
     </button>
-    <button class="nav-item" data-t="prediksi">
+    <button type="button" class="nav-item" data-t="prediksi">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>
       <span class="lbl-txt">Prediksi Dampak</span>
       <span class="nav-badge">ML</span>
     </button>
-    <button class="nav-item" data-t="klaster">
+    <button type="button" class="nav-item" data-t="klaster">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="8" r="3"/><circle cx="17" cy="9" r="3"/><circle cx="12" cy="17" r="3"/></svg>
       <span class="lbl-txt">Klaster Risiko</span>
     </button>
-    <button class="nav-item" data-t="tren">
+    <button type="button" class="nav-item" data-t="tren">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>
       <span class="lbl-txt">Tren &amp; Prediksi</span>
     </button>
 
     <div class="nav-section">Lainnya</div>
-    <button class="nav-item" data-t="laporan">
+    <button type="button" class="nav-item" data-t="laporan">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
       <span class="lbl-txt">Laporan</span>
     </button>
-    <button class="nav-item" data-t="pengaturan">
+    <button type="button" class="nav-item" data-t="pengaturan">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
       <span class="lbl-txt">Pengaturan</span>
     </button>
@@ -161,7 +294,7 @@
   <!-- MAIN -->
   <main class="main">
     <div class="topbar">
-      <button class="icon-btn" id="btn-toggle-sidebar" aria-label="Toggle Sidebar" style="margin-right: 4px;">
+      <button type="button" class="icon-btn" id="btn-toggle-sidebar" aria-label="Toggle Sidebar" style="margin-right: 4px;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
       </button>
       <div class="search">
@@ -169,12 +302,44 @@
         <input id="search-input" placeholder="Cari provinsi, jenis bencana, atau laporan…">
       </div>
       <div class="topbar-actions">
-        <button class="icon-btn" aria-label="Notifikasi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="dot"></span></button>
-        <button class="icon-btn" aria-label="Pengaturan"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+        <button type="button" class="icon-btn" id="btn-notif" aria-label="Notifikasi" aria-controls="notif-panel" aria-expanded="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="dot"></span></button>
+        <button type="button" class="icon-btn" aria-label="Pengaturan"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
         <div class="divider-v"></div>
-        <button class="btn-primary" id="btn-export"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Export</button>
+        <button type="button" class="btn-primary" id="btn-export"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Export</button>
       </div>
     </div>
+
+    <!-- ===== PANEL NOTIFIKASI ===== -->
+    <div id="notif-panel" class="notif-panel" style="display: none;" role="dialog" aria-label="Pemberitahuan">
+      <div class="notif-header">
+        <h3>Pemberitahuan</h3>
+        <button type="button" id="close-notif" class="close-btn" aria-label="Tutup">&times;</button>
+      </div>
+      <div class="notif-body">
+        <div class="notif-item unread">
+          <div class="notif-dot"></div>
+          <div class="notif-content">
+            <b>TUGAS BARU</b>
+            <p>Anda mempunyai tugas baru untuk matakuliah Neuro Computing dengan judul 11. Image Retrieval</p>
+            <span class="notif-time">14 jam yang lalu</span>
+          </div>
+          <button type="button" class="notif-trash" aria-label="Hapus notifikasi">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          </button>
+        </div>
+        <div class="notif-item">
+          <div class="notif-content">
+            <b>PRESENSI KULIAH</b>
+            <p>Dosen telah membuka presensi untuk matakuliah Neuro Computing</p>
+            <span class="notif-time">15 jam yang lalu</span>
+          </div>
+          <button type="button" class="notif-trash" aria-label="Hapus notifikasi">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
 
     <!-- OVERVIEW -->
     <section class="page on" id="p-overview">
@@ -199,22 +364,19 @@
           <label>Jenis</label>
           <select class="select" id="f-jenis">
             <option value="semua">Semua bencana</option>
-            <option value="banjir">Banjir</option>
-            <option value="karhutla">Karhutla</option>
-            <option value="cuaca">Cuaca ekstrem</option>
-            <option value="longsor">Tanah longsor</option>
+            <option value="BANJIR">Banjir</option>
+            <option value="KEBAKARAN HUTAN DAN LAHAN">Karhutla</option>
+            <option value="CUACA EKSTREM">Cuaca ekstrem</option>
+            <option value="TANAH LONGSOR">Tanah longsor</option>
           </select>
         </div>
         <div class="filter-group">
           <label>Provinsi</label>
           <select class="select" id="f-prov">
             <option value="semua">Semua provinsi</option>
-            <option value="jateng">Jawa Tengah</option>
-            <option value="jatim">Jawa Timur</option>
-            <option value="jabar">Jawa Barat</option>
           </select>
         </div>
-        <button class="reset" id="f-reset"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg> Reset</button>
+        <button type="button" class="reset" id="f-reset"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg> Reset</button>
       </div>
 
       <div class="kpis" id="kpi-row">
@@ -246,7 +408,7 @@
 
       <div class="grid-2">
         <div class="card">
-          <div class="card-head"><div><h3>Tren Kejadian Bulanan</h3><p>Data Tahun 2026</p></div><button class="card-menu">⋯</button></div>
+          <div class="card-head"><div><h3>Tren Kejadian Bulanan</h3><p>Data Tahun 2026</p></div><button type="button" class="card-menu">⋯</button></div>
           <div class="chart-wrap"><canvas id="c-monthly"></canvas></div>
         </div>
         <div class="card">
@@ -275,15 +437,22 @@
     <section class="page" id="p-peta">
       <div class="page-head"><div><div class="crumb"><span>Dashboard</span> / <b>Peta Wilayah</b></div><h1>Peta Risiko Wilayah</h1><p>Sebaran dan intensitas kejadian per provinsi</p></div></div>
       <div class="filterbar">
-        <div class="filter-group"><label>Periode</label><select class="select"><option>2015 – 2026</option><option>2024 – 2026</option></select></div>
+        <!-- DROPDOWN PERIODE DIPERBAIKI & DISESUAIKAN UNTUK STORYTELLING -->
+        <div class="filter-group">
+          <label>Periode</label>
+          <select class="select" id="map-filter-periode" style="appearance: auto; -webkit-appearance: auto; padding: 8px 12px; height: 38px; line-height: 1.5; width: 100%;">
+            <option value="2015">Gambaran Keseluruhan (2015 – 2026)</option>
+            <option value="2024">Fokus Tren Terkini (2024 – 2026)</option>
+          </select>
+        </div>
         <div class="filter-group">
           <label>Jenis</label>
           <select class="select" id="map-filter-jenis">
             <option value="semua">Semua bencana</option>
-            <option value="banjir">Banjir</option>
-            <option value="karhutla">Karhutla</option>
-            <option value="cuaca">Cuaca ekstrem</option>
-            <option value="longsor">Tanah longsor</option>
+            <option value="BANJIR">Banjir</option>
+            <option value="KEBAKARAN HUTAN DAN LAHAN">Karhutla</option>
+            <option value="CUACA EKSTREM">Cuaca ekstrem</option>
+            <option value="TANAH LONGSOR">Tanah longsor</option>
           </select>
         </div>
       </div>
@@ -539,15 +708,15 @@
       <div class="card anim-card" style="padding: 0;">
         <div class="report-card" style="padding: 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center;">
           <div style="display: flex; gap: 16px; align-items: center;"><div style="width: 48px; height: 48px; border-radius: 12px; background: #E8F1FB; display: flex; align-items: center; justify-content: center; color: var(--blue);"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div><b style="font-size: 15px; color: var(--ink); display: block; margin-bottom: 4px;">Dataset BNPB (CSV)</b><span style="font-size: 12px; color: var(--muted);">Data mentah 44.280 kejadian · 30 MB · Rilis 5 Nov 2026</span></div></div>
-          <button class="btn-download"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Unduh</button>
+          <button type="button" class="btn-download"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Unduh</button>
         </div>
         <div class="report-card" style="padding: 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center;">
           <div style="display: flex; gap: 16px; align-items: center;"><div style="width: 48px; height: 48px; border-radius: 12px; background: #FFF1E2; display: flex; align-items: center; justify-content: center; color: #FB5607;"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="8" r="3"/><circle cx="17" cy="9" r="3"/><circle cx="12" cy="17" r="3"/></svg></div><div><b style="font-size: 15px; color: var(--ink); display: block; margin-bottom: 4px;">Hasil Klasterisasi Risiko Wilayah (CSV)</b><span style="font-size: 12px; color: var(--muted);">Profil 4 klaster risiko · 1 MB · Rilis 5 Nov 2026</span></div></div>
-          <button class="btn-download"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Unduh</button>
+          <button type="button" class="btn-download"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Unduh</button>
         </div>
         <div class="report-card" style="padding: 20px; display: flex; justify-content: space-between; align-items: center;">
           <div style="display: flex; gap: 16px; align-items: center;"><div style="width: 48px; height: 48px; border-radius: 12px; background: #D1FADF; display: flex; align-items: center; justify-content: center; color: var(--green);"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div><b style="font-size: 15px; color: var(--ink); display: block; margin-bottom: 4px;">Laporan Evaluasi Model &amp; Mitigasi (PDF)</b><span style="font-size: 12px; color: var(--muted);">Metrik akurasi &amp; interpretasi clustering · 4 MB · Rilis 5 Nov 2026</span></div></div>
-          <button class="btn-download"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Unduh</button>
+          <button type="button" class="btn-download"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Unduh</button>
         </div>
       </div>
     </section>
