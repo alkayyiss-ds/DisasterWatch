@@ -1,4 +1,4 @@
-# DisasterWatch
+# DisasterWatch.
 
 Analisis dan pemantauan data bencana Indonesia bersumber dari **Geoportal Data Bencana Indonesia (BNPB)** — <https://gis.bnpb.go.id>.
 
