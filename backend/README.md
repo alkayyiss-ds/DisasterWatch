@@ -1,17 +1,21 @@
-# DisasterWatch — Backend Prediksi Dampak
+# DisasterWatch — Backend & Model Prediksi Dampak
 
-API **FastAPI** yang menerapkan model klasifikasi terbaik (**Random Forest**) pada halaman
-**Prediksi Dampak** di dashboard (`frontend/index.html`).
+Folder ini berisi model klasifikasi terbaik (**Random Forest**) untuk halaman **Prediksi Dampak**, API **FastAPI**,
+dan skrip yang mengekspor semuanya menjadi file statis agar dashboard (`frontend/dashboard.html`) bisa di-deploy
+**tanpa server backend**.
 
 ```
 backend/
-├─ app.py            # API + menyajikan folder frontend/
-├─ dw_model.py       # pembersihan data, label severity, fitur (dipakai pelatihan & prediksi)
-├─ train_model.py    # melatih, mengevaluasi, dan menyimpan model ke backend/models/
-├─ mitigasi.py       # basis aturan rekomendasi mitigasi
+├─ dw_model.py          # pembersihan data, label severity, fitur (dipakai pelatihan & prediksi)
+├─ train_model.py       # melatih, mengevaluasi, dan menyimpan model ke backend/models/
+├─ mitigasi.py          # basis aturan rekomendasi mitigasi
+├─ export_static.py     # data dashboard → frontend/data/*.json, lalu memanggil export_js_model.py
+├─ export_js_model.py   # model Random Forest → frontend/js/model/*.js (prediksi di browser)
+├─ app.py               # API FastAPI (opsional): /api/dashboard-data, /api/prediksi
+├─ extra_api.py         # API tambahan: overview, klaster, tren, laporan, unduh
 ├─ requirements.txt
-├─ models/           # dibuat otomatis oleh train_model.py (tidak di-commit)
-└─ tests/test_api.py
+├─ models/              # dibuat otomatis oleh train_model.py (tidak di-commit)
+└─ tests/               # test_api.py (API) & test_js_model.py (model JavaScript = API)
 ```
 
 ## Cara menjalankan
@@ -27,53 +31,52 @@ pip install -r backend/requirements.txt
 # 2. Latih model (±40 detik) → backend/models/
 python backend/train_model.py
 
-# 3. Jalankan server
-uvicorn backend.app:app --reload --port 8000
+# 3. Buat file statis untuk dashboard: frontend/data/*.json + frontend/js/model/*.js
+python backend/export_static.py
+
+# 4. Buka dashboard (server statis apa saja)
+cd frontend ; python -m http.server 8001     # http://localhost:8001/dashboard.html
 ```
 
-Lalu buka:
-- **http://localhost:8000**: dashboard; pilih menu *Prediksi Dampak*
-- **http://localhost:8000/docs**: dokumentasi interaktif API (bisa mencoba prediksi langsung)
+Untuk deploy, unggah folder `frontend/` ke GitHub Pages, Netlify, atau Vercel. Halaman lain membaca
+`frontend/data/*.json` lewat `fetch`, jadi dashboard perlu dibuka lewat http(s), bukan `file://`.
+Halaman Prediksi Dampak sendiri tetap berjalan meskipun dibuka langsung dari file.
 
-Jika langkah 2 terlewat, server otomatis melatih model saat pertama kali dijalankan.
-`frontend/index.html` juga tetap bisa dibuka langsung dari file atau Live Server. Prediksi akan dipanggil
-ke `http://localhost:8000` selama server berjalan. Jika server mati, halaman menampilkan petunjuk cara menyalakannya.
+API FastAPI tidak wajib untuk dashboard, tetapi berguna untuk pengujian dan dokumentasi:
 
-Uji otomatis: `pytest backend/tests -q`
+```powershell
+uvicorn backend.app:app --reload --port 8000  # http://localhost:8000/docs
+```
 
-## Endpoint
+Uji otomatis: `pytest backend/tests -q` (tes model JavaScript butuh Node.js; tanpa Node tes itu dilewati).
+
+## Endpoint API
 
 | Metode | Path | Fungsi |
 |---|---|---|
-| GET | `/api/health` | status server & versi model |
-| GET | `/api/prediksi/meta` | opsi dropdown (10 jenis bencana, 38 provinsi, 12 bulan), metrik model, faktor risiko dominan, ringkasan klaster, nilai KPI |
-| POST | `/api/prediksi` | prediksi tingkat dampak + estimasi korban/terdampak/kerusakan + profil klaster provinsi + rekomendasi mitigasi |
+| GET | `/api/dashboard-data` | KPI, top provinsi, komposisi jenis, faktor risiko model |
+| GET | `/api/overview?tahun=&jenis=&provinsi=&dari=` | ringkasan Overview & Peta (tahun=0 terbaru, tahun<0 semua tahun) |
+| GET | `/api/extra` | klaster risiko & jenis dominan |
+| GET | `/api/tren?seri=&model=&horizon=` | aktual, uji, dan prediksi tren bulanan |
+| GET | `/api/laporan`, `/api/unduh/{kode}` | daftar & unduhan file laporan |
+| POST | `/api/prediksi` | tingkat dampak (Random Forest) + estimasi korban/terdampak/kerusakan |
 
-Contoh request `POST /api/prediksi`:
-
-```json
-{ "jenis_bencana": "Banjir", "provinsi": "Jawa Tengah", "bulan": "Januari", "kepadatan_penduduk": "Sedang" }
-```
-
-`jenis_bencana` menerima kode BNPB (`BANJIR`) atau label (`Banjir`, `Karhutla`, `Gempa bumi`). `provinsi`
-menerima nama (`Jawa Tengah`/`JAWA TENGAH`) atau `id_prov` (`33`). `bulan` menerima nama atau angka 1–12.
-`tahun` opsional (default tahun berjalan).
-
-Potongan respons:
+Contoh `POST /api/prediksi`:
 
 ```json
-{
-  "prediksi": { "kelas": "Berat", "probabilitas": 0.60,
-                "peluang": [{"kelas": "Tanpa Dampak", "p": 0.04}, {"kelas": "Ringan", "p": 0.02},
-                            {"kelas": "Sedang", "p": 0.34}, {"kelas": "Berat", "p": 0.60}] },
-  "estimasi": { "korban_jiwa": {"teks": "Umumnya 0 jiwa", "detail": "11% laporan serupa ada korban jiwa"},
-                "terdampak":   {"teks": "~ 3.151 jiwa", "detail": "rentang umum 944–13.417"},
-                "kerusakan":   {"teks": "~ 613 unit",   "detail": "rentang umum 185–2.402"},
-                "basis": "Median dari 179 laporan banjir kategori \"Berat\" di Jawa Tengah (sejak 2024)" },
-  "klaster_provinsi": { "klaster": 1, "pendek": "Tingkat II - Kronis/Multi-Hazard" },
-  "mitigasi": [ { "t": "Aktifkan posko & status siaga darurat", "sumber": "Tingkat dampak", "urgent": true }, "..." ]
-}
+{ "jenis_bencana": "Banjir", "provinsi": "Jawa Tengah", "bulan": "Januari", "kepadatan": "Sedang" }
 ```
+
+```json
+{ "tingkat": 3, "label": "Berat", "probabilitas": [4, 2, 34, 60],
+  "korban": 0, "terdampak": 3151, "rusak": 613,
+  "rentang": { "korban": [0, 0], "terdampak": [944, 13417], "rusak": [185, 2402] },
+  "basis_estimasi": "provinsi & jenis (2024+)", "n_historis": 179 }
+```
+
+`jenis_bencana` menerima kode BNPB (`BANJIR`), label (`Banjir`, `Karhutla`), atau alias (`gempa`, `longsor`).
+`provinsi` menerima nama (`Jawa Tengah` / `JAWA TENGAH`). `bulan` menerima nama atau angka 1–12.
+Input yang tidak dikenal menghasilkan HTTP 400.
 
 ## Model
 
@@ -92,16 +95,36 @@ tingkat kab/kota dan koordinat titik kejadian. Halaman Prediksi Dampak hanya mem
 sehingga model deployment memakai fitur tingkat provinsi. Akurasinya turun sedikit (0,697), tetapi model ini bisa dipakai
 langsung dari input halaman.
 
+## Model versi JavaScript (Prediksi Dampak tanpa server)
+
+```
+frontend/js/model/
+├─ rf_forest.js   # 300 pohon Random Forest (di-generate, ±1,8 MB; ±620 KB setelah gzip)
+├─ dw_lookup.js   # provinsi, riwayat, estimasi dampak, klaster, aturan mitigasi.py (di-generate)
+└─ dw_model.js    # logika prediksi: fitur → 300 pohon → peluang kelas → estimasi & mitigasi (ditulis manual)
+```
+
+- `DWModel.prediksi(body)` menghasilkan JSON yang **sama persis** dengan `POST /api/prediksi`.
+  `frontend/js/data.js` memakainya untuk halaman Prediksi Dampak. Jika folder `js/model/` tidak ada,
+  halaman kembali memakai tabel `frontend/data/prediksi.json`.
+- `DWModel.mitigasi(tingkat, jenis, kepadatan, provinsi)` menyusun rekomendasi dengan aturan `mitigasi.py`
+  (tingkat dampak, jenis bencana, kepadatan, dan klaster dominan provinsi).
+- `export_js_model.py` menjalankan setiap pohon untuk seluruh input halaman
+  (10 jenis × 38 provinsi × 12 bulan = 4.560 kombinasi) dan membuang cabang yang tidak pernah dilalui,
+  sehingga node berkurang dari ±849 ribu menjadi ±103 ribu. Ambang split dan isi daun tidak diubah,
+  dan skrip memverifikasi bahwa peluangnya sama dengan model asli sebelum menulis file.
+- `DW_JS_FULL=1 pytest backend/tests/test_js_model.py` membandingkan JavaScript dengan API untuk ke-4.560 kombinasi.
+- Model di browser memprediksi untuk tahun data terakhir (2026) ke atas, sama dengan API yang memakai tahun berjalan.
+
 ## Batasan yang perlu diketahui
 
 - **Kepadatan penduduk tidak dipakai model**, karena tidak ada di data BNPB. Input ini hanya memengaruhi rekomendasi mitigasi
   (mis. "Prioritaskan evakuasi kawasan padat"). Untuk memakainya sebagai fitur, tambahkan data kepadatan BPS per provinsi/kab-kota.
-- **Estimasi korban/terdampak/kerusakan bukan keluaran model.** Angkanya adalah median (dan rentang kuartil) dari laporan historis
-  dengan jenis bencana dan kategori dampak yang sama, diutamakan dari provinsi yang sama dan sejak 2024 (era pelaporan terbaru).
-- **Rekomendasi mitigasi berbasis aturan** (`mitigasi.py`), yang menggabungkan tingkat dampak terprediksi, jenis bencana,
-  kepadatan, dan klaster dominan provinsi.
+- **Estimasi korban/terdampak/kerusakan bukan keluaran model.** Angkanya adalah median (dan rentang kuartil) dari minimal 5 laporan
+  historis dengan jenis bencana dan tingkat dampak yang sama, diutamakan dari provinsi yang sama dan sejak 2024 (era pelaporan terbaru).
+- **Rekomendasi mitigasi berbasis aturan** (`mitigasi.py`), bukan keluaran model ML.
 - **Profil klaster provinsi** diambil dari `bnpb_disaster_clusters.csv`. File itu berisi 1.041 baris untuk 526 `id_kab` unik
   (nama kab/kota tercatat ganda dengan kapitalisasi berbeda, dan 348 kab/kota mendapat klaster berbeda di baris duplikatnya).
-  Backend memakai satu baris per `id_kab`, yaitu baris dengan `total_laporan` terbanyak. Sebaiknya normalisasi nama kab/kota
+  Model memakai satu baris per `id_kab`, yaitu baris dengan `total_laporan` terbanyak. Sebaiknya normalisasi nama kab/kota
   dilakukan di tahap clustering.
 - Versi scikit-learn saat melatih dan menjalankan server harus sama. Jika berbeda, jalankan ulang `train_model.py`.

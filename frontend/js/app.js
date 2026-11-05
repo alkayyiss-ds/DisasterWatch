@@ -392,6 +392,27 @@
     /* 11. Prediksi & Mitigasi */
     var simJenis = $('#sim-jenis'), simProv = $('#sim-prov'), simBulan = $('#sim-bulan'), simKep = $('#sim-kepadatan');
     var LBL = ['Tanpa Dampak', 'Ringan', 'Sedang', 'Berat'];
+    var MODEL = window.DWModel || null;   // model Random Forest di browser (js/model/dw_model.js)
+
+    // Dropdown lengkap dari model: 9 jenis bencana & 38 provinsi (pilihan saat ini dipertahankan)
+    function isiPilihan(sel, labels) {
+      if (!sel || !labels.length) return;
+      var cur = sel.value;
+      sel.innerHTML = labels.map(function (l) { return '<option>' + l + '</option>'; }).join('');
+      if (labels.indexOf(cur) > -1) sel.value = cur;
+    }
+    if (MODEL) {
+      try {
+        var opsi = MODEL.opsi(), inf = MODEL.info();
+        isiPilihan(simJenis, opsi.jenis.map(function (j) { return j.label; }));
+        isiPilihan(simProv, opsi.provinsi.map(function (p) { return p.label; }));
+        var mb = $('#model-badge');
+        if (mb && inf.metrik && inf.metrik.accuracy != null) {
+          mb.title = 'Random Forest ' + inf.n_pohon + ' pohon, berjalan di browser · akurasi uji ' +
+                     inf.metrik.accuracy.toFixed(3).replace('.', ',') + ' · MSE ' + inf.metrik.mse.toFixed(4).replace('.', ',');
+        }
+      } catch (e) { console.error('Model JavaScript gagal dimuat:', e); MODEL = null; }
+    }
 
     function hitungPrediksi() {
       var jenis = simJenis ? simJenis.value : 'Banjir', prov = simProv ? simProv.value : 'Jawa Tengah';
@@ -420,7 +441,11 @@
       .catch(function (e) {
         console.error('Prediksi gagal:', e);
         setText('#sim-val', 'Prediksi gagal');
-        if (st) { st.hidden = false; st.textContent = 'Gagal memuat prediksi: ' + e.message + '. Pastikan folder data/ ada dan halaman dibuka lewat server (bukan file://).'; }
+        if (st) {
+          st.hidden = false;
+          st.textContent = 'Gagal memuat prediksi: ' + e.message + (MODEL ? '' :
+            '. Pastikan folder js/model/ (atau data/prediksi.json) ikut di-deploy dan halaman dibuka lewat server.');
+        }
       })
       .then(function () { if (box) box.classList.remove('loading'); });
     }
@@ -428,7 +453,13 @@
     function renderMitigasi(t, label, jenis, prov, kep) {
       var list = $('#mitigation-list'), badge = $('#mitigasi-badge'); if (!list) return;
       var it = [];
-      if (t >= 3) {
+      if (MODEL) {
+        // Aturan backend/mitigasi.py: tingkat dampak + jenis bencana + kepadatan + klaster dominan provinsi
+        var mt = MODEL.mitigasi(t, jenis, kep, prov), k = mt.klaster;
+        it = mt.rekomendasi.map(function (m) { return { u: m.urgent ? 1 : 0, t: m.t, d: m.d, s: m.sumber }; });
+        setText('#mitigasi-sub', (k ? 'Klaster ' + k.klaster + ' — ' + k.pendek.replace(/^Tingkat [IV]+ - /, '') + ' · ' : '') +
+                                 prov + ' · prediksi ' + label);
+      } else if (t >= 3) {
         it.push({ u: 1, t: 'Evakuasi & peringatan dini', d: 'Aktifkan sirene, evakuasi zona merah, dan siagakan posko darurat di ' + prov + '.' });
         it.push({ u: 1, t: 'Logistik darurat', d: 'Siapkan tenda, air bersih, dan obat-obatan untuk warga terdampak.' });
         it.push({ u: 0, t: 'Koordinasi lintas sektor', d: 'Libatkan BNPB, TNI/Polri, dan relawan untuk respons cepat.' });
@@ -439,12 +470,15 @@
         it.push({ u: 0, t: 'Pemantauan rutin', d: 'Pantau prakiraan cuaca dan kondisi lingkungan di ' + prov + '.' });
         it.push({ u: 0, t: 'Kesiapsiagaan dasar', d: 'Pastikan perlengkapan darurat keluarga tersedia.' });
       }
-      if (jenis === 'Banjir') it.push({ u: 0, t: 'Normalisasi drainase', d: 'Bersihkan saluran air dan sungai di area rawan.' });
-      if (jenis === 'Tanah longsor') it.push({ u: 0, t: 'Penguatan lereng', d: 'Pasang bronjong dan tanam vegetasi penahan di lereng rawan.' });
-      if (jenis === 'Karhutla') it.push({ u: 0, t: 'Patroli api', d: 'Tingkatkan patroli dan deteksi titik panas di lahan gambut.' });
-      if (kep === 'Tinggi' || kep === 'Sangat tinggi') it.push({ u: 0, t: 'Zonasi tata ruang', d: 'Perketat izin bangunan di zona rawan bencana.' });
+      if (!MODEL) {
+        if (jenis === 'Banjir') it.push({ u: 0, t: 'Normalisasi drainase', d: 'Bersihkan saluran air dan sungai di area rawan.' });
+        if (jenis === 'Tanah longsor') it.push({ u: 0, t: 'Penguatan lereng', d: 'Pasang bronjong dan tanam vegetasi penahan di lereng rawan.' });
+        if (jenis === 'Karhutla') it.push({ u: 0, t: 'Patroli api', d: 'Tingkatkan patroli dan deteksi titik panas di lahan gambut.' });
+        if (kep === 'Tinggi' || kep === 'Sangat tinggi') it.push({ u: 0, t: 'Zonasi tata ruang', d: 'Perketat izin bangunan di zona rawan bencana.' });
+      }
       list.innerHTML = it.map(function (x) {
-        return '<li class="' + (x.u ? 'urgent' : '') + '"><span class="m-icon">' + (x.u ? '!' : '✓') + '</span><div><b>' + x.t + '</b>' + x.d + '</div></li>'; }).join('');
+        return '<li class="' + (x.u ? 'urgent' : '') + '"><span class="m-icon">' + (x.u ? '!' : '✓') + '</span><div><b>' + x.t +
+               (x.s ? ' <small style="font-weight:600;color:var(--muted)">· ' + x.s + '</small>' : '') + '</b>' + x.d + '</div></li>'; }).join('');
       if (badge) { badge.textContent = label; badge.className = 'pill ' + ['green', 'blue', 'orange', 'red'][t]; }
       setText('#kpi-tingkat', t + 1); setText('#kpi-rekomendasi', it.length);
     }

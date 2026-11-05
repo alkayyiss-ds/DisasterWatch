@@ -97,7 +97,10 @@
     });
   }
 
+  /* Prediksi Dampak: model Random Forest dijalankan langsung di browser (js/model/dw_model.js).
+     Jika file model tidak dimuat, pakai tabel hasil model yang sudah dihitung (data/prediksi.json). */
   function prediksi(b) {
+    if (g.DWModel) return Promise.resolve().then(function () { return g.DWModel.prediksi(b); });
     return load('prediksi').then(function (P) {
       var bn = BULAN.indexOf(b.bulan) + 1;
       var e = bn ? P[b.jenis_bencana + '|' + b.provinsi + '|' + bn] : null;

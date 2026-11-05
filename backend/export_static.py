@@ -4,7 +4,8 @@ Jalankan dari root repo (venv aktif):
     python backend/export_static.py
     python backend/export_static.py --dengan-dataset   # sertakan CSV dataset besar (>25 MB) untuk tombol Unduh
 
-Hasil: frontend/data/*.json (+ frontend/data/unduh/*) — semua dihitung dari data BNPB, model, dan hasil trend-modeling.
+Hasil: frontend/data/*.json (+ frontend/data/unduh/*) — semua dihitung dari data BNPB, model, dan hasil trend-modeling,
+       serta frontend/js/model/*.js — model Random Forest yang dijalankan di browser (lihat export_js_model.py).
 """
 import argparse
 import json
@@ -166,6 +167,11 @@ def main():
                   "faktor": {"labels": [f["faktor"] for f in fr], "values": [f["bobot"] for f in fr]},
                   "terakhir": {"tanggal": last.strftime("%Y-%m-%d"), "tahun": int(last.year), "bulan_lengkap": int(cut)},
                   "jenis": jenis, "provinsi": provs, "diekspor": datetime.now().isoformat(timespec="seconds")})
+
+    # 8) model Random Forest versi JavaScript → frontend/js/model/ (Prediksi Dampak dihitung di browser)
+    print("Mengekspor model Random Forest ke JavaScript ...")
+    import export_js_model
+    export_js_model.main()
     print("Selesai. Jalankan frontend:  cd frontend ; python -m http.server 8001")
 
 

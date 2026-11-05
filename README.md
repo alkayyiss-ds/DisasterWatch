@@ -49,17 +49,27 @@ Tahap 1 — **download data** ✅ (selesai)
 | TSUNAMI | 9 |
 | GEMPA BUMI DAN TSUNAMI | 5 |
 
-## Dashboard + backend Prediksi Dampak
+## Dashboard + Prediksi Dampak (tanpa backend)
 
-Halaman **Prediksi Dampak** memakai model Random Forest lewat API di folder `backend/`. Dari root repo:
+Dashboard (`frontend/dashboard.html`) berjalan sebagai situs statis:
+
+- data setiap halaman dibaca dari `frontend/data/*.json`;
+- halaman **Prediksi Dampak** menjalankan model Random Forest langsung di browser (`frontend/js/model/`).
+  Hasilnya sama persis dengan API backend (diuji pada seluruh 4.560 kombinasi input).
+
+Membuat ulang file statis setelah data atau model berubah (dari root repo):
 
 ```powershell
 pip install -r backend/requirements.txt
-python backend/train_model.py                 # sekali, ±40 detik
-uvicorn backend.app:app --reload --port 8000  # buka http://localhost:8000
+python backend/train_model.py      # melatih model → backend/models/ (±40 detik)
+python backend/export_static.py    # frontend/data/*.json + frontend/js/model/*.js
 ```
 
-Detail endpoint, model, dan batasannya ada di [`backend/README.md`](backend/README.md).
+Menjalankan secara lokal: `cd frontend ; python -m http.server 8001`, lalu buka `http://localhost:8001/dashboard.html`.
+Untuk deploy, unggah folder `frontend/` ke GitHub Pages, Netlify, atau Vercel.
+
+API FastAPI tetap tersedia bila dibutuhkan: `uvicorn backend.app:app --reload --port 8000` (dokumentasi di `/docs`).
+Detail endpoint, model, versi JavaScript, dan batasannya ada di [`backend/README.md`](backend/README.md).
 
 ## Struktur project
 
