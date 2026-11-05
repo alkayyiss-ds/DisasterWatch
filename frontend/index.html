@@ -18,7 +18,7 @@
     --muted: #667085;
     --bg-dark: #0A1220;
     --line: rgba(16, 24, 40, 0.08);
-    --glass-bg: rgba(255, 255, 255, 0.45);
+    --glass-bg: rgba(255, 255, 255, 0.65);
     --glass-border: rgba(255, 255, 255, 0.9);
     --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
     --sdg-green: #4C9F38;
@@ -36,13 +36,12 @@
     background: #FAFBFC;
   }
   .blob {
-    position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.7;
+    position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.6;
     animation: float-blob 10s infinite alternate;
   }
-  .blob-1 { top: -10%; left: -10%; width: 600px; height: 600px; background: rgba(58,134,255,0.3); }
+  .blob-1 { top: -10%; left: -10%; width: 500px; height: 500px; background: rgba(58,134,255,0.3); }
   .blob-2 { top: 40%; right: -10%; width: 600px; height: 600px; background: rgba(244,162,89,0.2); animation-delay: -5s; }
-  .blob-3 { bottom: -10%; left: 20%; width: 500px; height: 500px; background: rgba(76,159,56,0.2); animation-delay: -2s; }
-  .blob-4 { bottom: 20%; right: 20%; width: 400px; height: 400px; background: rgba(217,45,32,0.1); animation-delay: -7s; }
+  .blob-3 { bottom: -10%; left: 20%; width: 400px; height: 400px; background: rgba(76,159,56,0.2); animation-delay: -2s; }
 
   @keyframes float-blob {
     0% { transform: translate(0, 0) scale(1); }
@@ -52,7 +51,7 @@
   /* ===== NAVBAR (GLASSMORPHISM) ===== */
   .navbar {
     position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
-    width: 90%; max-width: 1100px; height: 64px;
+    width: 90%; max-width: 1000px; height: 64px;
     display: flex; align-items: center; justify-content: space-between;
     padding: 0 24px; background: var(--glass-bg);
     backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
@@ -81,59 +80,86 @@
 
   /* ===== SECTION UMUM ===== */
   section { padding: 100px 5%; position: relative; }
-  .section-head { text-align: center; max-width: 650px; margin: 0 auto 60px; }
+  .section-head { text-align: center !important; max-width: 650px; margin: 0 auto 60px !important; display: block !important; }
   .section-head h2 { font-family: 'Outfit'; font-size: 40px; font-weight: 800; color: var(--navy); margin-bottom: 16px; letter-spacing: -0.02em; }
   .section-head p { font-size: 16px; color: var(--muted); line-height: 1.6; }
 
   /* ===== HERO SECTION ===== */
   .hero {
-    position: relative; min-height: 95vh; padding: 180px 5% 60px;
+    position: relative; min-height: 95vh; padding: 160px 5% 60px;
     display: flex; flex-direction: column; align-items: center; text-align: center;
     overflow: hidden;
   }
   
-  .hero-content { max-width: 800px; position: relative; z-index: 10; animation: fadeUp 1s ease-out; }
+  .hero-content { max-width: 750px; position: relative; z-index: 10; animation: fadeUp 1s ease-out; }
   .hero-badge {
     display: inline-flex; align-items: center; gap: 6px; padding: 6px 16px;
     background: #fff; border: 1px solid var(--line); border-radius: 99px;
     color: var(--blue); font-size: 12px; font-weight: 700; margin-bottom: 24px;
     box-shadow: 0 4px 12px rgba(16,24,40,0.05);
   }
-  .hero h1 { font-family: 'Outfit'; font-size: 56px; font-weight: 800; line-height: 1.1; color: var(--navy); letter-spacing: -0.03em; margin-bottom: 24px; }
+  .hero h1 { font-family: 'Outfit'; font-size: 52px; font-weight: 800; line-height: 1.1; color: var(--navy); letter-spacing: -0.03em; margin-bottom: 20px; }
   .hero h1 span { background: linear-gradient(135deg, var(--blue-light), var(--orange)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .hero p { font-size: 18px; color: var(--muted); line-height: 1.6; margin-bottom: 40px; max-width: 650px; margin-left: auto; margin-right: auto; }
+  .hero p { font-size: 16px; color: var(--muted); line-height: 1.6; margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto; }
+  .hero-actions { display: flex; gap: 12px; justify-content: center; }
   
   .btn-hero {
-    background: var(--navy); color: #fff; padding: 16px 36px; border-radius: 99px;
-    text-decoration: none; font-size: 16px; font-weight: 600; display: inline-flex; align-items: center; gap: 10px;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: 0 10px 30px -10px rgba(15,27,45,0.5);
+    background: var(--navy); color: #fff; padding: 14px 32px; border-radius: 99px;
+    text-decoration: none; font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px;
+    transition: all 0.3s; box-shadow: 0 10px 30px -10px rgba(15,27,45,0.5);
   }
-  .btn-hero:hover { background: var(--blue); transform: translateY(-4px) scale(1.02); box-shadow: 0 15px 35px -10px rgba(46,117,182,0.6); }
+  .btn-hero:hover { background: var(--blue); transform: translateY(-3px); box-shadow: 0 15px 35px -10px rgba(46,117,182,0.6); }
 
-  /* ===== MOCKUP DASHBOARD (LAPTOP + HP) ===== */
+  /* ===== MOCKUP DASHBOARD (VIDEO PLAYER) ===== */
   .hero-mockup {
-    position: relative; margin-top: 50px; width: 100%; max-width: 1000px;
+    position: relative; margin-top: 40px; width: 100%; max-width: 1100px;
     z-index: 10; padding: 0 20px;
     display: flex; justify-content: center; align-items: center;
-    animation: float 6s ease-in-out infinite;
   }
-  .mockup-laptop {
-    width: 85%; border-radius: 16px; border: 8px solid #fff;
-    box-shadow: 0 20px 50px -15px rgba(16,24,40,0.2), 0 0 60px rgba(58,134,255,0.1);
-    display: block; transition: transform 0.4s ease;
+  
+  .mockup-frame {
+    width: 100%; 
+    border-radius: 20px; border: 8px solid #fff;
+    box-shadow: 0 25px 60px -15px rgba(16,24,40,0.25), 0 0 60px rgba(58,134,255,0.1);
+    background: #000; overflow: hidden; position: relative;
+    aspect-ratio: 16 / 9;
+    display: flex; align-items: center; justify-content: center;
   }
-  .mockup-phone {
-    position: absolute; bottom: -50px; right: 2%; width: 24%; min-width: 160px;
-    border-radius: 28px; border: 8px solid #fff;
-    box-shadow: 0 20px 50px -15px rgba(16,24,40,0.3), 0 0 40px rgba(244,162,89,0.2);
-    display: block; transition: transform 0.4s ease; z-index: 15;
+
+  .mockup-frame video {
+    width: 100%; height: 100%; 
+    object-fit: contain;
+    display: none;
+    opacity: 0; transition: opacity 0.5s ease;
   }
-  .hero-mockup:hover .mockup-laptop { transform: scale(1.02) translateY(-5px); }
-  .hero-mockup:hover .mockup-phone { transform: scale(1.05) translateY(-10px); }
+  .mockup-frame video.active {
+    display: block;
+    opacity: 1;
+  }
+
+  /* ===== FITUR INTERAKTIF (PILIHAN VIDEO) ===== */
+  .video-selector {
+    display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+    margin-top: 30px; z-index: 20;
+  }
+  .video-btn {
+    background: rgba(255,255,255,0.8); border: 1px solid var(--line); border-radius: 99px;
+    padding: 10px 20px; font-size: 13px; font-weight: 600; color: var(--muted);
+    cursor: pointer; display: flex; align-items: center; gap: 8px;
+    transition: all 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+  }
+  .video-btn:hover { background: #fff; color: var(--navy); transform: translateY(-2px); }
+  .video-btn.active { background: var(--navy); color: #fff; border-color: var(--navy); box-shadow: 0 4px 15px rgba(15,27,45,0.3); }
+  
+  .video-btn svg {
+    width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+    transition: transform 0.3s;
+  }
+  .video-btn:hover svg { transform: scale(1.1); }
 
   /* ===== STATISTIK BAR ===== */
   .stats-bar {
-    position: relative; margin: -50px auto 0; max-width: 1000px;
+    position: relative; margin: -10px auto 0; max-width: 1000px;
     background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
     border-radius: 24px; box-shadow: var(--glass-shadow); border: 1px solid var(--glass-border);
     display: grid; grid-template-columns: repeat(4, 1fr); padding: 40px; gap: 16px;
@@ -177,17 +203,29 @@
   .df-list div b { display: block; font-size: 17px; color: var(--ink); margin-bottom: 4px; }
   .df-list div span { font-size: 14.5px; color: var(--muted); line-height: 1.5; display: block; }
   
-  .df-image { position: relative; }
-  .df-image img {
-    width: 100%; border-radius: 24px; border: 8px solid #fff;
-    box-shadow: var(--glass-shadow);
+  /* --- SLIDER GAMBAR BENCANA --- */
+  .df-image-slider { 
+    position: relative; border-radius: 24px; overflow: hidden; border: 8px solid #fff; 
+    box-shadow: var(--glass-shadow); aspect-ratio: 4/3; width: 100%;
   }
+  .slide-img {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    object-fit: cover; opacity: 0; transition: opacity 1s ease-in-out;
+  }
+  .slide-img.active { opacity: 1; }
+  
+  .df-image-overlay {
+    position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px; z-index: 10;
+    background: linear-gradient(transparent, rgba(10,18,32,0.85)); color: white;
+  }
+  .df-image-overlay b { font-size: 16px; display: block; margin-bottom: 4px; font-family: 'Outfit'; }
+  .df-image-overlay span { font-size: 12px; opacity: 0.85; line-height: 1.4; }
 
-  /* ===== TECH STACK SECTION (100% NO ERROR) ===== */
+  /* ===== TECH STACK SECTION ===== */
   .tech-stack { background: transparent; text-align: center; }
   .tech-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 24px;
-    max-width: 1000px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+    max-width: 900px; margin: 0 auto;
   }
   .tech-card {
     background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
@@ -233,13 +271,14 @@
   .faq-item.active .faq-q svg { transform: rotate(180deg); }
   .faq-q svg { transition: transform 0.3s; }
 
-  /* ===== SDGS SECTION ===== */
+  /* ===== SDGS SECTION (DITAMBAH IKON) ===== */
   .sdgs-section { background: transparent; }
   .sdgs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1000px; margin: 0 auto; }
   .sdg-card {
     padding: 32px; border-radius: 24px; text-align: left; color: #fff; position: relative; overflow: hidden;
     transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     box-shadow: 0 10px 30px -10px rgba(0,0,0,0.15);
+    display: flex; flex-direction: column;
   }
   .sdg-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.2); }
   .sdg-card::before {
@@ -253,6 +292,14 @@
   .sdg-card.orange { background: linear-gradient(135deg, var(--sdg-orange), #D17D14); }
   .sdg-card.blue { background: linear-gradient(135deg, var(--sdg-blue), #1B8CA8); }
   
+  /* Style Ikon di dalam kartu SDGs */
+  .sdg-icon {
+    width: 48px; height: 48px; margin-bottom: 16px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(255,255,255,0.2); border-radius: 12px; border: 1px solid rgba(255,255,255,0.3);
+  }
+  .sdg-icon svg { width: 24px; height: 24px; stroke: #fff; }
+
   .sdg-num { font-family: 'Outfit'; font-size: 48px; font-weight: 800; line-height: 1; margin-bottom: 12px; color: rgba(255,255,255,0.9); }
   .sdg-card h3 { font-family: 'Outfit'; font-size: 20px; font-weight: 700; margin-bottom: 12px; }
   .sdg-card p { font-size: 14px; line-height: 1.6; color: rgba(255,255,255,0.95); margin: 0; }
@@ -313,6 +360,11 @@
     .steps-grid { grid-template-columns: 1fr; }
     .steps-grid::before { display: none; }
     .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+    .video-selector { gap: 8px; }
+    .video-btn { padding: 8px 14px; font-size: 12px; }
+    
+    /* Tech Stack jadi 2 kolom di HP */
+    .tech-grid { grid-template-columns: repeat(2, 1fr); }
   }
 </style>
 </head>
@@ -323,12 +375,11 @@
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
     <div class="blob blob-3"></div>
-    <div class="blob blob-4"></div>
   </div>
 
   <!-- NAVBAR -->
   <nav class="navbar">
-    <a href="landing.html" class="nav-brand">
+    <a href="index.html" class="nav-brand">
       <svg width="24" height="24" viewBox="0 0 44 44">
         <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2E75B6"/><stop offset="1" stop-color="#F4A259"/></linearGradient></defs>
         <rect width="44" height="44" rx="12" fill="url(#lg)"/>
@@ -338,10 +389,10 @@
       DisasterWatch
     </a>
     <div class="nav-links">
-      <a href="#dashboard-info">Fitur</a>
-      <a href="#testimoni">Testimoni</a>
-      <a href="#faq">FAQ</a>
+      <a href="#">Home</a>
       <a href="#sdgs">SDGs</a>
+      <a href="#fitur">Fitur</a>
+      <a href="#cara-kerja">Cara Kerja</a>
     </div>
     <a href="dashboard.html" class="btn-nav">Masuk Dashboard</a>
   </nav>
@@ -363,20 +414,51 @@
       </div>
     </div>
 
-    <!-- MOCKUP DASHBOARD (LAPTOP + HP) -->
+    <!-- MOCKUP DASHBOARD (VIDEO PLAYER) -->
     <div class="hero-mockup">
-      <!-- Gambar Laptop -->
-      <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop" alt="Dashboard Laptop" class="mockup-laptop">
-      
-      <!-- Gambar HP -->
-      <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=600&auto=format&fit=crop" alt="Dashboard Mobile" class="mockup-phone">
+      <div class="mockup-frame">
+        <video src="assets/overview.mp4" autoplay loop muted playsinline class="active" id="vid-overview"></video>
+        <video src="assets/peta wilayah.mp4" loop muted playsinline id="vid-peta"></video>
+        <video src="assets/ML.mp4" loop muted playsinline id="vid-ml"></video>
+        <video src="assets/klaster.mp4" loop muted playsinline id="vid-klaster"></video>
+        <video src="assets/trend prediksi.mp4" loop muted playsinline id="vid-tren"></video>
+        <video src="assets/lainnya.mp4" loop muted playsinline id="vid-lainnya"></video>
+      </div>
+    </div>
+
+    <!-- Tombol Pilihan Video -->
+    <div class="video-selector">
+      <button class="video-btn active" data-video="vid-overview">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+        Overview
+      </button>
+      <button class="video-btn" data-video="vid-peta">
+        <svg viewBox="0 0 24 24"><path d="M9 4l6 2 6-2v16l-6 2-6-2-6 2V6z"/><path d="M9 4v16M15 6v16"/></svg>
+        Peta Wilayah
+      </button>
+      <button class="video-btn" data-video="vid-ml">
+        <svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>
+        Prediksi Dampak
+      </button>
+      <button class="video-btn" data-video="vid-klaster">
+        <svg viewBox="0 0 24 24"><circle cx="7" cy="8" r="3"/><circle cx="17" cy="9" r="3"/><circle cx="12" cy="17" r="3"/></svg>
+        Klaster Risiko
+      </button>
+      <button class="video-btn" data-video="vid-tren">
+        <svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>
+        Tren & Prediksi
+      </button>
+      <button class="video-btn" data-video="vid-lainnya">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Lainnya
+      </button>
     </div>
   </section>
 
   <!-- STATISTIK BAR -->
   <div class="stats-bar reveal">
     <div class="stat-item"><h3>44.290</h3><p>Total Kejadian</p></div>
-    <div class="stat-item"><h3>412</h3><p>Wilayah Terklaster</p></div>
+    <div class="stat-item"><h3>526</h3><p>Wilayah Terklaster</p></div>
     <div class="stat-item"><h3>4</h3><p>Tingkat Risiko</p></div>
     <div class="stat-item"><h3>11 Thn</h3><p>Data Historis</p></div>
   </div>
@@ -455,14 +537,21 @@
         </ul>
       </div>
 
-      <!-- Kolom Kanan: Gambar Dashboard -->
-      <div class="df-image reveal">
-        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop" alt="Fitur Dashboard">
+      <!-- Kolom Kanan: SLIDER GAMBAR BENCANA INDONESIA -->
+      <div class="df-image-slider reveal">
+        <img src="https://images.unsplash.com/photo-1547683905-f686c993aae5?q=80&w=1000&auto=format&fit=crop" class="slide-img active" alt="Banjir di Indonesia">
+        <img src="https://images.unsplash.com/photo-1610128114197-485d933885c5?q=80&w=1000&auto=format&fit=crop" class="slide-img" alt="Gunung Meletus">
+        <img src="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?q=80&w=1000&auto=format&fit=crop" class="slide-img" alt="Bencana Alam">
+             
+        <div class="df-image-overlay">
+          <b>Bencana di Indonesia</b>
+          <span>Dari banjir hingga erupsi, dashboard membantu memetakan risiko secara nasional.</span>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- TECH STACK SECTION (100% NO ERROR) -->
+  <!-- TECH STACK SECTION -->
   <section class="tech-stack">
     <div class="section-head reveal">
       <h2>Didukung Teknologi Terbaik</h2>
@@ -470,27 +559,20 @@
     </div>
     
     <div class="tech-grid reveal">
-      <!-- Python (Logo Resmi) -->
       <div class="tech-card">
         <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg" alt="Python Logo">
         <span>Python</span>
       </div>
-      
-      <!-- Scikit-Learn (Logo Resmi) -->
       <div class="tech-card">
         <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Scikit_learn_logo_small.svg" alt="Scikit-Learn Logo">
         <span>Scikit-Learn</span>
       </div>
-      
-      <!-- Chart.js (SVG Lokal - Anti Rusak) -->
       <div class="tech-card">
         <svg viewBox="0 0 24 24" fill="none" stroke="#FF6384" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 44px; height: 44px;">
           <path d="M21.21 15.89A10 10 0 1 1 8 2.83M22 12A10 10 0 0 0 12 2v10z"/>
         </svg>
         <span>Chart.js</span>
       </div>
-      
-      <!-- Leaflet (SVG Lokal - Anti Rusak) -->
       <div class="tech-card">
         <svg viewBox="0 0 24 24" fill="none" stroke="#199900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 44px; height: 44px;">
           <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
@@ -498,14 +580,10 @@
         </svg>
         <span>Leaflet</span>
       </div>
-      
-      <!-- XGBoost (Logo Resmi) -->
       <div class="tech-card">
         <img src="https://upload.wikimedia.org/wikipedia/commons/6/69/XGBoost_logo.png" alt="XGBoost Logo">
         <span>XGBoost</span>
       </div>
-      
-      <!-- Data BNPB (SVG Lokal) -->
       <div class="tech-card">
         <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#667085" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
@@ -528,7 +606,7 @@
           <div class="testi-avatar">BS</div>
           <div class="testi-info">
             <b>Budi Santoso</b>
-            <span>Relawan BNPB</span>
+            <span>Relawan BNPB (Simulasi Pengguna)</span>
           </div>
         </div>
       </div>
@@ -538,7 +616,7 @@
           <div class="testi-avatar">RA</div>
           <div class="testi-info">
             <b>Rina Astuti</b>
-            <span>Peneliti Kebencanaan UI</span>
+            <span>Peneliti Kebencanaan (Simulasi Pengguna)</span>
           </div>
         </div>
       </div>
@@ -548,14 +626,14 @@
           <div class="testi-avatar">DH</div>
           <div class="testi-info">
             <b>Dewi Handayani</b>
-            <span>Aktivis Lingkungan</span>
+            <span>Aktivis Lingkungan (Simulasi Pengguna)</span>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- FAQ SECTION -->
+  <!-- FAQ SECTION (DITAMBAH 3 PERTANYAAN BARU) -->
   <section class="faq" id="faq">
     <div class="section-head reveal">
       <h2>Pertanyaan yang Sering Diajukan</h2>
@@ -578,10 +656,28 @@
         <div class="faq-q">Apakah data di sini sudah mencakup semua provinsi di Indonesia? <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
         <div class="faq-a">Saat ini dashboard mencakup 38 provinsi di Indonesia. Kami terus melakukan pembaruan data secara berkala untuk memastikan akurasi dan cakupan yang maksimal.</div>
       </div>
+      
+      <!-- FAQ BARU 1 -->
+      <div class="faq-item">
+        <div class="faq-q">Bagaimana cara dashboard berjalan tanpa server backend? <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+        <div class="faq-a">Kami menggunakan pendekatan <i>zero-backend</i>. Semua model Machine Learning (Random Forest) telah dikonversi ke dalam format JavaScript. Jadi, saat pengguna melakukan simulasi, komputasi prediksi terjadi langsung di browser pengguna (client-side) tanpa perlu mengirim data ke server.</div>
+      </div>
+      
+      <!-- FAQ BARU 2 -->
+      <div class="faq-item">
+        <div class="faq-q">Apakah data saya aman saat menggunakan simulasi? <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+        <div class="faq-a">Sangat aman. Karena dashboard berjalan sepenuhnya di browser Anda, tidak ada data input (seperti jenis bencana atau provinsi yang dipilih) yang dikirim atau disimpan ke server mana pun. Semua proses simulasi bersifat privat.</div>
+      </div>
+      
+      <!-- FAQ BARU 3 -->
+      <div class="faq-item">
+        <div class="faq-q">Seberapa sering data dan model diperbarui? <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+        <div class="faq-a">Pembaruan data dilakukan secara berkala dengan menarik data terbaru dari Geoportal BNPB. Setelah data baru di-<i>preprocessing</i> dan model di-<i>train</i> ulang, file JSON dan JS akan di-<i>generate</i> ulang, dan dashboard akan ter-<i>update</i> secara otomatis melalui sistem CI/CD (Vercel).</div>
+      </div>
     </div>
   </section>
 
-  <!-- SDGS SECTION -->
+  <!-- SDGS SECTION (DITAMBAH IKON) -->
   <section class="sdgs-section" id="sdgs">
     <div class="section-head reveal">
       <h2>Mendukung Tujuan Pembangunan Berkelanjutan</h2>
@@ -589,17 +685,31 @@
     </div>
     
     <div class="sdgs-grid reveal">
+      <!-- SDG 13 -->
       <div class="sdg-card green">
+        <div class="sdg-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
         <div class="sdg-num">13</div>
         <h3>Penanganan Perubahan Iklim</h3>
         <p>Memperkuat kapasitas adaptasi dan ketahanan terhadap bencana terkait iklim melalui analisis data prediktif dan pemetaan risiko.</p>
       </div>
+      
+      <!-- SDG 11 -->
       <div class="sdg-card orange">
+        <div class="sdg-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M9 8h1"/><path d="M9 12h1"/><path d="M9 16h1"/><path d="M14 8h1"/><path d="M14 12h1"/><path d="M14 16h1"/><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/></svg>
+        </div>
         <div class="sdg-num">11</div>
         <h3>Kota & Permukiman Berkelanjutan</h3>
         <p>Mengurangi jumlah korban dan kerugian ekonomi akibat bencana di kota-kota besar dengan perencanaan mitigasi berbasis data.</p>
       </div>
+      
+      <!-- SDG 9 -->
       <div class="sdg-card blue">
+        <div class="sdg-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+        </div>
         <div class="sdg-num">9</div>
         <h3>Inovasi & Infrastruktur</h3>
         <p>Memanfaatkan teknologi Machine Learning dan visualisasi data untuk mendukung pengambilan keputusan infrastruktur yang lebih aman.</p>
@@ -684,10 +794,44 @@
     </div>
   </footer>
 
-  <!-- SCRIPT UNTUK ANIMASI SCROLL & FAQ ACCORDION -->
+  <!-- SCRIPT UNTUK GANTI VIDEO, SLIDER GAMBAR, & ANIMASI SCROLL -->
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-      // Scroll Reveal
+      // --- 1. Logika Ganti Video ---
+      const buttons = document.querySelectorAll('.video-btn');
+      const videos = document.querySelectorAll('.mockup-frame video');
+
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          buttons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          videos.forEach(v => {
+            v.classList.remove('active');
+            v.pause();
+          });
+          const targetId = btn.getAttribute('data-video');
+          const targetVideo = document.getElementById(targetId);
+          if (targetVideo) {
+            targetVideo.classList.add('active');
+            targetVideo.currentTime = 0;
+            targetVideo.play();
+          }
+        });
+      });
+
+      // --- 2. Logika Slider Gambar Bencana ---
+      const slides = document.querySelectorAll('.slide-img');
+      let currentSlide = 0;
+      
+      if (slides.length > 0) {
+        setInterval(() => {
+          slides[currentSlide].classList.remove('active');
+          currentSlide = (currentSlide + 1) % slides.length;
+          slides[currentSlide].classList.add('active');
+        }, 3000);
+      }
+
+      // --- 3. Animasi Scroll Reveal ---
       const reveals = document.querySelectorAll('.reveal');
       const revealOnScroll = function() {
         const windowHeight = window.innerHeight;
@@ -702,7 +846,7 @@
       window.addEventListener("scroll", revealOnScroll);
       revealOnScroll(); 
 
-      // FAQ Accordion
+      // --- 4. FAQ Accordion ---
       const faqItems = document.querySelectorAll('.faq-item');
       faqItems.forEach(item => {
         const question = item.querySelector('.faq-q');
